@@ -1,6 +1,6 @@
 $(document).foundation();
 
-var apikey = config.API_KEY;
+// var apikey = config.API_KEY;
 
 var map;
       function initMap() {
