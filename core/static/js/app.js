@@ -10,11 +10,13 @@ var map;
         });
     }
 
-var mapWidth = $('#map').width();
-$('#map').css({
+$(window).resize(function() {
+    let mapWidth = $('#map').width();
+    $('#map').css({
     'height': mapWidth + 'px'
-});
-    
+    });
+})
+
 if (typeof Gyroscope === "function") {
     console.log('The gyroscope is maybe possibly working??? ')
 }
