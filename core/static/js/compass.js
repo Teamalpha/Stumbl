@@ -1,14 +1,27 @@
   
- function animations (angler) {
-    const animate = document.getElementById('canvas');
-    const ctx = animate.getContext('2d');
-    const direction = (angler * Math.PI / 180)
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+//  function animations (angler) {
+//     const animate = document.getElementById('canvas');
+//     const ctx = animate.getContext('2d');
+//     const direction = (angler * Math.PI / 180)
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+//     ctx.translate(150, 150);
+//     ctx.rotate(-direction);
+//     ctx.translate(-150, -150)
+//     ctx.fillRect(140, 20, 20, 260);
+//     ctx.resetTransform();
+//  }
+
+function animations (angler) {
+    const animate = document.getElementById('canvas');
+    const arrow = document.getElementById('source');
+    const ctx = animate.getContext('2d');
+    const direction = ((angler * Math.PI / 180) + Math.PI)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.translate(150, 150);
     ctx.rotate(-direction);
     ctx.translate(-150, -150)
-    ctx.fillRect(140, 20, 20, 260);
+    ctx.drawImage(arrow, 50, 50)
     ctx.resetTransform();
  }
   
@@ -28,8 +41,6 @@
         var compassHeading = Math.round(event.webkitCompassHeading);
 
         document.getElementById('compass').innerText = `${compassHeading}`;
-
-        const dog = 5;
 
         animations(compassHeading);
         
