@@ -15,22 +15,22 @@ $('#map').css({
     'height': mapWidth + 'px'
 });
     
-if (typeof Gyroscope === "function") {
-    console.log('The gyroscope is maybe possibly working??? ')
-}
+// if (typeof Gyroscope === "function") {
+//     console.log('The gyroscope is maybe possibly working??? ')
+// }
 
-let magSensor = new Magnetometer({frequency: 60});
+// let magSensor = new Magnetometer({frequency: 60});
 
-magSensor.addEventListener('reading', e => {
-  console.log("Magnetic field along the X-axis " + magSensor.x);
-  console.log("Magnetic field along the Y-axis " + magSensor.y);
-  console.log("Magnetic field along the Z-axis " + magSensor.z);
-  console.log(e)
-})
-magSensor.addEventListener('error', event => {
-  console.log(event.error.name, event.error.message);
-})
-magSensor.start();
+// magSensor.addEventListener('reading', e => {
+//   console.log("Magnetic field along the X-axis " + magSensor.x);
+//   console.log("Magnetic field along the Y-axis " + magSensor.y);
+//   console.log("Magnetic field along the Z-axis " + magSensor.z);
+//   console.log(e)
+// })
+// magSensor.addEventListener('error', event => {
+//   console.log(event.error.name, event.error.message);
+// })
+// magSensor.start();
 
 navigator.permissions.query({name:'geolocation'}).then(function(result) {
     if (result.state == 'granted') {
