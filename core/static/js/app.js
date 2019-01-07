@@ -1,17 +1,24 @@
 $(document).foundation();
 
-function roundify(selector = "#map") {
+function roundify(selector="#map") {
   let mapWidth = $(selector).width();
   $(selector).css({
     'height': mapWidth + 'px'
   });
+  var mapOffset = $(selector).offset()
+  var radius = mapWidth / 2
+  var originX = mapOffset.top + radius
+  var originY = mapOffset.left + radius
+  console.log(`x: ${originX}, y: ${originY}`)
 }
 
-$(document).ready(roundify('#map'))
+$(document).ready(roundify())
 
 $(window).resize(function () {
-  let mapWidth = $('#map').width();
-  $('#map').css({
-    'height': mapWidth + 'px'
-  });
+  roundify()
 })
+
+
+// setInterval(function() {
+//   roundify('#map')
+//   }, 500)
