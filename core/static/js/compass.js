@@ -42,7 +42,7 @@ function toRadian (degree) {
 }
   
 // const myhouse = [35.984638, -78.965814]
-const destination = [35.984641, -78.965719]
+const destination = [36.003042, -78.939679]
 
 function getBearing(lat1, long1, lat2, long2) {
     var y = Math.sin(long2-long1) * Math.cos(lat2);
@@ -57,7 +57,6 @@ function getBearing(lat1, long1, lat2, long2) {
 
 
 function compassAnimation (angler) {
-    // locale = 90;
     const animate = document.getElementById('canvas');
     const arrow = document.getElementById('source');
     const ctx = animate.getContext('2d');
