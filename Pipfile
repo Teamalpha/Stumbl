@@ -18,6 +18,7 @@ python-dotenv = "*"
 django = "*"
 "psycopg2" = "*"
 djangorestframework = "*"
+selenium = "*"
 
 [dev-packages]
 
