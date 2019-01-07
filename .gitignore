@@ -1,6 +1,7 @@
 # Custom ignores
 config.js
 Pipfile.lock
+pipfile.lock
 .vscode 
 ngrok.exe
 # Byte-compiled / optimized / DLL files
