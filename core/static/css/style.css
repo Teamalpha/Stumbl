@@ -18,3 +18,9 @@ html, body {
 .empty-space {
     height: 50px;
 }
+
+#arrow {
+    height: 30px;
+    widows: 40px;
+    display: block;
+}

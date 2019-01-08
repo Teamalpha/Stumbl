@@ -18,16 +18,12 @@
 
   </head>
   <body>
-    <svg class="absolute" height='1600' width='1600'>
-      <circle id="cir" cx="360" cy="357" r="315" stroke="green" fill="green" />
-    </svg>
-    <h1 id="doodooh1">Welcome to Stumbl</h1>   
-    {% comment %} <p id="result"></p> {% endcomment %}
+  <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
+    {% comment %} <svg id="arrow" class="absolute" height='1600' width='1600'></svg> {% endcomment %}
     <div class="empty-space"></div>
     
-    <div id="map">
-      
-    </div>
+    <div id="map"></div>
+
     <script>
       var map, infoWindow;
       function initMap() {
