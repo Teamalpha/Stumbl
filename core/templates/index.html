@@ -137,6 +137,13 @@
           place_address = places[0].formatted_address
           place_name = places[0].name
           console.log(place_lat, place_lng, place_address, place_name)
+          var destination = ({lat: place_lat, lng: place_lng});
+          var marker = new google.maps.Marker({
+            position: destination,
+            map: map,
+            icon:"https://img.icons8.com/metro/50/launched-rocket.png",
+            animation: google.maps.Animation.BOUNCE,
+          });
         });
 
       infoWindow = new google.maps.InfoWindow;
