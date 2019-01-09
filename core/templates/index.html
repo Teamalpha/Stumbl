@@ -14,13 +14,30 @@
     <script src="https://d3js.org/d3.v5.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js" integrity="sha256-WUKHnLrIrx8dew//IpSEmPN/NT3DGAEmIePQYIEJLLs= sha384-53StQWuVbn6figscdDC3xV00aYCPEz3srBdV/QGSXw3f19og3Tq2wTRe0vJqRTEO sha512-X9O+2f1ty1rzBJOC8AXBnuNUdyJg0m8xMKmbt9I3Vu/UOWmSg5zG+dtnje4wAZrKtkopz/PEDClHZ1LXx5IeOw==" crossorigin="anonymous" defer></script>
     <script src="{% static 'js/fabric.min.js' %}" defer></script>
+    <script src="{% static 'js/compass.js' %}" defer></script>
     <script src="{% static 'js/app.js' %}" defer></script>
 
   </head>
   <body>
     <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">      
     <h1>Welcome to Stumbl</h1>
-    <input type="hidden" id="pac-input" class="controls top-layer" type="text" placeholder="choose destination">
+
+    <div id='test'></div>
+    <div id='alpha'></div>
+    <div id='beta'></div>
+    <div id='gamma'></div>
+    <div id='compass'></div>
+    <div id='distance'></div>
+    <div id='location'></div>
+    <div id='location2'></div>
+    <canvas id="canvas" width="300" height="300" style="border:1px solid black;"></canvas>
+    <div style="display:none;">
+        <img id="source"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Dark_Green_Arrow_Down.svg/200px-Dark_Green_Arrow_Down.svg.png"
+          width="200" height="200">
+    </div>
+
+    <input id="pac-input" class="controls top-layer" type="text" placeholder="choose destination">
     <div class="empty-space"></div>
     <div id="map"></div>
     <div class="empty-space"></div>
@@ -39,7 +56,7 @@
     </div>
 
     <script>
-      var map, infoWindow;
+      var map, infoWindow, destWindow, placeCoords;
       function initAutocomplete() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 35.993, lng: -78.905 },
@@ -152,8 +169,15 @@
           console.log(places)
           place_lat = places[0].geometry.location.lat()
           place_lng = places[0].geometry.location.lng()
+          placeCoords = {lat: place_lat, lng: place_lng}
           place_address = places[0].formatted_address
           place_name = places[0].name
+          destWindow = new google.maps.InfoWindow
+          destWindow.setPosition({lat: place_lat, lng: place_lng})
+          destWindow.setContent(place_name)
+          destWindow.open(map)
+          map.setCenter({lat: place_lat, lng: place_lng});
+
           console.log(place_lat, place_lng, place_address, place_name)
           var destination = ({lat: place_lat, lng: place_lng});
           var marker = new google.maps.Marker({
