@@ -11,15 +11,33 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous" defer></script>
+    <script src="https://d3js.org/d3.v5.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js" integrity="sha256-WUKHnLrIrx8dew//IpSEmPN/NT3DGAEmIePQYIEJLLs= sha384-53StQWuVbn6figscdDC3xV00aYCPEz3srBdV/QGSXw3f19og3Tq2wTRe0vJqRTEO sha512-X9O+2f1ty1rzBJOC8AXBnuNUdyJg0m8xMKmbt9I3Vu/UOWmSg5zG+dtnje4wAZrKtkopz/PEDClHZ1LXx5IeOw==" crossorigin="anonymous" defer></script>
     <script src="{% static 'js/fabric.min.js' %}" defer></script>
     <script src="{% static 'js/app.js' %}" defer></script>
 
   </head>
   <body>
-  <h1>Welcome to Stumbl</h1>
-  <input id="pac-input" class="controls top-layer" type="text" placeholder="choose destination">
+    <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">      
+    <h1>Welcome to Stumbl</h1>
+    <input type="hidden" id="pac-input" class="controls top-layer" type="text" placeholder="choose destination">
+    <div class="empty-space"></div>
     <div id="map"></div>
+    <div class="empty-space"></div>
+
+    {% comment %} Slider for testing compass arrow {% endcomment %}
+    <div class="grid-x grid-margin-x">
+      <div class="cell small-10">
+        <div class="slider" data-slider data-initial-start="360" data-end="360">
+          <span class="slider-handle"  data-slider-handle role="slider" tabindex="1" aria-controls="sliderOutput1"></span>
+          <span class="slider-fill" data-slider-fill></span>
+        </div>
+      </div>
+      <div class="cell small-2">
+        <input type="number" id="sliderOutput1">
+      </div>
+    </div>
+
     <script>
       var map, infoWindow;
       function initAutocomplete() {
@@ -153,7 +171,6 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          console.log(pos)
 
           infoWindow.setPosition(pos);
           infoWindow.setContent('You are here');
