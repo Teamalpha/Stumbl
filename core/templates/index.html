@@ -18,15 +18,29 @@
 
   </head>
   <body>
-  <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
-    {% comment %} <svg id="arrow" class="absolute" height='1600' width='1600'></svg> {% endcomment %}
+    <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">      
+    <h1>Welcome to Stumbl</h1>
+    <input type="hidden" id="pac-input" class="controls top-layer" type="text" placeholder="choose destination">
     <div class="empty-space"></div>
-    
     <div id="map"></div>
+    <div class="empty-space"></div>
+
+    {% comment %} Slider for testing compass arrow {% endcomment %}
+    <div class="grid-x grid-margin-x">
+      <div class="cell small-10">
+        <div class="slider" data-slider data-initial-start="360" data-end="360">
+          <span class="slider-handle"  data-slider-handle role="slider" tabindex="1" aria-controls="sliderOutput1"></span>
+          <span class="slider-fill" data-slider-fill></span>
+        </div>
+      </div>
+      <div class="cell small-2">
+        <input type="number" id="sliderOutput1">
+      </div>
+    </div>
 
     <script>
       var map, infoWindow;
-      function initMap() {
+      function initAutocomplete() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 35.993, lng: -78.905 },
         zoom: 18,
@@ -121,6 +135,34 @@
           }
         ]
       });
+      
+      var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); //
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener('places_changed', function() {
+          var places = searchBox.getPlaces();
+          console.log(places)
+          place_lat = places[0].geometry.location.lat()
+          place_lng = places[0].geometry.location.lng()
+          place_address = places[0].formatted_address
+          place_name = places[0].name
+          console.log(place_lat, place_lng, place_address, place_name)
+          var destination = ({lat: place_lat, lng: place_lng});
+          var marker = new google.maps.Marker({
+            position: destination,
+            map: map,
+            icon:"https://img.icons8.com/metro/50/launched-rocket.png",
+            animation: google.maps.Animation.BOUNCE,
+          });
+        });
 
       infoWindow = new google.maps.InfoWindow;
       if (navigator.geolocation) {
@@ -152,6 +194,6 @@
       infoWindow.open(map);
     }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initAutocomplete" async defer></script>
   </body>
 </html>

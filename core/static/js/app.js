@@ -1,49 +1,45 @@
 $(document).foundation();
 
-var originX, originY, radius;
+let originX, originY, radius;
+let arrow = document.getElementById('arrow')
+let bearing = 0
+let mapDiv = $('#map')
 
-var compass = $('#cir')
-var arrow = document.getElementById('arrow')
-var bearing = 0
-
-function roundify(selector="#map") {
-  let mapWidth = $(selector).width();
-  $(selector).css({
-    'height': mapWidth + 'px'
-  });
-  var mapOffset = $(selector).offset()
-  radius = mapWidth / 2
-
-  originX = mapOffset.left + radius
-  originY = radius + mapOffset.top
-  console.log(`x: ${originX}, y: ${originY}`)
-  compass.attr('cx', originX.toString())
-  compass.attr('cy', originY.toString())
-  compass.attr('r', (radius * 1.1).toString())
-  // arrow.attr('x1', originX.toString())
-  // arrow.attr('y1', originY.toString())
-  // arrow.attr('x2', originX.toString())
-  // arrow.attr('y2', (originY - radius * 1.1).toString())
-  // var hiddenArrow = `
-  // <circle id="cir" cx=${originX.toString()} cy=${originY.toString()} r=${(radius * 1.1).toString()} stroke="green" fill="none" />
-  // <g id="poopoo" style="stroke: black;">
-  //   <line x1=${originX.toString()} y1=${originY.toString()} x2=${originX.toString()} y2=${(originY - radius * 1.1).toString()}/>
-  //   <polygon points="${originX} ${originY - radius * 1.1 - 5}, ${originX - 5} ${originY - radius * 1.1 + 5}, ${originX + 5} ${originY - radius * 1.1 + 5}"/>
-  // </g>
-  // <use href="#poopoo" transform="rotate(180, ${originX}, ${originY})"/>
-  // `
-  // arrow.html(hiddenArrow)
-  arrowWidthMP = $('#arrow').width() / 2
-  arrowHeightMP = $('#arrow').height() / 2
-  console.log(arrow.style.width)
-  arrow.style.cssText = `transform: rotate(${bearing}deg); transform-origin: ${originX}px ${originY}px; top: ${originY - arrowHeightMP - radius * 1.1}px; left: ${originX - arrowWidthMP}px;` 
+function roundify() {
+  mapDiv.css({'height': mapDiv.width() + 'px'});
+  radius = mapDiv.width() / 2
+  originX = mapDiv.offset().left + radius
+  originY = mapDiv.offset().top + radius
+  arrow.style.cssText = `
+    transform: rotate(${$(this).children('.slider-handle').attr('aria-valuenow')}deg);
+    transform-origin: bottom center;
+    height: ${radius + 60}px;
+    padding-bottom: ${radius - 35}px;
+    top: ${originY - 60 - radius}px;
+    left: ${originX - 30}px;
+    display: inline-block;
+  ` 
 }
 
-$(document).ready(roundify())
-
+$(document).ready(function() {
+  roundify()
+})
 $(window).resize(function () {
   roundify()
 })
+
+$('.slider').on('moved.zf.slider', function(){
+  let degrees = 
+  arrow.style.cssText = `
+    transform: rotate(${$(this).children('.slider-handle').attr('aria-valuenow')}deg);
+    transform-origin: bottom center;
+    height: ${radius + 60}px;
+    padding-bottom: ${radius - 35}px;
+    top: ${originY - 60 - radius}px;
+    left: ${originX - 30}px;
+    display: inline-block;
+    `
+});
 
 // setInterval(function() {
 //   roundify('#map')
