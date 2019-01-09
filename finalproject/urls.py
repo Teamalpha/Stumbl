@@ -17,9 +17,22 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from core import views
+from rest_framework import routers
+from api import views as api_views
+
+
+# Router for api url's
+router = routers.DefaultRouter()
+router.register('users', api_views.UserViewSet)
+router.register('destinations', api_views.DestinationViewSet)
+router.register('playlists', api_views.PlaylistViewSet)
+
 
 urlpatterns = [
     path('', views.index, name='home'),
+    path('profile/', views.profile, name='profile'),
+    path('playlist', views.playlist, name='playlist'),
+    path('api/', include((router.urls, 'core'), namespace='api')),
     path('admin/', admin.site.urls),
 ]
 
