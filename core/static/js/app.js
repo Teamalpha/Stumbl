@@ -22,16 +22,9 @@ $(window).resize(function () {
 setInterval(getMySpot, 1000);
 
 window.ondeviceorientationabsolute = function(event) {
-  mapDiv.css({ 'height': mapDiv.width() + 'px' });
-  radius = mapDiv.width() / 2
-  originX = mapDiv.offset().left + radius
-  originY = mapDiv.offset().top + radius
-  
-  if(event.webkitCompassHeading) {
-    // Apple works only with this, alpha doesn't work
-    compassHeading = event.webkitCompassHeading;  
-  }
-  else compassHeading = event.alpha
+  roundify()
+
+  compassHeading = event.alpha
 
   $('#c-heading').text((compassHeading))
   $('#c-bearing').text((updatebearing))
@@ -52,13 +45,10 @@ window.ondeviceorientationabsolute = function(event) {
 
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", function(event) {
-    document.getElementById("test").innerText = 'supported!'
     if (event.webkitCompassHeading) {
-      var compassHeading = event.webkitCompassHeading
-      mapDiv.css({ 'height': mapDiv.width() + 'px' });
-      radius = mapDiv.width() / 2
-      originX = mapDiv.offset().left + radius
-      originY = mapDiv.offset().top + radius
+      roundify()
+
+      compassHeading = event.webkitCompassHeading
 
       $('#c-heading').text((compassHeading))
       $('#c-bearing').text((updatebearing))
@@ -66,15 +56,17 @@ if (window.DeviceOrientationEvent) {
       if (finalHeading < 0) { finalHeading += 360}
       $('#c-finalheading').text((finalHeading))
 
-      arrow.style.cssText = `
-      transform: rotate(${(finalHeading)}deg);
-      transform-origin: bottom center;
-      height: ${radius + 60}px;
-      padding-bottom: ${radius - 35}px;
-      top: ${originY - 60 - radius}px;
-      left: ${originX - 30}px;
-      display: inline-block;
-    `
+      {
+        arrow.style.cssText = `
+          transform: rotate(${(finalHeading)}deg);
+          transform-origin: bottom center;
+          height: ${radius + 60}px;
+          padding-bottom: ${radius - 35}px;
+          top: ${originY - 60 - radius}px;
+          left: ${originX - 30}px;
+          display: inline-block;
+        `
+      }
     }
   })
 }
