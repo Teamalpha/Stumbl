@@ -28,19 +28,6 @@ $(window).resize(function () {
   roundify()
 })
 
-// $('.slider').on('moved.zf.slider', function () {
-//   let degrees =
-//     arrow.style.cssText = `
-//     transform: rotate(${$(this).children('.slider-handle').attr('aria-valuenow')}deg);
-//     transform-origin: bottom center;
-//     height: ${radius + 60}px;
-//     padding-bottom: ${radius - 35}px;
-//     top: ${originY - 60 - radius}px;
-//     left: ${originX - 30}px;
-//     display: inline-block;
-//     `
-// });
-
 setInterval(getMySpot, 1000);
 
 // Obtain a new *world-oriented* Full Tilt JS DeviceOrientation Promise
@@ -58,8 +45,11 @@ promise.then(function (deviceOrientation) { // Device Orientation Events are sup
 
     // Calculate the current compass heading that the user is 'looking at' (in degrees)
     var compassHeading = 360 - currentOrientation.alpha;
-    // $('#c-heading').text(Math.abs(compassHeading))
-    // $('#c-bearing').text(Math.abs(updatebearing))
+    $('#c-heading').text((compassHeading))
+    $('#c-bearing').text((updatebearing))
+    if (compassHeading - updatebearing)
+      $('#c-finalheading').text(Math.abs(compassHeading - updatebearing))
+
     arrow.style.cssText = `
       transform: rotate(${Math.abs(compassHeading - updatebearing)}deg);
       transform-origin: bottom center;
