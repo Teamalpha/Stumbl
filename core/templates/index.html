@@ -5,31 +5,33 @@
   Stumbl - {{ block.super }}
 {% endblock title %}
 
+
 {% block content %}
 
    
     <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">      
     <h1>Welcome to Stumbl</h1>
-    <input type="hidden" id="pac-input" class="controls top-layer" type="text" placeholder="choose destination">
+
+    <div id='test'></div>
+    <div id='alpha'></div>
+    <div id='beta'></div>
+    <div id='gamma'></div>
+    <div id='compass'></div>
+    <div id='distance'></div>
+    <div id='location'></div>
+    <div id='location2'></div>
+
+
+    <input id="pac-input" class="controls top-layer" type="text" placeholder="choose destination">
     <div class="empty-space"></div>
     <div id="map"></div>
     <div class="empty-space"></div>
-
-    {% comment %} Slider for testing compass arrow {% endcomment %}
-    <div class="grid-x grid-margin-x">
-      <div class="cell small-10">
-        <div class="slider" data-slider data-initial-start="360" data-end="360">
-          <span class="slider-handle"  data-slider-handle role="slider" tabindex="1" aria-controls="sliderOutput1"></span>
-          <span class="slider-fill" data-slider-fill></span>
-        </div>
-      </div>
-      <div class="cell small-2">
-        <input type="number" id="sliderOutput1">
-      </div>
-    </div>
+    <div id='c-heading'></div>
+    <div id='c-bearing'></div>
+    <div id='c-finalheading'></div>
 
     <script>
-      var map, infoWindow;
+      var map, infoWindow, destWindow, placeCoords;
       function initAutocomplete() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 35.993, lng: -78.905 },
@@ -142,8 +144,15 @@
           console.log(places)
           place_lat = places[0].geometry.location.lat()
           place_lng = places[0].geometry.location.lng()
+          placeCoords = {lat: place_lat, lng: place_lng}
           place_address = places[0].formatted_address
           place_name = places[0].name
+          destWindow = new google.maps.InfoWindow
+          destWindow.setPosition({lat: place_lat, lng: place_lng})
+          destWindow.setContent(place_name)
+          destWindow.open(map)
+          map.setCenter({lat: place_lat, lng: place_lng});
+
           console.log(place_lat, place_lng, place_address, place_name)
           var destination = ({lat: place_lat, lng: place_lng});
           var marker = new google.maps.Marker({

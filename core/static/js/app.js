@@ -6,41 +6,75 @@ let bearing = 0
 let mapDiv = $('#map')
 
 function roundify() {
-  mapDiv.css({'height': mapDiv.width() + 'px'});
+  mapDiv.css({ 'height': mapDiv.width() + 'px' });
   radius = mapDiv.width() / 2
   originX = mapDiv.offset().left + radius
   originY = mapDiv.offset().top + radius
-  arrow.style.cssText = `
-    transform: rotate(${$(this).children('.slider-handle').attr('aria-valuenow')}deg);
-    transform-origin: bottom center;
-    height: ${radius + 60}px;
-    padding-bottom: ${radius - 35}px;
-    top: ${originY - 60 - radius}px;
-    left: ${originX - 30}px;
-    display: inline-block;
-  ` 
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   roundify()
 })
 $(window).resize(function () {
   roundify()
 })
 
-$('.slider').on('moved.zf.slider', function(){
-  let degrees = 
-  arrow.style.cssText = `
-    transform: rotate(${$(this).children('.slider-handle').attr('aria-valuenow')}deg);
-    transform-origin: bottom center;
-    height: ${radius + 60}px;
-    padding-bottom: ${radius - 35}px;
-    top: ${originY - 60 - radius}px;
-    left: ${originX - 30}px;
-    display: inline-block;
-    `
-});
+setInterval(getMySpot, 1000);
 
-// setInterval(function() {
-//   roundify('#map')
-//   }, 500)
+window.ondeviceorientationabsolute = function(event) {
+  mapDiv.css({ 'height': mapDiv.width() + 'px' });
+  radius = mapDiv.width() / 2
+  originX = mapDiv.offset().left + radius
+  originY = mapDiv.offset().top + radius
+  
+  if(event.webkitCompassHeading) {
+    // Apple works only with this, alpha doesn't work
+    compassHeading = event.webkitCompassHeading;  
+  }
+  else compassHeading = event.alpha
+
+  $('#c-heading').text((compassHeading))
+  $('#c-bearing').text((updatebearing))
+  var finalHeading = compassHeading + updatebearing
+  if (finalHeading > 360) { finalHeading -= 360}
+  $('#c-finalheading').text((finalHeading))
+
+  arrow.style.cssText = `
+  transform: rotate(${(finalHeading)}deg);
+  transform-origin: bottom center;
+  height: ${radius + 60}px;
+  padding-bottom: ${radius - 35}px;
+  top: ${originY - 60 - radius}px;
+  left: ${originX - 30}px;
+  display: inline-block;
+`
+};
+
+if (window.DeviceOrientationEvent) {
+  window.addEventListener("deviceorientation", function(event) {
+    document.getElementById("test").innerText = 'supported!'
+    if (event.webkitCompassHeading) {
+      var compassHeading = event.webkitCompassHeading
+      mapDiv.css({ 'height': mapDiv.width() + 'px' });
+      radius = mapDiv.width() / 2
+      originX = mapDiv.offset().left + radius
+      originY = mapDiv.offset().top + radius
+
+      $('#c-heading').text((compassHeading))
+      $('#c-bearing').text((updatebearing))
+      var finalHeading = updatebearing - compassHeading 
+      if (finalHeading < 0) { finalHeading += 360}
+      $('#c-finalheading').text((finalHeading))
+
+      arrow.style.cssText = `
+      transform: rotate(${(finalHeading)}deg);
+      transform-origin: bottom center;
+      height: ${radius + 60}px;
+      padding-bottom: ${radius - 35}px;
+      top: ${originY - 60 - radius}px;
+      left: ${originX - 30}px;
+      display: inline-block;
+    `
+    }
+  })
+}
