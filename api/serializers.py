@@ -11,10 +11,11 @@ class DestinationSerializer(serializers.ModelSerializer):
 
 class PlaylistSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field="username", queryset=User.objects.all())
+    destinations = DestinationSerializer(read_only=True, many=True)
 
     class Meta:
         model = Playlist
-        fields = ('user', 'title', 'city', 'created', 'updated', 'pk')
+        fields = ('user', 'title', 'city', 'created', 'destinations', 'pk')
 
 
 class UserSerializer(serializers.ModelSerializer):

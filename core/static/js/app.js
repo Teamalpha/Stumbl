@@ -39,7 +39,6 @@ window.ondeviceorientationabsolute = function(event) {
   padding-bottom: ${radius - 35}px;
   top: ${originY - 60 - radius}px;
   left: ${originX - 30}px;
-  display: inline-block;
 `
 };
 
@@ -64,7 +63,6 @@ if (window.DeviceOrientationEvent) {
           padding-bottom: ${radius - 35}px;
           top: ${originY - 60 - radius}px;
           left: ${originX - 30}px;
-          display: inline-block;
         `
       }
     }
