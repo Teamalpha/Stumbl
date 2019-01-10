@@ -4,6 +4,7 @@
 <html class="no-js">
   <head>
     <title>{% block title %}Stumbl{% endblock title %}</title>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <meta name="google-site-verification" content="LxRKXxbx-5TCeA5NckaoDS_KytGGYo-N3X4J7rtMd3Q" />
@@ -15,27 +16,22 @@
     <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.5.1/dist/js/foundation.min.js" integrity="sha256-WUKHnLrIrx8dew//IpSEmPN/NT3DGAEmIePQYIEJLLs= sha384-53StQWuVbn6figscdDC3xV00aYCPEz3srBdV/QGSXw3f19og3Tq2wTRe0vJqRTEO sha512-X9O+2f1ty1rzBJOC8AXBnuNUdyJg0m8xMKmbt9I3Vu/UOWmSg5zG+dtnje4wAZrKtkopz/PEDClHZ1LXx5IeOw==" crossorigin="anonymous" defer></script>
     <script src="{% static 'js/fabric.min.js' %}" defer></script>
     <script src="{% static 'js/app.js' %}" defer></script>
-    {% block header %}{% endblock header %}
+    
   </head>
-    <nav>
-        <ul>
-            <li>
-                <a href="{% url 'home' %}">Home</a>
-            </li>
-            {% if user.is_authenticated %} <li>
-                    <a href="{% url 'auth_logout' %}">Logout</a>
-            </li>
+
+    <nav role="navigation">
+        <ul id="overlay-nav-menu" class="overlay-nav-menu">
+            <li><a href="{% url 'home' %}"><strong>Stumbl</strong></a></li>
+            <li><a href="#">Playlists</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'auth_logout' %}">Logout</a></li>
             {% else %}
-            <li>
-                <a href="{% url 'auth_login' %}">Login</a> 
-            </li>
-            <li>
-                <a href="{% url 'registration_register' %}">Register</a>
-            </li>
+            <li><a href="{% url 'auth_login' %}">Login</a></li>
+            <li><a href="{% url 'registration_register' %}">Register</a></li>
             {% endif %}
         </ul>
+        <a data-toggle-menu class="overlay-nav-menu-toggle" href="#overlay-nav-menu"><i class="fa fa-plus"></i></a>
     </nav>
-
 <body>
     {% block content %}{% endblock content %}
     {% block footer %}{% endblock footer %}

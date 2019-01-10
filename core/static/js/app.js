@@ -41,6 +41,14 @@ $('.slider').on('moved.zf.slider', function(){
     `
 });
 
+
+$('[data-toggle-menu]').on("click", function(){
+  $("#overlay-nav-menu").toggleClass("is-open");
+});
+
+
+
+
 // setInterval(function() {
 //   roundify('#map')
 //   }, 500)
