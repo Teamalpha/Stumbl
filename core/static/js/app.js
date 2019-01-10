@@ -44,8 +44,8 @@ promise.then(function (deviceOrientation) { // Device Orientation Events are sup
     var currentOrientation = deviceOrientation.getScreenAdjustedEuler();
 
     // Calculate the current compass heading that the user is 'looking at' (in degrees)
-    var compassHeading = currentOrientation.alpha - 360;
-    $('#c-heading').text(Math.abs(compassHeading))
+    // var compassHeading = currentOrientation.alpha - 360;
+    $('#c-heading').text((currentOrientation.alpha))
     $('#c-bearing').text((updatebearing))
     var finalHeading = compassHeading - updatebearing
     if (finalHeading < 0) { finalHeading += 360}
@@ -71,3 +71,22 @@ promise.then(function (deviceOrientation) { // Device Orientation Events are sup
   // Implement some fallback controls here...
 
 });
+
+window.ondeviceorientationabsolute = function(event) {
+  compassHeading = event.alpha
+  $('#c-heading').text((compassHeading))
+  $('#c-bearing').text((updatebearing))
+  var finalHeading = compassHeading - updatebearing
+  if (finalHeading < 0) { finalHeading += 360}
+  $('#c-finalheading').text((finalHeading))
+
+  arrow.style.cssText = `
+  transform: rotate(${(finalHeading)}deg);
+  transform-origin: bottom center;
+  height: ${radius + 60}px;
+  padding-bottom: ${radius - 35}px;
+  top: ${originY - 60 - radius}px;
+  left: ${originX - 30}px;
+  display: inline-block;
+`
+};
