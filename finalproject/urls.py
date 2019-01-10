@@ -19,7 +19,14 @@ from django.conf import settings
 from core import views
 from rest_framework import routers
 from api import views as api_views
-
+from core.backends import MyRegistrationView
+from django.contrib.auth.views import(
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
+from django.views.generic import TemplateView
 
 # Router for api url's
 router = routers.DefaultRouter()
@@ -27,11 +34,19 @@ router.register('users', api_views.UserViewSet)
 router.register('destinations', api_views.DestinationViewSet)
 router.register('playlists', api_views.PlaylistViewSet)
 
-
 urlpatterns = [
     path('', views.index, name='home'),
     path('profile/', views.profile, name='profile'),
     path('playlist', views.playlist, name='playlist'),
+    path('accounts/password/reset/', PasswordResetView, {'template_name': 'registration/password_reset_form.html'}, name="password_reset"),
+    path('accounts/password/reset/done/', PasswordResetDoneView, {'template_name': 'registration/password_reset_done.html'}, name="password_reset_done"),
+    path('accounts/password/reset/<uidb64>/<token>/', PasswordResetConfirmView, {'template_name': 'registration/password_reset_confirm.html'}, name="password_reset_confirm"),
+    path('accounts/password/done/', PasswordResetCompleteView,
+        {'template_name': 'registration/password_reset_complete.html'},
+        name="password_reset_complete"),
+    path('accounts/', include('registration.backends.simple.urls')),
+    path('accounts/register/', MyRegistrationView.as_view(), name='registration_register'),
+    path('accounts/', include('registration.backends.simple.urls')),
     path('api/', include((router.urls, 'core'), namespace='api')),
     path('admin/', admin.site.urls),
 ]
