@@ -19,20 +19,23 @@
     
   </head>
 
-    <nav role="navigation">
-        <ul id="overlay-nav-menu" class="overlay-nav-menu">
-            <li><a href="{% url 'home' %}"><strong>Stumbl</strong></a></li>
-            <li><a href="#">Playlists</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'auth_logout' %}">Logout</a></li>
-            {% else %}
-            <li><a href="{% url 'auth_login' %}">Login</a></li>
-            <li><a href="{% url 'registration_register' %}">Register</a></li>
-            {% endif %}
-        </ul>
-        <a data-toggle-menu class="overlay-nav-menu-toggle" href="#overlay-nav-menu"><i class="fa fa-plus"></i></a>
-    </nav>
+
 <body>
+    <header>
+        <nav role="navigation">
+            <ul id="overlay-nav-menu" class="overlay-nav-menu">
+                <li><a href="{% url 'home' %}"><strong>Stumbl</strong></a></li>
+                <li><a href="#">Playlists</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'auth_logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'auth_login' %}">Login</a></li>
+                <li><a href="{% url 'registration_register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+            <a data-toggle-menu class="overlay-nav-menu-toggle" href="#overlay-nav-menu"><i class="fa fa-plus"></i></a>
+        </nav>
+    </header>
     {% block content %}{% endblock content %}
     {% block footer %}{% endblock footer %}
 </body>
