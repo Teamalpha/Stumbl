@@ -155,8 +155,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
-django_heroku.settings(locals())
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'testing@example.com'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+EMAIL_PORT = 1025
 
 LOGIN_REDIRECT_URL = '/'
+
+django_heroku.settings(locals())
 
 INTERNAL_IPS = ['127.0.0.1']
