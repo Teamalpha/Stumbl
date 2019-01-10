@@ -10,15 +10,6 @@ function roundify() {
   radius = mapDiv.width() / 2
   originX = mapDiv.offset().left + radius
   originY = mapDiv.offset().top + radius
-  // arrow.style.cssText = `
-  //   transform: rotate(${updatebearing}deg);
-  //   transform-origin: bottom center;
-  //   height: ${radius + 60}px;
-  //   padding-bottom: ${radius - 35}px;
-  //   top: ${originY - 60 - radius}px;
-  //   left: ${originX - 30}px;
-  //   display: inline-block;
-  // ` 
 }
 
 $(document).ready(function () {
@@ -30,54 +21,22 @@ $(window).resize(function () {
 
 setInterval(getMySpot, 1000);
 
-// Obtain a new *world-oriented* Full Tilt JS DeviceOrientation Promise
-var promise = FULLTILT.getDeviceOrientation({ 'type': 'world' });
-
-// Wait for Promise result
-promise.then(function (deviceOrientation) { // Device Orientation Events are supported
-
-  // Register a callback to run every time a new 
-  // deviceorientation event is fired by the browser.
-  deviceOrientation.listen(function () {
-
-    // Get the current *screen-adjusted* device orientation angles
-    var currentOrientation = deviceOrientation.getScreenAdjustedEuler();
-
-    // Calculate the current compass heading that the user is 'looking at' (in degrees)
-    // var compassHeading = currentOrientation.alpha - 360;
-    $('#c-heading').text((currentOrientation.alpha))
-    $('#c-bearing').text((updatebearing))
-    var finalHeading = compassHeading - updatebearing
-    if (finalHeading < 0) { finalHeading += 360}
-    $('#c-finalheading').text((finalHeading))
-
-    arrow.style.cssText = `
-      transform: rotate(${(finalHeading)}deg);
-      transform-origin: bottom center;
-      height: ${radius + 60}px;
-      padding-bottom: ${radius - 35}px;
-      top: ${originY - 60 - radius}px;
-      left: ${originX - 30}px;
-      display: inline-block;
-    `
-    // Do something with `compassHeading` here...
-
-  });
-
-}).catch(function (errorMessage) { // Device Orientation Events are not supported
-
-  console.log(errorMessage);
-
-  // Implement some fallback controls here...
-
-});
-
 window.ondeviceorientationabsolute = function(event) {
-  compassHeading = event.alpha
+  mapDiv.css({ 'height': mapDiv.width() + 'px' });
+  radius = mapDiv.width() / 2
+  originX = mapDiv.offset().left + radius
+  originY = mapDiv.offset().top + radius
+  
+  if(event.webkitCompassHeading) {
+    // Apple works only with this, alpha doesn't work
+    compassHeading = event.webkitCompassHeading;  
+  }
+  else compassHeading = event.alpha
+
   $('#c-heading').text((compassHeading))
   $('#c-bearing').text((updatebearing))
-  var finalHeading = compassHeading - updatebearing
-  if (finalHeading < 0) { finalHeading += 360}
+  var finalHeading = compassHeading + updatebearing
+  if (finalHeading > 360) { finalHeading -= 360}
   $('#c-finalheading').text((finalHeading))
 
   arrow.style.cssText = `
@@ -90,3 +49,32 @@ window.ondeviceorientationabsolute = function(event) {
   display: inline-block;
 `
 };
+
+if (window.DeviceOrientationEvent) {
+  window.addEventListener("deviceorientation", function(event) {
+    document.getElementById("test").innerText = 'supported!'
+    if (event.webkitCompassHeading) {
+      var compassHeading = event.webkitCompassHeading
+      mapDiv.css({ 'height': mapDiv.width() + 'px' });
+      radius = mapDiv.width() / 2
+      originX = mapDiv.offset().left + radius
+      originY = mapDiv.offset().top + radius
+
+      $('#c-heading').text((compassHeading))
+      $('#c-bearing').text((updatebearing))
+      var finalHeading = updatebearing - compassHeading 
+      if (finalHeading < 0) { finalHeading += 360}
+      $('#c-finalheading').text((finalHeading))
+
+      arrow.style.cssText = `
+      transform: rotate(${(finalHeading)}deg);
+      transform-origin: bottom center;
+      height: ${radius + 60}px;
+      padding-bottom: ${radius - 35}px;
+      top: ${originY - 60 - radius}px;
+      left: ${originX - 30}px;
+      display: inline-block;
+    `
+    }
+  })
+}
