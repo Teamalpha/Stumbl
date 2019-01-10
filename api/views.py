@@ -14,13 +14,13 @@ class UserViewSet(viewsets.ModelViewSet):
     search_fields = ('username', )
 
 class PlaylistViewSet(viewsets.ModelViewSet):
-    queryset = Playlist.objects.all().order_by('-created_at')
+    queryset = Playlist.objects.all().order_by('-created')
     serializer_class = PlaylistSerializer
     filter_backends = (filters.SearchFilter, )
     search_fields = ('city', )
 
 class DestinationViewSet(viewsets.ModelViewSet):
-    queryset = Destination.objects.all().order_by('-created_at')
+    queryset = Destination.objects.all().order_by('-created')
     serializer_class = DestinationSerializer
     filter_backends = (filters.SearchFilter, )
     search_fields = ('name', )

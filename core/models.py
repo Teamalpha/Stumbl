@@ -10,15 +10,6 @@ class TimeStamp(models.Model):
     class Meta:
         abstract = True
 
-class Destination(TimeStamp):
-    name = models.CharField(max_length=50, null=False)
-    playlist = models.ForeignKey("Playlist", on_delete=models.CASCADE, related_name="destinations")
-    coordinates = models.TextField(null=False)
-    place_id = models.CharField(max_length=50, null=True)
-    description = models.TextField(null=True)
-
-    def __str__(self):
-        return self.name
 
 class Playlist(TimeStamp):
     title = models.CharField(max_length=50, null=False)
@@ -30,3 +21,15 @@ class Playlist(TimeStamp):
 
     def __str__(self):
         return self.title
+
+
+class Destination(TimeStamp):
+    name = models.CharField(max_length=50, null=False)
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name="destinations")
+    coordinates = models.TextField(null=False)
+    place_id = models.CharField(max_length=50, null=True)
+    description = models.TextField(null=True)
+
+    def __str__(self):
+        return self.name
+
