@@ -80,15 +80,23 @@ $('.open-pl-modal').click(function(event) {
         $.get(`/api/playlists/?search=${city}`, function(data){
           console.log(`Playlists in ${city}`, data)
           cityPlaylists = data
-          $('#choose-city-modal').removeClass('is-active')
+          $('#city-playlist-list').empty()
+          for (let playlist of cityPlaylists) {
+            $('#city-playlist-list').append(`<div id="${playlist.title}">
+            <button class="button is-primary">${playlist.title}
+            </div>`)
+            $(`#${playlist}`).click(function(event) {
+              event.preventDefault()
+              $.get(`/api/playlists/${playlist.pk}`, function(data){
+                
+              })
+            })
+          }
           $('#city-playlists-modal').addClass('is-active')
-          $('#breadcrumbs-list').append(`<a id="#${city}-breadcrumb" href="#">${city}</a>`)
-
         })
       })
     }
-  
-  $('#choose-city-modal').addClass('is-active')
+    $('#choose-city-modal').addClass('is-active')
   })
     .catch((err) => {
       console.log(err);
