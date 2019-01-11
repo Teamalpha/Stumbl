@@ -21,7 +21,7 @@
     <div id='location'></div>
     <div id='location2'></div>
 
-
+    <button class="button is-info open-pl-modal">Playlists</button>
     <input id="pac-input" class="controls top-layer" type="text" placeholder="choose destination">
     <div class="empty-space"></div>
     <div id="map"></div>
@@ -29,17 +29,25 @@
     <div id='c-heading'></div>
     <div id='c-bearing'></div>
     <div id='c-finalheading'></div>
-<button id="open-pl-modal">Playlists</button>
+    
     {% comment %} Choose city modal {% endcomment %}
-    <div id="playlist-city" class="modal">
+    <div id="choose-city-modal" class="modal">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Modal title</p>
-          <button class="delete" aria-label="close"></button>
+          <nav class="breadcrumb is-medium has-arrow-separator topmost" aria-label="breadcrumbs">
+            <ul>
+              <li>
+                <a id href="#">
+                  <span id="open-pl-modal">Playlists</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <p class="modal-card-title"></p>
+          <button class="delete" id="exit-choose-city-modal" aria-label="close"></button>
         </header>
-        <section class="modal-card-body">
-          aslkjhasdfkljhasdfhjk
+        <section id="city-list" class="modal-card-body">
         </section>
         <footer class="modal-card-foot">
           <button class="button is-success">Save changes</button>
@@ -48,6 +56,31 @@
       </div>
     </div>
 
+    {% comment %} City playlists modal {% endcomment %}
+    <div id="city-playlists-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+            <ul>
+              <li id="breadcrumbs-list">
+                <a class="open-pl-modal" href="#">Playlists</a>
+              </li>
+            </ul>
+          </nav>
+          <p class="modal-card-title"></p>
+          <button class="delete" id="exit-city-playlists-modal" aria-label="close"></button>
+        </header>
+        
+        <section id="city-list" class="modal-card-body">
+          
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">Save changes</button>
+          <button class="button">Cancel</button>
+        </footer>
+      </div>
+    </div>
     <script>
       var map, infoWindow, destWindow, placeCoords;
       function initAutocomplete() {

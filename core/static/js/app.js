@@ -2,6 +2,7 @@
 let originX, originY, radius;
 let arrow = document.getElementById('arrow')
 let mapDiv = $('#map')
+let cities = []
 
 function roundify() {
   mapDiv.css({ 'height': mapDiv.width() + 'px' });
@@ -53,14 +54,52 @@ if (window.DeviceOrientationEvent) {
   })
 }
 
-$('#open-pl-modal').click(function() {
-  $('#playlist-city').toggleClass('is-active')
-  $.get("/api/users/", function(data, status){
-    alert("Data: " + data + "\nStatus: " + status);
+function getCities() {
+  for (let playlist of playlists) {
+    if (!cities.includes(playlist.city)) {
+      cities.push(playlist.city)
+    }
+  }
+  return cities
+}
+
+$('.open-pl-modal').click(function(event) {
+  event.preventDefault()
+  $.get("/api/playlists/", function(data){
     console.log(data)
-  });
+    playlists = data
+  }).then(() => {
+    cities = getCities()
+    $('#city-list').empty()
+    for (let city of cities) {
+      $('#city-list').append(`<div id="${city}">
+      <button class="button is-primary">${city}
+      </div>`)
+      $(`#${city}`).click(function(event) {
+        event.preventDefault()
+        $.get(`/api/playlists/?search=${city}`, function(data){
+          console.log(`Playlists in ${city}`, data)
+          cityPlaylists = data
+          $('#choose-city-modal').removeClass('is-active')
+          $('#city-playlists-modal').addClass('is-active')
+          $('#breadcrumbs-list').append(`<a id="#${city}-breadcrumb" href="#">${city}</a>`)
+
+        })
+      })
+    }
+  
+  $('#choose-city-modal').addClass('is-active')
+  })
+    .catch((err) => {
+      console.log(err);
+    })
 })
 
-$('.delete').click(function() {
-  $('#playlist-city').toggleClass('is-active')
-})
+function deleteButtonListener(buttonSelector, modalSelector) {
+  $(buttonSelector).click(function() {
+    $(modalSelector).removeClass('is-active')
+  })
+}
+
+deleteButtonListener('#exit-city-playlists-modal', '#city-playlists-modal')
+deleteButtonListener('#exit-choose-city-modal', '#choose-city-modal')
