@@ -128,6 +128,35 @@
         ]
       });
       
+      var gem1 = {lat: 35.993214, lng: -78.904029};
+
+    function loadDefaultPlaylist () {
+      $.get('/api/playlists/1/')
+        .then(function (playlist) {
+          for (let gem of playlist.destinations) {
+            let coords = { "lat": +gem.lat, "lng": +gem.lng }
+            console.log(coords)
+            var marker = new google.maps.Marker({
+              position: coords,
+              map: map,
+              icon:"https://img.icons8.com/color/48/000000/crystal.png",
+            });
+          }
+          {% comment %} for (let gem of playlist.destinations) {
+            var marker = new google.maps.Marker({
+              position: JSON.parse(gem.coordinates),
+              map: map,
+              icon:"https://img.icons8.com/color/48/000000/crystal.png",
+            });
+            marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+          } {% endcomment %}
+      })
+    }
+
+      loadDefaultPlaylist();
+
       var input = document.getElementById('pac-input');
         var searchBox = new google.maps.places.SearchBox(input);
         //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); //
