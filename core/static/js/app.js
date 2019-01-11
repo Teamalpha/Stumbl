@@ -1,4 +1,3 @@
-$(document).foundation();
 
 let originX, originY, radius;
 let arrow = document.getElementById('arrow')
@@ -70,3 +69,15 @@ if (window.DeviceOrientationEvent) {
     }
   })
 }
+
+$('#open-pl-modal').click(function() {
+  $('#playlist-city').toggleClass('is-active')
+  $.get("/api/users/", function(data, status){
+    alert("Data: " + data + "\nStatus: " + status);
+    console.log(data)
+  });
+})
+
+$('.delete').click(function() {
+  $('#playlist-city').toggleClass('is-active')
+})
