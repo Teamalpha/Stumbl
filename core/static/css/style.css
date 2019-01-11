@@ -1,5 +1,5 @@
 #map {
-    width: 80%;
+    width: 90%;
     border-radius: 100%;
     margin: 0 auto;
     z-index: 9999;
@@ -25,5 +25,11 @@ html, body {
     width: 60px;
     display: block;
     padding: 0;
-    display: none;
+}
+
+#viewpoint {
+    height: 60px;
+    width: 60px;
+    display: block;
+    padding: 0;
 }

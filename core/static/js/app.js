@@ -2,14 +2,20 @@ $(document).foundation();
 
 let originX, originY, radius;
 let arrow = document.getElementById('arrow')
+let viewpoint = document.getElementById('viewpoint')
 let bearing = 0
 let mapDiv = $('#map')
+
 
 function roundify() {
   mapDiv.css({ 'height': mapDiv.width() + 'px' });
   radius = mapDiv.width() / 2
   originX = mapDiv.offset().left + radius
   originY = mapDiv.offset().top + radius
+  viewpoint.style.cssText = `
+    top: ${originY - radius * 1.05}px;
+    left: ${originX + radius * 1.05}px;
+  `
 }
 
 $(document).ready(function () {
@@ -40,6 +46,7 @@ window.ondeviceorientationabsolute = function(event) {
   top: ${originY - 60 - radius}px;
   left: ${originX - 30}px;
 `
+  $('#viewpoint').css('transform', `rotate(compassHeading)deg`)
 };
 
 if (window.DeviceOrientationEvent) {
