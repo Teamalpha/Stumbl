@@ -134,6 +134,15 @@
       $.get('/api/playlists/1/')
         .then(function (playlist) {
           for (let gem of playlist.destinations) {
+            let coords = { "lat": +gem.lat, "lng": +gem.lng }
+            console.log(coords)
+            var marker = new google.maps.Marker({
+              position: coords,
+              map: map,
+              icon:"https://img.icons8.com/color/48/000000/crystal.png",
+            });
+          }
+          {% comment %} for (let gem of playlist.destinations) {
             var marker = new google.maps.Marker({
               position: JSON.parse(gem.coordinates),
               map: map,
@@ -142,7 +151,7 @@
             marker.addListener('click', function() {
           infowindow.open(map, marker);
         });
-          }
+          } {% endcomment %}
       })
     }
 
