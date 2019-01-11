@@ -27,8 +27,8 @@ class Destination(TimeStamp):
     name = models.CharField(max_length=50, null=False)
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name="destinations")
     coordinates = models.TextField(null=False)
-    place_id = models.CharField(max_length=50, null=True)
-    description = models.TextField(null=True)
+    place_id = models.CharField(max_length=50, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.name

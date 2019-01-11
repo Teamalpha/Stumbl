@@ -3,7 +3,6 @@
     border-radius: 100%;
     margin: 0 auto;
 }
-  /* Optional: Makes the sample page fill the window. */
 
 html, body {
     width: 100%;
@@ -22,9 +21,9 @@ html, body {
 #arrow {
     height: 60px;
     width: 60px;
-    display: block;
     padding: 0;
     display: none;
+    transform-origin: bottom center;
 }
 
 .a-link {
