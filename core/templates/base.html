@@ -16,23 +16,14 @@
     <script src="{% static 'js/app.js' %}" defer></script>
     {% block header %}{% endblock header %}
   </head>
-    <nav>
-        <ul>
-            <li>
-                <a href="{% url 'home' %}">Home</a>
-            </li>
-            {% if user.is_authenticated %} <li>
-                    <a href="{% url 'auth_logout' %}">Logout</a>
-            </li>
-            {% else %}
-            <li>
-                <a href="{% url 'auth_login' %}">Login</a> 
-            </li>
-            <li>
-                <a href="{% url 'registration_register' %}">Register</a>
-            </li>
-            {% endif %}
-        </ul>
+    <nav class='navigation'>
+        <a class='nav-a' href="{% url 'home' %}">Stumbl</a>
+        {% if user.is_authenticated %} <li>
+        <a class='nav-a' href="{% url 'auth_logout' %}">Logout</a>
+        {% else %}
+        <a class='nav-a' href="{% url 'auth_login' %}">Login</a> 
+        <a class='nav-a' href="{% url 'registration_register' %}">Register</a>            
+        {% endif %}
     </nav>
 
 <body>
