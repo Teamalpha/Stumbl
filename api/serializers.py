@@ -6,7 +6,7 @@ class DestinationSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = Destination
-        fields = ('playlist', 'coordinates', 'place_id', 'description', 'name', 'created', 'updated',)
+        fields = ('playlist', 'lat', 'lng', 'place_id', 'description', 'name', 'created', 'updated',)
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
@@ -15,7 +15,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Playlist
-        fields = ('user', 'title', 'city', 'destinations', 'created', 'updated', 'pk')
+        fields = ('user', 'title', 'city', 'created', 'destinations', 'pk',)
 
 
 class UserSerializer(serializers.ModelSerializer):
