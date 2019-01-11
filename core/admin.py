@@ -6,7 +6,8 @@ class DestinationAdmin(admin.ModelAdmin):
     model = Destination
     list_display = (
         "playlist",
-        "coordinates",
+        "lat",
+        "lng",
         "place_id",
         "description",
         "name",
