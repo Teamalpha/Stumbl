@@ -23,6 +23,7 @@ html, body {
 #arrow {
     height: 60px;
     width: 60px;
-    display: block;
     padding: 0;
+    display: none;
+    transform-origin: bottom center;
 }
