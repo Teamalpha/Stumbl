@@ -129,17 +129,24 @@
       });
       
       var gem1 = {lat: 35.993214, lng: -78.904029};
-      var gem2 = {lat: 35.993674, lng: -78.904769};
-      var gem3 = {lat: 35.992554, lng: -78.905177};
-      var gemz = [gem1, gem2, gem3]
 
-      for (let gem of gemz) {
-        var marker = new google.maps.Marker({
-            position: gem,
-            map: map,
-            icon:"https://img.icons8.com/color/48/000000/crystal.png",
-          });
-      }
+    function loadDefaultPlaylist () {
+      $.get('/api/playlists/1/')
+        .then(function (playlist) {
+          for (let gem of playlist.destinations) {
+            var marker = new google.maps.Marker({
+              position: JSON.parse(gem.coordinates),
+              map: map,
+              icon:"https://img.icons8.com/color/48/000000/crystal.png",
+            });
+            marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+          }
+      })
+    }
+
+      loadDefaultPlaylist();
 
       var input = document.getElementById('pac-input');
         var searchBox = new google.maps.places.SearchBox(input);
