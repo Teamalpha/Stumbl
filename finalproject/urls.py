@@ -38,6 +38,7 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('profile/', views.profile, name='profile'),
     path('playlist', views.playlist, name='playlist'),
+    path('destinations', views.destinations, name='destinations'),
     path('accounts/password/reset/', PasswordResetView, {'template_name': 'registration/password_reset_form.html'}, name="password_reset"),
     path('accounts/password/reset/done/', PasswordResetDoneView, {'template_name': 'registration/password_reset_done.html'}, name="password_reset_done"),
     path('accounts/password/reset/<uidb64>/<token>/', PasswordResetConfirmView, {'template_name': 'registration/password_reset_confirm.html'}, name="password_reset_confirm"),
@@ -49,6 +50,8 @@ urlpatterns = [
     path('accounts/', include('registration.backends.simple.urls')),
     path('api/', include((router.urls, 'core'), namespace='api')),
     path('admin/', admin.site.urls),
+    path('playlist/<int:pk>/', views.playlist_detail, name="playlist_detail"),
+
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+Destinations - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+<div class="row">
+  <div class="columns">
+    <nav aria-label="You are here:" role="navigation">
+      <ul class="breadcrumbs">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'playlist' %}">Cities</a></li>
+        <li><a href="{% url 'playlist_detail' %}">Choose A Playlist</a></li>
+        <li><a href="{% url 'destinations' %}">Destinations</a></li>
+    <br>
+    <br>
+    <h3>Destinations:</h3>
+
+{% endblock content %}
