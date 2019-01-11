@@ -27,3 +27,7 @@ html, body {
     padding: 0;
     display: none;
 }
+
+.a-link {
+    font-size: 2rem;
+}
