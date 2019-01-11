@@ -2,9 +2,9 @@
     width: 80%;
     border-radius: 100%;
     margin: 0 auto;
-    z-index: 9999;
+    -webkit-transform: translate3d(0px, 0px, 0px);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
-  /* Optional: Makes the sample page fill the window. */
 
 html, body {
     width: 100%;
@@ -23,7 +23,7 @@ html, body {
 #arrow {
     height: 60px;
     width: 60px;
-    display: block;
     padding: 0;
     display: none;
+    transform-origin: bottom center;
 }
