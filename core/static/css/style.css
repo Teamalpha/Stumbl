@@ -35,3 +35,7 @@ html, body {
 .topmost {
     z-index: 9999
 }
+
+.button {
+    margin: 2px;
+}
