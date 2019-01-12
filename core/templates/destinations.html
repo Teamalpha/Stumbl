@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+Destinations - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+<br>
+<nav class="breadcrumb is-medium has-arrow-separator" aria-label="breadcrumbs">
+  <ul>
+    <li>
+      <a href="{% url 'home' %}">
+        <span class="icon is-medium">
+          <i class="fas fa-home" aria-hidden="true"></i>
+        </span>
+        <span>Home</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'playlist' %}">
+        <span class="icon is-medium">
+          <i class="fas fa-city" aria-hidden="true"></i>
+        </span>
+        <span>Cities</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'playlist_detail' %}">
+        <span class="icon is-medium">
+          <i class="fas fa-list-ul" aria-hidden="true"></i>
+        </span>
+        <span>Playlists</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'destinations' %}">
+        <span class="icon is-medium">
+          <i class="fas fa-gem" aria-hidden="true"></i>
+        </span>
+        <span>Destinations</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+    <br>
+    <br>
+    <h3>Destinations:</h3>
+
+{% endblock content %}

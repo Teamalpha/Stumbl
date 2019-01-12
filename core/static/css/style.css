@@ -1,5 +1,5 @@
 #map {
-    width: 80%;
+    width: 88%;
     border-radius: 100%;
     margin: 0 auto;
     -webkit-transform: translate3d(0px, 0px, 0px);
@@ -26,4 +26,17 @@ html, body {
     padding: 0;
     display: none;
     transform-origin: bottom center;
+}
+
+.button {
+    margin: 2px;
+}
+
+.message-header {
+    background-color: chartreuse
+}
+
+#pac-input {
+    width: 80%;
+    margin: auto;
 }

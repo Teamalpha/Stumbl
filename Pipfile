@@ -21,6 +21,8 @@ djangorestframework = "*"
 selenium = "*"
 
 [dev-packages]
+"flake8" = "*"
+prospector = "*"
 
 [requires]
 python_version = "3.7"

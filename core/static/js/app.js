@@ -1,4 +1,3 @@
-$(document).foundation();
 
 let originX, originY, radius;
 let arrow = document.getElementById('arrow')
@@ -15,20 +14,15 @@ function roundify() {
   arrow.style.left = `${originX - 30}px`
 }
 
-$(document).ready(function () {
-  roundify()
-})
-$(window).resize(function () {
-  roundify()
-})
-
+$(document).ready(function () { roundify() })
+$(window).resize(function () { roundify() })
 setInterval(getMySpot, 200);
 
 // Set compass arrow for Android Devices
-window.ondeviceorientationabsolute = function(event) {
+window.ondeviceorientationabsolute = function (event) {
   compassHeading = event.alpha
   var finalHeading = compassHeading + updatebearing
-  if (finalHeading > 360) { finalHeading -= 360}
+  if (finalHeading > 360) { finalHeading -= 360 }
   $('#c-heading').text(`Absolute direction: ${compassHeading}`)
   $('#c-bearing').text(`Destination_______: ${updatebearing}`)
   $('#c-finalheading').text(`Final Destination : ${finalHeading}`)
@@ -39,12 +33,12 @@ window.ondeviceorientationabsolute = function(event) {
 
 // set compass arrow for iOs devices
 if (window.DeviceOrientationEvent) {
-  window.addEventListener("deviceorientation", function(event) {
+  window.addEventListener("deviceorientation", function (event) {
     if (event.webkitCompassHeading) {
       roundify()
       compassHeading = event.webkitCompassHeading
-      var finalHeading = updatebearing - compassHeading 
-      if (finalHeading < 0) { finalHeading += 360}
+      var finalHeading = updatebearing - compassHeading
+      if (finalHeading < 0) { finalHeading += 360 }
       $('#c-heading').text(`Absolute direction: ${compassHeading}`)
       $('#c-bearing').text(`Destination_______: ${updatebearing}`)
       $('#c-finalheading').text(`Final Destination : ${finalHeading}`)
@@ -53,3 +47,27 @@ if (window.DeviceOrientationEvent) {
     }
   })
 }
+
+$('.open-pl-modal').click(function () {
+  $('#choose-city-modal').addClass('is-active')
+})
+
+function exitButtonListener(buttonSelector, modalSelector) {
+  $(buttonSelector).click(function () {
+    $(modalSelector).removeClass('is-active')
+  })
+}
+
+exitButtonListener('#exit-city-playlists-modal', '#city-playlists-modal')
+exitButtonListener('#exit-choose-city-modal', '#choose-city-modal')
+exitButtonListener('#exit-playlist-detail-modal', '#playlist-detail-modal')
+
+const cancelButtons = document.querySelectorAll('.cancel')
+
+cancelButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    $('#city-playlists-modal').removeClass('is-active')
+    $('#choose-city-modal').removeClass('is-active')
+    $('#playlist-detail-modal').removeClass('is-active')
+  })
+})
