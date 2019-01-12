@@ -117,16 +117,16 @@
         <header class="modal-card-head">
           Create new playlist
           <p class="modal-card-title"></p>
-          <button class="delete" id="exit-playlist-detail-modal" aria-label="close"></button>
+          <button class="delete" id="exit-create-playlist-modal" aria-label="close"></button>
         </header>
         <section id="create-playlist" class="modal-card-body">
           
-          <article v-for="item in newPlaylist" class="message is-success is-small">
+          {% comment %} <article v-for="item in newPlaylist" class="message is-success is-small">
             <div class="message-header">
               <p>${item.name}</p>
             </div>
             <div class="message-body">${item.description}</div>
-          </article>
+          </article> {% endcomment %}
 
         <div class="control">
           <input id="modal-autocomplete" class="controls top-layer input" type="text" placeholder="choose destination">
@@ -161,10 +161,67 @@
           <button class="button is-primary new-playlist">New Playlist</button>
           <button class="button is-danger cancel">Cancel</button>
           {% if user.is_authenticated %}
-          <div>
+          {% comment %} <div>
             <button class="button is-warning">Edit</button>
             <button class="button is-danger">Delete</button>
+          </div> {% endcomment %}
+          {% endif %}
+        </footer>
+      </div>
+    </div>
+
+    {% comment %} Edit Playlist modal {% endcomment %}
+    <div id="edit-playlist-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          Create new playlist
+          <p class="modal-card-title"></p>
+          <button class="delete" id="exit-edit-playlist-modal" aria-label="close"></button>
+        </header>
+        <section id="create-playlist" class="modal-card-body">
+          
+          <article v-for="item in newPlaylist" class="message is-success is-small">
+            <div class="message-header">
+              <p>${item.name}</p>
+            </div>
+            <div class="message-body">${item.description}</div>
+          </article>
+
+        <div class="control">
+          <input id="modal-autocomplete" class="controls top-layer input" type="text" placeholder="choose destination">
+        </div>
+
+          <div class="field">
+            <label class="label">Title</label>
+            <div class="control">
+              <input v-model="newPlaylist.title" class="input" type="text" placeholder="Playlist name">
+            </div>
           </div>
+
+          <div class="field">
+            <label class="label">City</label>
+            <div class="control">
+              <input v-model="newPlaylist.city" class="input is-success" type="text" placeholder="City" value="bulma">
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <button @click="addDestination()" class="button is-link">Submit</button>
+            </div>
+          </div>
+
+        </section>
+
+        <footer class="modal-card-foot">
+          <button class="button is-primary new-playlist">New Playlist</button>
+          <button class="button is-danger cancel">Cancel</button>
+          {% if user.is_authenticated %}
+          {% comment %} <div>
+            <button class="button is-warning">Edit</button>
+            <button class="button is-danger">Delete</button>
+          </div> {% endcomment %}
           {% endif %}
         </footer>
       </div>
@@ -335,7 +392,7 @@
           animation: google.maps.Animation.BOUNCE,
         });
       });
-      
+
     var input2 = document.getElementById('modal-autocomplete')
     var autocomplete = new google.maps.places.Autocomplete(input2);
     autocomplete.bindTo('bounds', map);

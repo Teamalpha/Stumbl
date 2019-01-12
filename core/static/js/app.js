@@ -69,6 +69,8 @@ function exitButtonListener(buttonSelector, modalSelector) {
 exitButtonListener('#exit-city-playlists-modal', '#city-playlists-modal')
 exitButtonListener('#exit-choose-city-modal', '#choose-city-modal')
 exitButtonListener('#exit-playlist-detail-modal', '#playlist-detail-modal')
+exitButtonListener('#exit-create-playlist-modal', '#create-playlist-modal')
+exitButtonListener('#exit-edit-playlist-modal', '#edit-playlist-modal')
 
 const cancelButtons = document.querySelectorAll('.cancel')
 
