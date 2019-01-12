@@ -18,7 +18,7 @@
     <script src="{% static 'js/app.js' %}" defer></script>
     {% block header %}{% endblock header %}
   </head>
-    <nav>
+    {% comment %} <nav>
         <ul>
             <li>
                 <a href="{% url 'home' %}">Home</a>
@@ -37,9 +37,52 @@
             <li>
                 <a href="{% url 'playlist' %}">Playlist</a>
             </li>
-     
         </ul>
-    </nav>
+    </nav> {% endcomment %}
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://bulma.io">
+        {% comment %} <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28"> {% endcomment %}
+      </a>
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item">
+          Stumbl
+        </a>
+
+        <a class="navbar-item">
+          About
+        </a>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+          {% if user.is_authenticated %}
+            <a class="button is-light" href="{% url 'auth_logout' %}">
+              Logout
+            </a>
+          {% else %}
+            <a class="button is-primary" href="{% url 'auth_login' %}">
+              <strong>Login</strong>
+            </a>
+            <a class="button is-success" href="{% url 'registration_register' %}">
+              <strong>Sign up</strong>
+            </a>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
 
 <body>
     {% block content %}{% endblock content %}

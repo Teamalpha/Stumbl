@@ -34,3 +34,46 @@
 {% endfor %}
 {% endblock%}
 
+          <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Text input">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Description</label>
+            <div class="control">
+              <input class="input is-success" type="text" placeholder="Text input" value="bulma">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input class="input is-warning" placeholder="description">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Lattitude</label>
+            <div class="control">
+              <input v-model="newDestination.lat" class="input is-warning" placeholder="description">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Longitude</label>
+            <div class="control">
+              <input class="input is-warning" placeholder="description">
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <button @click="addDestination" class="button is-link">Submit</button>
+            </div>
+            <div class="control">
+              <button class="button is-text">Cancel</button>
+            </div>
+          </div>

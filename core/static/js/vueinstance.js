@@ -12,6 +12,9 @@ const vm = new Vue({
     cityPlaylists: [],
     cities: [],
     currentPlaylist: [],
+    playlists: [],
+    newPlaylist: {},
+    newDestination: {}
     // loggedInUser: { 'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'users_followed': [] },
     // newResponse: { 'text': null, 'post': null, 'user': requestUser },
     // currentPost: {},
@@ -24,7 +27,6 @@ const vm = new Vue({
     //   } else {
     //     this.showFeedNotAll = false;
     //   }
-    //   this.getPosts();
     this.getCities()
   },
   methods: {
@@ -58,6 +60,9 @@ const vm = new Vue({
         console.log(this.currentPlaylist)
       })
     },
+    addDestination: function () {
+      console.log(this.newPlaylist)
+    }
   }, // close methods
 }) // close vue instance
 
