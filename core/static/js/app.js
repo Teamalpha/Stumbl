@@ -109,3 +109,14 @@ function exitButtonListener(buttonSelector, modalSelector) {
 exitButtonListener('#exit-city-playlists-modal', '#city-playlists-modal')
 exitButtonListener('#exit-choose-city-modal', '#choose-city-modal')
 exitButtonListener('#exit-playlist-detail-modal', '#playlist-detail-modal')
+
+const cancelButtons = document.querySelectorAll('.cancel')
+
+cancelButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    $('#city-playlists-modal').removeClass('is-active')
+    $('#choose-city-modal').removeClass('is-active')
+    $('#playlist-detail-modal').removeClass('is-active')
+    console.log('clicked')
+  })
+})
