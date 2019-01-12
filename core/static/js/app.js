@@ -1,8 +1,10 @@
 
-let originX, originY, radius;
+let originX, originY, radius, flag;
 let arrow = document.getElementById('arrow')
 let mapDiv = $('#map')
 let cities = []
+let cityPlaylists = []
+let destinations = []
 
 function roundify() {
   mapDiv.css({ 'height': mapDiv.width() + 'px' });
@@ -63,34 +65,41 @@ function getCities() {
   return cities
 }
 
-$('.open-pl-modal').click(function(event) {
-  event.preventDefault()
+$('.open-pl-modal').click(function() {
   $.get("/api/playlists/", function(data){
-    console.log(data)
     playlists = data
   }).then(() => {
     cities = getCities()
     $('#city-list').empty()
+    // Generate list of cities
     for (let city of cities) {
-      $('#city-list').append(`<div id="${city}">
-      <button class="button is-primary">${city}
-      </div>`)
-      $(`#${city}`).click(function(event) {
-        event.preventDefault()
-        $.get(`/api/playlists/?search=${city}`, function(data){
-          console.log(`Playlists in ${city}`, data)
+      $('#city-list').append(`<div><button id="${city}" class="button is-primary">${city}</button></div>`)
+      // click handler for city
+      $(`#${city}`).click(function() {
+        $.get(`/api/playlists/?search=${city}`, function(data) {
           cityPlaylists = data
-          $('#city-playlist-list').empty()
+        }).then(() => {
+          $('#city-playlists').empty()
+          // Generate list of playlists
           for (let playlist of cityPlaylists) {
-            $('#city-playlist-list').append(`<div id="${playlist.title}">
-            <button class="button is-primary">${playlist.title}
-            </div>`)
-            $(`#${playlist}`).click(function(event) {
-              event.preventDefault()
-              $.get(`/api/playlists/${playlist.pk}`, function(data){
-                
-              })
-            })
+            $('#city-playlists').append(`<div><button id="${playlist.title}" class="button is-primary">${playlist.title}</button></div>`)
+            // flag = true
+            // console.log(flag)
+            // // click handler for playlist
+            // $(`#${playlist.title}`).click(function() {
+            //   alert(playlist.pk)
+            //   $.get(`/api/playlists/${playlist.pk}`, function(data) {
+            //     destinations = data
+            //     console.log('playlist clicked!')
+            //   }).then(() => {
+            //     $('#playlist-detail').empty()
+            //     // Generate list of destinations
+            //     for (let destination of destinations) {
+            //       $('#playlist-detail').append(`<div><button id="${destination.name}" class="button is-primary">${destination.name}</button></div>`)
+            //     }
+            //     $('#playlist-detail-modal').addClass('is-active')
+            //   })
+            // })
           }
           $('#city-playlists-modal').addClass('is-active')
         })
@@ -98,16 +107,25 @@ $('.open-pl-modal').click(function(event) {
     }
     $('#choose-city-modal').addClass('is-active')
   })
-    .catch((err) => {
-      console.log(err);
-    })
 })
 
-function deleteButtonListener(buttonSelector, modalSelector) {
+function exitButtonListener(buttonSelector, modalSelector) {
   $(buttonSelector).click(function() {
     $(modalSelector).removeClass('is-active')
   })
 }
 
-deleteButtonListener('#exit-city-playlists-modal', '#city-playlists-modal')
-deleteButtonListener('#exit-choose-city-modal', '#choose-city-modal')
+exitButtonListener('#exit-city-playlists-modal', '#city-playlists-modal')
+exitButtonListener('#exit-choose-city-modal', '#choose-city-modal')
+exitButtonListener('#exit-playlist-detail-modal', '#playlist-detail-modal')
+
+// setInterval(function () {
+// if (flag) {
+//   for (let playlist of cityPlaylists) {
+//     $(`#${playlist.title}`).click(function() {
+//       console.log(`you clicked ! `)
+//     })
+//   }
+//   console.log(cityPlaylists)
+// flag = false
+// }}, 1000)

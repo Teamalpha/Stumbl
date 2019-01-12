@@ -35,11 +35,12 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
+        Search cities
           <p class="modal-card-title"></p>
           <button class="delete" id="exit-choose-city-modal" aria-label="close"></button>
         </header>
         <section id="city-list" class="modal-card-body">
-          Search cities
+
         </section>
         <footer class="modal-card-foot">
           <button class="button is-success">Save changes</button>
@@ -56,8 +57,7 @@
           <p class="modal-card-title"></p>
           <button class="delete" id="exit-city-playlists-modal" aria-label="close"></button>
         </header>
-        
-        <section id="city-playlist-list" class="modal-card-body">
+        <section id="city-playlists" class="modal-card-body">
           Search playlists
         </section>
         <footer class="modal-card-foot">
@@ -66,6 +66,24 @@
         </footer>
       </div>
     </div>
+    {% comment %} Playlist detail modal {% endcomment %}
+    <div id="playlist-detail-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title"></p>
+          <button class="delete" id="exit-playlist-detail-modal" aria-label="close"></button>
+        </header>
+        <section id="playlist-detail" class="modal-card-body">
+          Search playlists
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">Save changes</button>
+          <button class="button">Cancel</button>
+        </footer>
+      </div>
+    </div>
+  
     <script>
       var map, infoWindow, destWindow, placeCoords;
       function initAutocomplete() {
@@ -169,6 +187,7 @@
     function loadDefaultPlaylist () {
       $.get('/api/playlists/1/')
         .then(function (playlist) {
+          console.log(playlist)
           for (let gem of playlist.destinations) {
             let coords = { "lat": +gem.lat, "lng": +gem.lng }
             console.log(coords)
