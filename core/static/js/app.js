@@ -14,13 +14,8 @@ function roundify() {
   arrow.style.left = `${originX - 30}px`
 }
 
-$(document).ready(function () {
-  roundify()
-})
-$(window).resize(function () {
-  roundify()
-})
-
+$(document).ready(function () { roundify() })
+$(window).resize(function () { roundify() })
 setInterval(getMySpot, 200);
 
 // Set compass arrow for Android Devices
@@ -53,52 +48,9 @@ if (window.DeviceOrientationEvent) {
   })
 }
 
-
 $('.open-pl-modal').click(function () {
   $('#choose-city-modal').addClass('is-active')
 })
-//   $.get("/api/playlists/", function(data){
-//     playlists = data
-//   }).then(() => {
-//     cities = getCities()
-//     $('#city-list').empty()
-//     // Generate list of cities
-//     for (let city of cities) {
-//       $('#city-list').append(`<div><button id="${city}" class="button is-primary">${city}</button></div>`)
-//       // click handler for city
-//       $(`#${city}`).click(function() {
-//         $.get(`/api/playlists/?search=${city}`, function(data) {
-//           cityPlaylists = data
-//         }).then(() => {
-//           $('#city-playlists').empty()
-//           // Generate list of playlists
-//           for (let playlist of cityPlaylists) {
-//             $('#city-playlists').append(`<div><button id="${playlist.title}" class="button is-primary">${playlist.title}</button></div>`)
-// flag = true
-// console.log(flag)
-// // click handler for playlist
-// $(`#${playlist.title}`).click(function() {
-//   alert(playlist.pk)
-//   $.get(`/api/playlists/${playlist.pk}`, function(data) {
-//     destinations = data
-//     console.log('playlist clicked!')
-//   }).then(() => {
-//     $('#playlist-detail').empty()
-//     // Generate list of destinations
-//     for (let destination of destinations) {
-//       $('#playlist-detail').append(`<div><button id="${destination.name}" class="button is-primary">${destination.name}</button></div>`)
-//     }
-//     $('#playlist-detail-modal').addClass('is-active')
-//   })
-// })
-// }
-// $('#city-playlists-modal').addClass('is-active')
-//         })
-//       })
-//     }
-
-//   })
-// })
 
 function exitButtonListener(buttonSelector, modalSelector) {
   $(buttonSelector).click(function () {
@@ -117,6 +69,5 @@ cancelButtons.forEach((button) => {
     $('#city-playlists-modal').removeClass('is-active')
     $('#choose-city-modal').removeClass('is-active')
     $('#playlist-detail-modal').removeClass('is-active')
-    console.log('clicked')
   })
 })

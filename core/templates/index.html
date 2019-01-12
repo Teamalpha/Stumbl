@@ -7,295 +7,305 @@
 
 
 {% block content %}
+  <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">      
+  <h1>Welcome to Stumbl</h1>
+  <div id="vue-instance">
 
-   
-    <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">      
-    <h1>Welcome to Stumbl</h1>
-    <div id="vue-instance">
+  <div id='test'></div>
+  <div id='alpha'></div>
+  <div id='beta'></div>
+  <div id='gamma'></div>
+  <div id='compass'></div>
+  <div id='distance'></div>
+  <div id='location'></div>
+  <div id='location2'></div>
 
-    <div id='test'></div>
-    <div id='alpha'></div>
-    <div id='beta'></div>
-    <div id='gamma'></div>
-    <div id='compass'></div>
-    <div id='distance'></div>
-    <div id='location'></div>
-    <div id='location2'></div>
+  <button class="button is-info open-pl-modal">Playlists</button>
 
-    <button class="button is-info open-pl-modal">Playlists</button>
-    <input id="pac-input" class="controls top-layer" type="text" placeholder="choose destination">
-    <div class="empty-space"></div>
-    <div id="map"></div>
-    <div class="empty-space"></div>
-    <div id='c-heading'></div>
-    <div id='c-bearing'></div>
-    <div id='c-finalheading'></div>
-    
 
-      {% comment %} Choose city modal {% endcomment %}
-      <div id="choose-city-modal" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-          Search cities
-            <p class="modal-card-title"></p>
-            <button class="delete" id="exit-choose-city-modal" aria-label="close"></button>
-          </header>
-          <section id="city-list" class="modal-card-body">
-            <div v-for="city in cities">
-              <button @click="getCityPlaylists(city)" class="button is-success is-fullwidth">${city}</button>
-            </div>
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-primary">New Playlist</button>
-            <button class="button danger cancel">Cancel</button>
-          </footer>
-        </div>
-      </div>
+    <div class="control">
+      <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
+    </div>
 
-      {% comment %} City playlists modal {% endcomment %}
-      <div id="city-playlists-modal" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            Search playlists
-            <p class="modal-card-title"></p>
-            <button class="delete" id="exit-city-playlists-modal" aria-label="close"></button>
-          </header>
-          <section id="city-playlists" class="modal-card-body">
-            <div v-for="playlist in cityPlaylists">
-              <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
-            </div>
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-primary">New Playlist</button>
-            <button class="button danger cancel">Cancel</button>
-          </footer>
-        </div>
-      </div>
 
-      {% comment %} Playlist detail modal {% endcomment %}
-      <div id="playlist-detail-modal" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            ${currentPlaylist.title}
-            <p class="modal-card-title"></p>
-            <button class="delete" id="exit-playlist-detail-modal" aria-label="close"></button>
-          </header>
-          <section id="playlist-detail" class="modal-card-body">
-            
-            <article v-for="destination in currentPlaylist.destinations" class="message">
-              <div class="message-header">
-                <p>${destination.name}</p>
-              </div>
-              <div class="message-body">${destination.description}</div>
-            </article>
+  <div class="empty-space"></div>
+  <div id="map"></div>
+  <div class="empty-space"></div>
+  <div id='c-heading'></div>
+  <div id='c-bearing'></div>
+  <div id='c-finalheading'></div>
+  
 
-{% comment %} add form to add new destination {% endcomment %}
-            
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-primary">New Playlist</button>
-            <button class="button danger cancel">Cancel</button>
-          </footer>
-        </div>
+    {% comment %} Choose city modal {% endcomment %}
+    <div id="choose-city-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+        Search cities
+          <p class="modal-card-title"></p>
+          <button class="delete" id="exit-choose-city-modal" aria-label="close"></button>
+        </header>
+        <section id="city-list" class="modal-card-body">
+          <div v-for="city in cities">
+            <button @click="getCityPlaylists(city)" class="button is-success is-fullwidth">${city}</button>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-primary">New Playlist</button>
+          <button class="button is-danger cancel">Cancel</button>
+        </footer>
       </div>
     </div>
-  
-    <script>
-      var map, infoWindow, destWindow, placeCoords;
-      function initAutocomplete() {
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 35.993, lng: -78.905 },
-        zoom: 18,
-        disableDefaultUI: true,
-        styles: [
-          { 
-            elementType: 'geometry', 
-            stylers: [{ color: '#242f3e' }] 
-          },
-          { 
-            elementType: 'labels.text.stroke',
-            stylers: [{ color: '#242f3e' }] 
-          },
-          { 
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#746855' }] 
-          },
-          {
-            featureType: 'administrative.locality',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#d59563' }]
-          },
-          {
-            featureType: 'poi',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#d59563' }]
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'geometry',
-            stylers: [{ color: '#263c3f' }]
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#6b9a76' }]
-          },
-          {
-            featureType: 'road',
-            elementType: 'geometry',
-            stylers: [{ color: '#38414e' }]
-          },
-          {
-            featureType: 'road',
-            elementType: 'geometry.stroke',
-            stylers: [{ color: '#212a37' }]
-          },
-          {
-            featureType: 'road',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#9ca5b3' }]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'geometry',
-            stylers: [{ color: '#746855' }]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'geometry.stroke',
-            stylers: [{ color: '#1f2835' }]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#f3d19c' }]
-          },
-          {
-            featureType: 'transit',
-            elementType: 'geometry',
-            stylers: [{ color: '#2f3948' }]
-          },
-          {
-            featureType: 'transit.station',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#d59563' }]
-          },
-          {
-            featureType: 'water',
-            elementType: 'geometry',
-            stylers: [{ color: '#17263c' }]
-          },
-          {
-            featureType: 'water',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#515c6d' }]
-          },
-          {
-            featureType: 'water',
-            elementType: 'labels.text.stroke',
-            stylers: [{ color: '#17263c' }]
-          }
-        ]
-      });
-      
-      var gem1 = {lat: 35.993214, lng: -78.904029};
 
-    function loadDefaultPlaylist () {
-      $.get('/api/playlists/1/')
-        .then(function (playlist) {
-          console.log(playlist)
-          for (let gem of playlist.destinations) {
-            let coords = { "lat": +gem.lat, "lng": +gem.lng }
-            console.log(coords)
-            var marker = new google.maps.Marker({
-              position: coords,
-              map: map,
-              icon:"https://img.icons8.com/color/48/000000/crystal.png",
-            });
-          }
-          {% comment %} for (let gem of playlist.destinations) {
-            var marker = new google.maps.Marker({
-              position: JSON.parse(gem.coordinates),
-              map: map,
-              icon:"https://img.icons8.com/color/48/000000/crystal.png",
-            });
-            marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        });
-          } {% endcomment %}
-      })
-    }
+    {% comment %} City playlists modal {% endcomment %}
+    <div id="city-playlists-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          Search playlists
+          <p class="modal-card-title"></p>
+          <button class="delete" id="exit-city-playlists-modal" aria-label="close"></button>
+        </header>
+        <section id="city-playlists" class="modal-card-body">
+          <div v-for="playlist in cityPlaylists">
+            <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-primary">New Playlist</button>
+          <button class="button is-danger cancel">Cancel</button>
+        </footer>
+      </div>
+    </div>
 
-      loadDefaultPlaylist();
+    {% comment %} Playlist detail modal {% endcomment %}
+    <div id="playlist-detail-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          ${currentPlaylist.title}
+          <p class="modal-card-title"></p>
+          <button class="delete" id="exit-playlist-detail-modal" aria-label="close"></button>
+        </header>
+        <section id="playlist-detail" class="modal-card-body">
+          
+          <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
+            <div class="message-header">
+              <p>${destination.name}</p>
+            </div>
+            <div class="message-body">${destination.description}</div>
+          </article>
 
-      var input = document.getElementById('pac-input');
-        var searchBox = new google.maps.places.SearchBox(input);
-        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); //
+{% comment %} add form to add new destination {% endcomment %}
+     
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-primary">New Playlist</button>
+          <button class="button is-danger cancel">Cancel</button>
+          {% if user.is_authenticated %}
+          <div>
+            <button class="button is-warning">Edit</button>
+            <button class="button is-danger">Delete</button>
+          </div>
+          {% endif %}
+        </footer>
+      </div>
+    </div>
+  </div>
 
-        // Bias the SearchBox results towards current map's viewport.
-        map.addListener('bounds_changed', function() {
-          searchBox.setBounds(map.getBounds());
-        });
+  <script>
+    var map, infoWindow, destWindow, placeCoords;
+    function initAutocomplete() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 35.993, lng: -78.905 },
+      zoom: 18,
+      disableDefaultUI: true,
+      styles: [
+        { 
+          elementType: 'geometry', 
+          stylers: [{ color: '#242f3e' }] 
+        },
+        { 
+          elementType: 'labels.text.stroke',
+          stylers: [{ color: '#242f3e' }] 
+        },
+        { 
+          elementType: 'labels.text.fill',
+          stylers: [{ color: '#746855' }] 
+        },
+        {
+          featureType: 'administrative.locality',
+          elementType: 'labels.text.fill',
+          stylers: [{ color: '#d59563' }]
+        },
+        {
+          featureType: 'poi',
+          elementType: 'labels.text.fill',
+          stylers: [{ color: '#d59563' }]
+        },
+        {
+          featureType: 'poi.park',
+          elementType: 'geometry',
+          stylers: [{ color: '#263c3f' }]
+        },
+        {
+          featureType: 'poi.park',
+          elementType: 'labels.text.fill',
+          stylers: [{ color: '#6b9a76' }]
+        },
+        {
+          featureType: 'road',
+          elementType: 'geometry',
+          stylers: [{ color: '#38414e' }]
+        },
+        {
+          featureType: 'road',
+          elementType: 'geometry.stroke',
+          stylers: [{ color: '#212a37' }]
+        },
+        {
+          featureType: 'road',
+          elementType: 'labels.text.fill',
+          stylers: [{ color: '#9ca5b3' }]
+        },
+        {
+          featureType: 'road.highway',
+          elementType: 'geometry',
+          stylers: [{ color: '#746855' }]
+        },
+        {
+          featureType: 'road.highway',
+          elementType: 'geometry.stroke',
+          stylers: [{ color: '#1f2835' }]
+        },
+        {
+          featureType: 'road.highway',
+          elementType: 'labels.text.fill',
+          stylers: [{ color: '#f3d19c' }]
+        },
+        {
+          featureType: 'transit',
+          elementType: 'geometry',
+          stylers: [{ color: '#2f3948' }]
+        },
+        {
+          featureType: 'transit.station',
+          elementType: 'labels.text.fill',
+          stylers: [{ color: '#d59563' }]
+        },
+        {
+          featureType: 'water',
+          elementType: 'geometry',
+          stylers: [{ color: '#17263c' }]
+        },
+        {
+          featureType: 'water',
+          elementType: 'labels.text.fill',
+          stylers: [{ color: '#515c6d' }]
+        },
+        {
+          featureType: 'water',
+          elementType: 'labels.text.stroke',
+          stylers: [{ color: '#17263c' }]
+        }
+      ]
+    });
+    
+    var gem1 = {lat: 35.993214, lng: -78.904029};
 
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        searchBox.addListener('places_changed', function() {
-          var places = searchBox.getPlaces();
-          arrow.style.display = 'inline-block';
-          console.log(places)
-          place_lat = places[0].geometry.location.lat()
-          place_lng = places[0].geometry.location.lng()
-          placeCoords = {lat: place_lat, lng: place_lng}
-          place_address = places[0].formatted_address
-          place_name = places[0].name
-          destWindow = new google.maps.InfoWindow
-          destWindow.setPosition({lat: place_lat, lng: place_lng})
-          destWindow.setContent(place_name)
-          destWindow.open(map)
-          map.setCenter({lat: place_lat, lng: place_lng});
-
-          console.log(place_lat, place_lng, place_address, place_name)
-          var destination = ({lat: place_lat, lng: place_lng});
+  function loadDefaultPlaylist () {
+    $.get('/api/playlists/1/')
+      .then(function (playlist) {
+        console.log(playlist)
+        for (let gem of playlist.destinations) {
+          let coords = { "lat": +gem.lat, "lng": +gem.lng }
+          console.log(coords)
           var marker = new google.maps.Marker({
-            position: destination,
+            position: coords,
             map: map,
-            icon:"https://img.icons8.com/metro/50/launched-rocket.png",
-            animation: google.maps.Animation.BOUNCE,
+            icon:"https://img.icons8.com/color/48/000000/crystal.png",
           });
+        }
+        {% comment %} for (let gem of playlist.destinations) {
+          var marker = new google.maps.Marker({
+            position: JSON.parse(gem.coordinates),
+            map: map,
+            icon:"https://img.icons8.com/color/48/000000/crystal.png",
+          });
+          marker.addListener('click', function() {
+        infowindow.open(map, marker);
+      });
+        } {% endcomment %}
+    })
+  }
+
+    loadDefaultPlaylist();
+
+    var input = document.getElementById('pac-input');
+      var searchBox = new google.maps.places.SearchBox(input);
+      //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); //
+
+      // Bias the SearchBox results towards current map's viewport.
+      map.addListener('bounds_changed', function() {
+        searchBox.setBounds(map.getBounds());
+      });
+
+      // Listen for the event fired when the user selects a prediction and retrieve
+      // more details for that place.
+      searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+        arrow.style.display = 'inline-block';
+        console.log(places)
+        place_lat = places[0].geometry.location.lat()
+        place_lng = places[0].geometry.location.lng()
+        placeCoords = {lat: place_lat, lng: place_lng}
+        place_address = places[0].formatted_address
+        place_name = places[0].name
+        destWindow = new google.maps.InfoWindow
+        destWindow.setPosition({lat: place_lat, lng: place_lng})
+        destWindow.setContent(place_name)
+        destWindow.open(map)
+        map.setCenter({lat: place_lat, lng: place_lng});
+
+        console.log(place_lat, place_lng, place_address, place_name)
+        var destination = ({lat: place_lat, lng: place_lng});
+        var marker = new google.maps.Marker({
+          position: destination,
+          map: map,
+          icon:"https://img.icons8.com/metro/50/launched-rocket.png",
+          animation: google.maps.Animation.BOUNCE,
         });
+      });
 
-      infoWindow = new google.maps.InfoWindow;
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
+    infoWindow = new google.maps.InfoWindow;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
 
-          infoWindow.setPosition(pos);
-          infoWindow.setContent('You are here');
-          infoWindow.open(map);
-          map.setCenter(pos);
-        }, function () {
-          handleLocationError(true, infoWindow, map.getCenter());
-        });
-      } else {
-        // Browser doesn't support Geolocation
-        console.log('browser geolocation not supported')
-        handleLocationError(false, infoWindow, map.getCenter());
-      }
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('You are here');
+        infoWindow.open(map);
+        map.setCenter(pos);
+      }, function () {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      console.log('browser geolocation not supported')
+      handleLocationError(false, infoWindow, map.getCenter());
     }
+  }
 
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-      infoWindow.setPosition(pos);
-      infoWindow.setContent(browserHasGeolocation ?
-        'Error: The Geolocation service failed.' :
-        'Error: Your browser doesn\'t support geolocation.');
-      infoWindow.open(map);
-    }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initAutocomplete" async defer></script>
-  {% endblock content %}
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+      'Error: The Geolocation service failed.' :
+      'Error: Your browser doesn\'t support geolocation.');
+    infoWindow.open(map);
+  }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initAutocomplete" async defer></script>
+{% endblock content %}

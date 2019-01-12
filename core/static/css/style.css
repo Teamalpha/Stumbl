@@ -1,5 +1,5 @@
 #map {
-    width: 80%;
+    width: 88%;
     border-radius: 100%;
     margin: 0 auto;
     -webkit-transform: translate3d(0px, 0px, 0px);
@@ -28,14 +28,15 @@ html, body {
     transform-origin: bottom center;
 }
 
-.a-link {
-    font-size: 2rem;
-}
-
-.topmost {
-    z-index: 9999
-}
-
 .button {
     margin: 2px;
+}
+
+.message-header {
+    background-color: chartreuse
+}
+
+#pac-input {
+    width: 80%;
+    margin: auto;
 }
