@@ -2,14 +2,14 @@
 {% load staticfiles %}
 
 {% block title %}
-  Stumbl - {{ block.super }}
+Stumbl - {{ block.super }}
 {% endblock title %}
 
 
 {% block content %}
-  <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">      
-  <h1>Welcome to Stumbl</h1>
-  <div id="vue-instance">
+<img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
+<h1>Welcome to Stumbl</h1>
+<div id="vue-instance">
 
   <div id='test'></div>
   <div id='alpha'></div>
@@ -23,9 +23,9 @@
   <button class="button is-info open-pl-modal">Playlists</button>
 
 
-    <div class="control">
-      <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
-    </div>
+  <div class="control">
+    <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
+  </div>
 
 
   <div class="empty-space"></div>
@@ -34,220 +34,223 @@
   <div id='c-heading'></div>
   <div id='c-bearing'></div>
   <div id='c-finalheading'></div>
-  
 
-    {% comment %} Choose city modal {% endcomment %}
-    <div id="choose-city-modal" class="modal">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
+
+  {% comment %} Choose city modal {% endcomment %}
+  <div id="choose-city-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
         Search cities
-          <p class="modal-card-title"></p>
-          <button class="delete" id="exit-choose-city-modal" aria-label="close"></button>
-        </header>
-        <section id="city-list" class="modal-card-body">
-          <div v-for="city in cities">
-            <button @click="getCityPlaylists(city)" class="button is-success is-fullwidth">${city}</button>
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-primary new-playlist">New Playlist</button>
-          <button class="button is-danger cancel">Cancel</button>
-        </footer>
-      </div>
-    </div>
-
-    {% comment %} City playlists modal {% endcomment %}
-    <div id="city-playlists-modal" class="modal">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          Search playlists
-          <p class="modal-card-title"></p>
-          <button class="delete" id="exit-city-playlists-modal" aria-label="close"></button>
-        </header>
-        <section id="city-playlists" class="modal-card-body">
-          <div v-for="playlist in cityPlaylists">
-            <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-primary new-playlist">New Playlist</button>
-          <button class="button is-danger cancel">Cancel</button>
-        </footer>
-      </div>
-    </div>
-
-    {% comment %} Playlist detail modal {% endcomment %}
-    <div id="playlist-detail-modal" class="modal">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          ${currentPlaylist.title}
-          <p class="modal-card-title"></p>
-          <button class="delete" id="exit-playlist-detail-modal" aria-label="close"></button>
-        </header>
-        <section id="playlist-detail" class="modal-card-body">
-          
-          <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
-            <div class="message-header">
-              <p>${destination.name}</p>
-            </div>
-            <div class="message-body">${destination.description}</div>
-          </article>
-
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-primary new-playlist">New Playlist</button>
-          <button class="button is-danger cancel">Cancel</button>
-          {% if user.is_authenticated %}
-          <div>
-            <button class="button is-warning">Edit</button>
-            <button class="button is-danger">Delete</button>
-          </div>
-          {% endif %}
-        </footer>
-      </div>
-    </div>
-
-    {% comment %} Create Playlist modal {% endcomment %}
-    <div id="create-playlist-modal" class="modal">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          Create new playlist
-          <p class="modal-card-title"></p>
-          <button class="delete" id="exit-create-playlist-modal" aria-label="close"></button>
-        </header>
-        <section id="create-playlist" class="modal-card-body">
-          
-          {% comment %} <article v-for="item in newPlaylist" class="message is-success is-small">
-            <div class="message-header">
-              <p>${item.name}</p>
-            </div>
-            <div class="message-body">${item.description}</div>
-          </article> {% endcomment %}
-
-        <div class="control">
-          <input id="modal-autocomplete" class="controls top-layer input" type="text" placeholder="choose destination">
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" id="exit-choose-city-modal" aria-label="close">Back</button>
+      </header>
+      <section id="city-list" class="modal-card-body">
+        <div v-for="city in cities">
+          <button @click="getCityPlaylists(city)" class="button is-success is-fullwidth">${city}</button>
         </div>
-
-          <div class="field">
-            <label class="label">Title</label>
-            <div class="control">
-              <input v-model="newPlaylist.title" class="input" type="text" placeholder="Playlist name">
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">City</label>
-            <div class="control">
-              <input v-model="newPlaylist.city" class="input is-success" type="text" placeholder="City" value="bulma">
-            </div>
-          </div>
-
-          <div class="field is-grouped">
-            <div class="control">
-              <button @click="addDestination()" class="button is-link">Submit</button>
-            </div>
-            <div class="control">
-              <button class="button is-text">Cancel</button>
-            </div>
-          </div>
-
-        </section>
-
-        <footer class="modal-card-foot">
-          <button class="button is-primary new-playlist">New Playlist</button>
-          <button class="button is-danger cancel">Cancel</button>
-          {% if user.is_authenticated %}
-          {% comment %} <div>
-            <button class="button is-warning">Edit</button>
-            <button class="button is-danger">Delete</button>
-          </div> {% endcomment %}
-          {% endif %}
-        </footer>
-      </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-primary new-playlist">New Playlist</button>
+        <button class="button is-danger cancel">Cancel</button>
+      </footer>
     </div>
-
-    {% comment %} Edit Playlist modal {% endcomment %}
-    <div id="edit-playlist-modal" class="modal">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          Create new playlist
-          <p class="modal-card-title"></p>
-          <button class="delete" id="exit-edit-playlist-modal" aria-label="close"></button>
-        </header>
-        <section id="create-playlist" class="modal-card-body">
-          
-          <article v-for="item in newPlaylist" class="message is-success is-small">
-            <div class="message-header">
-              <p>${item.name}</p>
-            </div>
-            <div class="message-body">${item.description}</div>
-          </article>
-
-        <div class="control">
-          <input id="modal-autocomplete" class="controls top-layer input" type="text" placeholder="choose destination">
-        </div>
-
-          <div class="field">
-            <label class="label">Title</label>
-            <div class="control">
-              <input v-model="newPlaylist.title" class="input" type="text" placeholder="Playlist name">
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">City</label>
-            <div class="control">
-              <input v-model="newPlaylist.city" class="input is-success" type="text" placeholder="City" value="bulma">
-            </div>
-          </div>
-
-          <div class="field is-grouped">
-            <div class="control">
-              <button @click="addDestination()" class="button is-link">Submit</button>
-            </div>
-          </div>
-
-        </section>
-
-        <footer class="modal-card-foot">
-          <button class="button is-primary new-playlist">New Playlist</button>
-          <button class="button is-danger cancel">Cancel</button>
-          {% if user.is_authenticated %}
-          {% comment %} <div>
-            <button class="button is-warning">Edit</button>
-            <button class="button is-danger">Delete</button>
-          </div> {% endcomment %}
-          {% endif %}
-        </footer>
-      </div>
-    </div>
-
   </div>
 
-  <script>
-    var map, infoWindow, destWindow, placeCoords;
-    function initAutocomplete() {
+  {% comment %} City playlists modal {% endcomment %}
+  <div id="city-playlists-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Search playlists
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" id="exit-city-playlists-modal" aria-label="close">Back</button>
+      </header>
+      <section id="city-playlists" class="modal-card-body">
+        <div v-for="playlist in cityPlaylists">
+          <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-primary new-playlist">New Playlist</button>
+        <button class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} Playlist detail modal {% endcomment %}
+  <div id="playlist-detail-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        ${currentPlaylist.title}
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" id="exit-playlist-detail-modal" aria-label="close">Back</button>
+      </header>
+      <section id="playlist-detail" class="modal-card-body">
+
+        <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
+          <div class="message-header">
+            <p>${destination.name}</p>
+          </div>
+          <div class="message-body has-background-grey-lighter">${destination.description}</div>
+        </article>
+
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-primary new-playlist">New Playlist</button>
+        <button class="button is-danger cancel">Cancel</button>
+        {% if user.is_authenticated %}
+        <div>
+          <button class="button is-warning">Edit</button>
+          <button class="button is-danger">Delete</button>
+        </div>
+        {% endif %}
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} Create Playlist modal {% endcomment %}
+  <div id="create-playlist-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Create new playlist
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" id="exit-create-playlist-modal" aria-label="close">Back</button>
+      </header>
+      <section id="create-playlist" class="modal-card-body">
+
+        {% comment %} <article v-for="item in newPlaylist" class="message is-success is-small">
+          <div class="message-header">
+            <p>${item.name}</p>
+          </div>
+          <div class="message-body">${item.description}</div>
+        </article> {% endcomment %}
+
+        <div class="field">
+          <label class="label">Title</label>
+          <div class="control">
+            <input v-model="newPlaylist.title" class="input" type="text" placeholder="Playlist name">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">City</label>
+          <div class="control">
+            <input v-model="newPlaylist.city" class="input is-success" type="text" placeholder="City" value="bulma">
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button @click="addDestination()" class="button is-link">Submit</button>
+          </div>
+          <div class="control">
+            <button class="button is-text">Cancel</button>
+          </div>
+        </div>
+
+      </section>
+
+      <footer class="modal-card-foot">
+        <button class="button is-danger cancel">Cancel</button>
+        {% if user.is_authenticated %}
+        {% comment %} <div>
+          <button class="button is-warning">Edit</button>
+          <button class="button is-danger">Delete</button>
+        </div> {% endcomment %}
+        {% endif %}
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} Edit Playlist modal {% endcomment %}
+  <div id="edit-playlist-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Create new playlist
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" id="exit-edit-playlist-modal" aria-label="close">Back</button>
+      </header>
+      <section id="create-playlist" class="modal-card-body">
+
+        <label class="label">Search places</label>
+        <div class="control">
+          <input id="modal-autocomplete" class="controls top-layer input" type="text" placeholder="choose destination">
+        </div>
+
+        <article v-for="item in newPlaylist" class="message is-success is-small">
+          <div class="message-header">
+            <p>${item.name}</p>
+          </div>
+          <div class="message-body">${item.description}</div>
+        </article>
+
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input v-model="newDestination.name" id="current-place-name" class="input" type="text" placeholder="Place name">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Address</label>
+          <div class="control">
+            <input v-model="newDestination.formatted_address" id="current-place-address" class="input is-success" type="text"
+              placeholder="Address" value="bulma">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Add a comment</label>
+          <div class="control">
+            <input v-model="newDestination.description" id="current-place-description" class="input is-success" type="text"
+              placeholder="Description" value="bulma">
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button @click="addDestination()" class="button is-link">Submit</button>
+          </div>
+        </div>
+
+      </section>
+
+      <footer class="modal-card-foot">
+        <button class="button is-danger cancel">Cancel</button>
+        {% if user.is_authenticated %}
+        {% comment %} <div>
+          <button class="button is-danger">Delete</button>
+        </div> {% endcomment %}
+        {% endif %}
+      </footer>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var map, infoWindow, destWindow, placeCoords, autocomplete, lastAutocomplete;
+  function initAutocomplete() {
     map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 35.993, lng: -78.905 },
       zoom: 18,
       disableDefaultUI: true,
       styles: [
-        { 
-          elementType: 'geometry', 
-          stylers: [{ color: '#242f3e' }] 
+        {
+          elementType: 'geometry',
+          stylers: [{ color: '#242f3e' }]
         },
-        { 
+        {
           elementType: 'labels.text.stroke',
-          stylers: [{ color: '#242f3e' }] 
+          stylers: [{ color: '#242f3e' }]
         },
-        { 
+        {
           elementType: 'labels.text.fill',
-          stylers: [{ color: '#746855' }] 
+          stylers: [{ color: '#746855' }]
         },
         {
           featureType: 'administrative.locality',
@@ -326,80 +329,83 @@
         }
       ]
     });
-    
-    var gem1 = {lat: 35.993214, lng: -78.904029};
 
-  function loadDefaultPlaylist () {
-    $.get('/api/playlists/1/')
-      .then(function (playlist) {
-        console.log(playlist)
-        for (let gem of playlist.destinations) {
-          let coords = { "lat": +gem.lat, "lng": +gem.lng }
-          console.log(coords)
-          var marker = new google.maps.Marker({
-            position: coords,
-            map: map,
-            icon:"https://img.icons8.com/color/48/000000/crystal.png",
-          });
-        }
-        {% comment %} for (let gem of playlist.destinations) {
-          var marker = new google.maps.Marker({
-            position: JSON.parse(gem.coordinates),
-            map: map,
-            icon:"https://img.icons8.com/color/48/000000/crystal.png",
-          });
-          marker.addListener('click', function() {
-        infowindow.open(map, marker);
-      });
-        } {% endcomment %}
-    })
-  }
+    var gem1 = { lat: 35.993214, lng: -78.904029 };
 
-    loadDefaultPlaylist();
+    //   function loadDefaultPlaylist () {
+    //   $.get('/api/playlists/1/')
+    //     .then(function (playlist) {
+    //       console.log(playlist)
+    //       for (let gem of playlist.destinations) {
+    //         let coords = { "lat": +gem.lat, "lng": +gem.lng }
+    //         console.log(coords)
+    //         var marker = new google.maps.Marker({
+    //           position: coords,
+    //           map: map,
+    //           icon:"https://img.icons8.com/color/48/000000/crystal.png",
+    //         });
+    //       }
+    //       {% comment %} for (let gem of playlist.destinations) {
+    //         var marker = new google.maps.Marker({
+    //           position: JSON.parse(gem.coordinates),
+    //           map: map,
+    //           icon:"https://img.icons8.com/color/48/000000/crystal.png",
+    //         });
+    //         marker.addListener('click', function() {
+    //       infowindow.open(map, marker);
+    //     });
+    //       } {% endcomment %}
+    //   })
+    // }
+
+    // loadDefaultPlaylist();
 
     var input = document.getElementById('pac-input');
-      var searchBox = new google.maps.places.SearchBox(input);
-      //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); //
+    var searchBox = new google.maps.places.SearchBox(input);
+    //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); //
 
-      // Bias the SearchBox results towards current map's viewport.
-      map.addListener('bounds_changed', function() {
-        searchBox.setBounds(map.getBounds());
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener('bounds_changed', function () {
+      searchBox.setBounds(map.getBounds());
+    });
+
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener('places_changed', function () {
+      var places = searchBox.getPlaces();
+      arrow.style.display = 'inline-block';
+      console.log(places)
+      place_lat = places[0].geometry.location.lat()
+      place_lng = places[0].geometry.location.lng()
+      placeCoords = { lat: place_lat, lng: place_lng }
+      place_address = places[0].formatted_address
+      place_name = places[0].name
+      destWindow = new google.maps.InfoWindow
+      destWindow.setPosition({ lat: place_lat, lng: place_lng })
+      destWindow.setContent(place_name)
+      destWindow.open(map)
+      map.setCenter({ lat: place_lat, lng: place_lng });
+
+      console.log(place_lat, place_lng, place_address, place_name)
+      var destination = ({ lat: place_lat, lng: place_lng });
+      var marker = new google.maps.Marker({
+        position: destination,
+        map: map,
+        icon: "https://img.icons8.com/metro/50/launched-rocket.png",
+        animation: google.maps.Animation.BOUNCE,
       });
+    });
 
-      // Listen for the event fired when the user selects a prediction and retrieve
-      // more details for that place.
-      searchBox.addListener('places_changed', function() {
-        var places = searchBox.getPlaces();
-        arrow.style.display = 'inline-block';
-        console.log(places)
-        place_lat = places[0].geometry.location.lat()
-        place_lng = places[0].geometry.location.lng()
-        placeCoords = {lat: place_lat, lng: place_lng}
-        place_address = places[0].formatted_address
-        place_name = places[0].name
-        destWindow = new google.maps.InfoWindow
-        destWindow.setPosition({lat: place_lat, lng: place_lng})
-        destWindow.setContent(place_name)
-        destWindow.open(map)
-        map.setCenter({lat: place_lat, lng: place_lng});
-
-        console.log(place_lat, place_lng, place_address, place_name)
-        var destination = ({lat: place_lat, lng: place_lng});
-        var marker = new google.maps.Marker({
-          position: destination,
-          map: map,
-          icon:"https://img.icons8.com/metro/50/launched-rocket.png",
-          animation: google.maps.Animation.BOUNCE,
-        });
-      });
-
-    var input2 = document.getElementById('modal-autocomplete')
-    var autocomplete = new google.maps.places.Autocomplete(input2);
+    var modalAutocomplete = document.getElementById('modal-autocomplete')
+    autocomplete = new google.maps.places.Autocomplete(modalAutocomplete);
     autocomplete.bindTo('bounds', map);
 
-    autocomplete.addListener('place_changed', function() {
-      var placeX = autocomplete.getPlace();
-      console.log(placeX)
+    autocomplete.addListener('place_changed', function () {
+      vm.newDestination = autocomplete.getPlace();
+      // document.getElementById('current-place-name').value = vm.newDestination.name
+      // document.getElementById('current-place-address').value = vm.newDestination.formatted_address
+
+      console.log('Most recent autocomplete', vm.newDestination)
     })
 
     infoWindow = new google.maps.InfoWindow;
@@ -431,6 +437,7 @@
       'Error: Your browser doesn\'t support geolocation.');
     infoWindow.open(map);
   }
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initAutocomplete" async defer></script>
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initAutocomplete"
+  async defer></script>
 {% endblock content %}

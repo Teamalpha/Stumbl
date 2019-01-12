@@ -1,8 +1,8 @@
-// var csrftoken = Cookies.get('csrftoken')
-// Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
+var csrftoken = Cookies.get('csrftoken')
+Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
 
-// const requestUserPk = parseInt(document.getElementById('request-user-pk').value) || -1
-// const requestUser = document.getElementById('request-user').value
+const requestUserPk = parseInt(document.getElementById('request-user-pk').value) || -1
+const requestUser = document.getElementById('request-user').value
 
 const vm = new Vue({
   el: '#vue-instance',
@@ -15,18 +15,8 @@ const vm = new Vue({
     playlists: [],
     newPlaylist: {},
     newDestination: {}
-    // loggedInUser: { 'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'users_followed': [] },
-    // newResponse: { 'text': null, 'post': null, 'user': requestUser },
-    // currentPost: {},
-    // newPost: { 'text': null },
-    // newFollow: { 'following_user': requestUserPk, 'followed_user': null },
   },
   mounted: function () {
-    //   if (requestUserPk !== -1) {
-    //     this.getLoggedInUser();
-    //   } else {
-    //     this.showFeedNotAll = false;
-    //   }
     this.getCities()
   },
   methods: {
@@ -39,9 +29,9 @@ const vm = new Vue({
           }
         }
       })
-      .catch((err) => {
-        console.log(err);
-      })
+        .catch((err) => {
+          console.log(err);
+        })
     },
     getCityPlaylists: function (city) {
       this.$http.get(`/api/playlists/?search=${city}`).then((response) => {
@@ -49,9 +39,9 @@ const vm = new Vue({
         document.getElementById('city-playlists-modal').classList.add('is-active')
         console.log(this.cityPlaylists)
       })
-      .catch((err) => {
-        console.log(err);
-      })
+        .catch((err) => {
+          console.log(err);
+        })
     },
     getPlaylist: function (playlist) {
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
@@ -62,6 +52,7 @@ const vm = new Vue({
     },
     addDestination: function () {
       console.log(this.newPlaylist)
+      document.getElementById('edit-playlist-modal').classList.add('is-active')
     }
   }, // close methods
 }) // close vue instance
