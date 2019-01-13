@@ -84,5 +84,6 @@ cancelButtons.forEach((button) => {
     $('#choose-city-modal').removeClass('is-active')
     $('#playlist-detail-modal').removeClass('is-active')
     $('#create-playlist-modal').removeClass('is-active')
+    $('#edit-playlist-modal').removeClass('is-active')
   })
 })

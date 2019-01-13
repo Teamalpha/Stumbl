@@ -98,7 +98,7 @@ Stumbl - {{ block.super }}
 
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-primary new-playlist">New Playlist</button>
+        <button @click="applyGems()" class="button is-primary apply-playlist">Select playlist</button>
         <button class="button is-danger cancel">Cancel</button>
         {% if user.is_authenticated %}
         <div>
@@ -176,17 +176,17 @@ Stumbl - {{ block.super }}
       </header>
       <section id="create-playlist" class="modal-card-body">
 
-        <label class="label">Search places</label>
-        <div class="control">
-          <input id="modal-autocomplete" class="controls top-layer input" type="text" placeholder="choose destination">
-        </div>
-
         <article v-for="destination in currentPlaylistDestinations" class="message is-success is-small">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
           <div class="message-body">${destination.description}</div>
         </article>
+
+        <label class="label">Search places</label>
+        <div class="control">
+          <input id="modal-autocomplete" class="controls top-layer input" type="text" placeholder="choose destination">
+        </div>
 
         <div class="field">
           <label class="label">Name</label>

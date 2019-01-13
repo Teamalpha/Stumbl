@@ -90,14 +90,32 @@ const vm = new Vue({
         "description": this.destinationDescription,
         "name": this.currentDestination.name
       }
+      this.currentPlaylistDestinations.push(this.newDestination)
       this.$http.post(`api/destinations/`, this.newDestination).then(() => {
-        this.currentPlaylistDestinations.push(this.newDestination)
+        
         this.currentDestination = {'name': ''}
         this.destinationDescription = ''
       })
       .catch((err) => {
         console.log(err);
       })
+    },
+    applyGems: function() {
+      console.log(this.currentPlaylist)
+      for (let gem of this.currentPlaylist.destinations) {
+        let coords = { "lat": +gem.lat, "lng": +gem.lng }
+        console.log(coords)
+        var marker = new google.maps.Marker({
+          position: coords,
+          map: map,
+          icon: "https://img.icons8.com/color/48/000000/crystal.png",
+        });
+      }
+      $('#city-playlists-modal').removeClass('is-active')
+      $('#choose-city-modal').removeClass('is-active')
+      $('#playlist-detail-modal').removeClass('is-active')
+      $('#create-playlist-modal').removeClass('is-active')
+      $('#edit-playlist-modal').removeClass('is-active')  
     }
   }, // close methods
 }) // close vue instance
