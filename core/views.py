@@ -6,6 +6,9 @@ from core.models import User, Playlist, Destination
 def index(request):
     return render(request, 'index.html', { 'google_api_key': settings.GOOGLE_MAPS_API_KEY})
 
+def about(request):
+    return render(request, 'about.html')
+    
 def destinations(request):
     destinations: Destination.objects.all()
     return render(request, 'destination.html',{'destinations.html': destinations, "pk": pk})

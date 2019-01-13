@@ -36,7 +36,7 @@ router.register('playlists', api_views.PlaylistViewSet)
 
 urlpatterns = [
     path('', views.index, name='home'),
-    path('profile/', views.profile, name='profile'),
+    path('about/', views.about, name='about'),
     path('playlist', views.playlist, name='playlist'),
     path('destinations', views.destinations, name='destinations'),
     path('accounts/password/reset/', PasswordResetView, {'template_name': 'registration/password_reset_form.html'}, name="password_reset"),
