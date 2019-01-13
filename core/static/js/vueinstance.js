@@ -14,7 +14,7 @@ const vm = new Vue({
     currentPlaylist: [],
     playlists: [],
     newPlaylist: {},
-    newDestination: {}
+    currentDestination: {}
   },
   mounted: function () {
     this.getCities()
@@ -50,9 +50,12 @@ const vm = new Vue({
         console.log(this.currentPlaylist)
       })
     },
-    addDestination: function () {
+    addPlaylist: function () {
       console.log(this.newPlaylist)
       document.getElementById('edit-playlist-modal').classList.add('is-active')
+    },
+    addDestination: function() {
+      console.log(this.newDestination)
     }
   }, // close methods
 }) // close vue instance

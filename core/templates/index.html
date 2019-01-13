@@ -144,7 +144,7 @@ Stumbl - {{ block.super }}
 
         <div class="field is-grouped">
           <div class="control">
-            <button @click="addDestination()" class="button is-link">Submit</button>
+            <button @click="addPlaylist()" class="button is-link">Submit</button>
           </div>
           <div class="control">
             <button class="button is-text">Cancel</button>
@@ -191,23 +191,23 @@ Stumbl - {{ block.super }}
         <div class="field">
           <label class="label">Name</label>
           <div class="control">
-            <input v-model="newDestination.name" id="current-place-name" class="input" type="text" placeholder="Place name">
+            <input v-model="currentDestination.name" id="current-place-name" class="input" type="text" placeholder="Place name">
           </div>
         </div>
 
         <div class="field">
           <label class="label">Address</label>
           <div class="control">
-            <input v-model="newDestination.formatted_address" id="current-place-address" class="input is-success" type="text"
-              placeholder="Address" value="bulma">
+            <input v-model="currentDestination.formatted_address" id="current-place-address" class="input is-success"
+              type="text" placeholder="Address" value="bulma">
           </div>
         </div>
 
         <div class="field">
           <label class="label">Add a comment</label>
           <div class="control">
-            <input v-model="newDestination.description" id="current-place-description" class="input is-success" type="text"
-              placeholder="Description" value="bulma">
+            <input v-model="currentDestination.description" id="current-place-description" class="input is-success"
+              type="text" placeholder="Description" value="bulma">
           </div>
         </div>
 
@@ -233,7 +233,7 @@ Stumbl - {{ block.super }}
 </div>
 
 <script>
-  var map, infoWindow, destWindow, placeCoords, autocomplete, lastAutocomplete;
+  var map, infoWindow, destWindow, placeCoords, places, autocomplete, lastAutocomplete;
   function initAutocomplete() {
     map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 35.993, lng: -78.905 },
@@ -332,37 +332,37 @@ Stumbl - {{ block.super }}
 
     var gem1 = { lat: 35.993214, lng: -78.904029 };
 
-    //   function loadDefaultPlaylist () {
-    //   $.get('/api/playlists/1/')
-    //     .then(function (playlist) {
-    //       console.log(playlist)
-    //       for (let gem of playlist.destinations) {
-    //         let coords = { "lat": +gem.lat, "lng": +gem.lng }
-    //         console.log(coords)
-    //         var marker = new google.maps.Marker({
-    //           position: coords,
-    //           map: map,
-    //           icon:"https://img.icons8.com/color/48/000000/crystal.png",
-    //         });
-    //       }
-    //       {% comment %} for (let gem of playlist.destinations) {
-    //         var marker = new google.maps.Marker({
-    //           position: JSON.parse(gem.coordinates),
-    //           map: map,
-    //           icon:"https://img.icons8.com/color/48/000000/crystal.png",
-    //         });
-    //         marker.addListener('click', function() {
-    //       infowindow.open(map, marker);
-    //     });
-    //       } {% endcomment %}
-    //   })
-    // }
+    function loadDefaultPlaylist() {
+      $.get('/api/playlists/1/')
+        .then(function (playlist) {
+          console.log(playlist)
+          for (let gem of playlist.destinations) {
+            let coords = { "lat": +gem.lat, "lng": +gem.lng }
+            console.log(coords)
+            var marker = new google.maps.Marker({
+              position: coords,
+              map: map,
+              icon: "https://img.icons8.com/color/48/000000/crystal.png",
+            });
+          }
+          //   for (let gem of playlist.destinations) {
+          //     var marker = new google.maps.Marker({
+          //       position: JSON.parse(gem.coordinates),
+          //       map: map,
+          //       icon:"https://img.icons8.com/color/48/000000/crystal.png",
+          //     });
+          //     marker.addListener('click', function() {
+          //     infowindow.open(map, marker);
+          //   });
+          // }
+        })
+    }
 
-    // loadDefaultPlaylist();
+    loadDefaultPlaylist();
 
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
-    //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); //
+    var modalAutocomplete = document.getElementById('modal-autocomplete')
 
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function () {
@@ -396,46 +396,30 @@ Stumbl - {{ block.super }}
       });
     });
 
-    var modalAutocomplete = document.getElementById('modal-autocomplete')
+
     autocomplete = new google.maps.places.Autocomplete(modalAutocomplete);
     autocomplete.bindTo('bounds', map);
 
     autocomplete.addListener('place_changed', function () {
-      vm.newDestination = autocomplete.getPlace();
-      // document.getElementById('current-place-name').value = vm.newDestination.name
-      // document.getElementById('current-place-address').value = vm.newDestination.formatted_address
-
+      vm.currentDestination = autocomplete.getPlace();
       console.log('Most recent autocomplete', vm.newDestination)
     })
 
-    infoWindow = new google.maps.InfoWindow;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
+    setInterval(recenter, 1000);
 
-        infoWindow.setPosition(pos);
-        infoWindow.setContent('You are here');
-        infoWindow.open(map);
-        map.setCenter(pos);
-      }, function () {
-        handleLocationError(true, infoWindow, map.getCenter());
-      });
-    } else {
-      // Browser doesn't support Geolocation
-      console.log('browser geolocation not supported')
-      handleLocationError(false, infoWindow, map.getCenter());
+    // listen for when user drags map and disable recentering
+    map.addListener('center_changed', function () {
+      stayCentered = false
+      console.log('center changed')
+    });
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+      infoWindow.open(map);
     }
-  }
-
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-      'Error: The Geolocation service failed.' :
-      'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
   }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initAutocomplete"

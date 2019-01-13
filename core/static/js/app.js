@@ -2,6 +2,7 @@
 let originX, originY, radius;
 let arrow = document.getElementById('arrow')
 let mapDiv = $('#map')
+let stayCentered = true
 
 function roundify() {
   mapDiv.css({ 'height': mapDiv.width() + 'px' });
@@ -46,6 +47,22 @@ if (window.DeviceOrientationEvent) {
       arrow.style.transform = `rotate(${(finalHeading)}deg)`;
     }
   })
+}
+
+function recenter() {
+  if (navigator.geolocation && stayCentered) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      map.setCenter(pos);
+
+    }, function () {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  }
 }
 
 $('.open-pl-modal').click(function () {
