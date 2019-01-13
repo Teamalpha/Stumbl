@@ -1,7 +1,10 @@
 
+var map, infoWindow, destWindow, placeCoords, places, autocomplete, lastAutocomplete;
+
 let originX, originY, radius;
 let arrow = document.getElementById('arrow')
 let mapDiv = $('#map')
+let stayCentered = true
 
 function roundify() {
   mapDiv.css({ 'height': mapDiv.width() + 'px' });
@@ -25,7 +28,7 @@ window.ondeviceorientationabsolute = function (event) {
   if (finalHeading > 360) { finalHeading -= 360 }
   $('#c-heading').text(`Absolute direction: ${compassHeading}`)
   $('#c-bearing').text(`Destination_______: ${updatebearing}`)
-  $('#c-finalheading').text(`Final Destination : ${finalHeading}`)
+  $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
 
   roundify()
   arrow.style.transform = `rotate(${(finalHeading)}deg)`
@@ -41,15 +44,24 @@ if (window.DeviceOrientationEvent) {
       if (finalHeading < 0) { finalHeading += 360 }
       $('#c-heading').text(`Absolute direction: ${compassHeading}`)
       $('#c-bearing').text(`Destination_______: ${updatebearing}`)
-      $('#c-finalheading').text(`Final Destination : ${finalHeading}`)
+      $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
 
       arrow.style.transform = `rotate(${(finalHeading)}deg)`;
     }
   })
 }
 
+
 $('.open-pl-modal').click(function () {
   $('#choose-city-modal').addClass('is-active')
+})
+
+const createPlaylistButtons = document.querySelectorAll('.new-playlist')
+
+createPlaylistButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    $('#create-playlist-modal').addClass('is-active')
+  })
 })
 
 function exitButtonListener(buttonSelector, modalSelector) {
@@ -61,6 +73,8 @@ function exitButtonListener(buttonSelector, modalSelector) {
 exitButtonListener('#exit-city-playlists-modal', '#city-playlists-modal')
 exitButtonListener('#exit-choose-city-modal', '#choose-city-modal')
 exitButtonListener('#exit-playlist-detail-modal', '#playlist-detail-modal')
+exitButtonListener('#exit-create-playlist-modal', '#create-playlist-modal')
+exitButtonListener('#exit-edit-playlist-modal', '#edit-playlist-modal')
 
 const cancelButtons = document.querySelectorAll('.cancel')
 
@@ -69,5 +83,7 @@ cancelButtons.forEach((button) => {
     $('#city-playlists-modal').removeClass('is-active')
     $('#choose-city-modal').removeClass('is-active')
     $('#playlist-detail-modal').removeClass('is-active')
+    $('#create-playlist-modal').removeClass('is-active')
+    $('#edit-playlist-modal').removeClass('is-active')
   })
 })

@@ -1,8 +1,8 @@
-// var csrftoken = Cookies.get('csrftoken')
-// Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
+var csrftoken = Cookies.get('csrftoken')
+Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
 
-// const requestUserPk = parseInt(document.getElementById('request-user-pk').value) || -1
-// const requestUser = document.getElementById('request-user').value
+const requestUserPk = parseInt(document.getElementById('request-user-pk').value) || -1
+const requestUser = document.getElementById('request-user').value
 
 const vm = new Vue({
   el: '#vue-instance',
@@ -11,20 +11,18 @@ const vm = new Vue({
     playlist: [],
     cityPlaylists: [],
     cities: [],
-    currentPlaylist: [],
-    // loggedInUser: { 'followers': [], 'pk': -1, 'url': null, 'username': requestUser, 'users_followed': [] },
-    // newResponse: { 'text': null, 'post': null, 'user': requestUser },
-    // currentPost: {},
-    // newPost: { 'text': null },
-    // newFollow: { 'following_user': requestUserPk, 'followed_user': null },
+    currentPlaylist: {},
+    currentPlaylistDestinations: [],
+    playlists: [],
+    newPlaylist: {},
+    currentDestination: {},
+    currentTitle: null,
+    currentCity: null,
+    newDestination: null,
+    destinationDescription: null,
+    newPlaylistPk: null,
   },
   mounted: function () {
-    //   if (requestUserPk !== -1) {
-    //     this.getLoggedInUser();
-    //   } else {
-    //     this.showFeedNotAll = false;
-    //   }
-    //   this.getPosts();
     this.getCities()
   },
   methods: {
@@ -37,19 +35,20 @@ const vm = new Vue({
           }
         }
       })
-      .catch((err) => {
-        console.log(err);
-      })
+        .catch((err) => {
+          console.log(err);
+        })
     },
     getCityPlaylists: function (city) {
       this.$http.get(`/api/playlists/?search=${city}`).then((response) => {
         this.cityPlaylists = response.data;
+        this.currentCity = city
         document.getElementById('city-playlists-modal').classList.add('is-active')
         console.log(this.cityPlaylists)
       })
-      .catch((err) => {
-        console.log(err);
-      })
+        .catch((err) => {
+          console.log(err);
+        })
     },
     getPlaylist: function (playlist) {
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
@@ -57,7 +56,67 @@ const vm = new Vue({
         document.getElementById('playlist-detail-modal').classList.add('is-active')
         console.log(this.currentPlaylist)
       })
+      .catch((err) => {
+        console.log(err);
+      })
     },
+    addPlaylist: function () {
+      console.log(this.newPlaylist)
+      this.newPlaylist = {
+        "user": requestUser,
+        "title": this.currentTitle,
+        "city": this.currentCity
+      }
+      this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
+        this.playlists.push(this.newPlaylist)
+        this.currentPlaylist = this.newPlaylist
+        this.currentDestination = {'name': ''}
+        this.destinationDescription = ''
+        console.log('response, looking for pk', response)
+        this.newPlaylistPk = response.data.pk
+        document.getElementById('edit-playlist-modal').classList.add('is-active')
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    },
+    addDestination: function() {
+      console.log(this.currentDestination)
+      this.newDestination = {
+        "playlist": this.newPlaylistPk,
+        "lat": this.currentDestination.geometry.location.lat(),
+        "lng": this.currentDestination.geometry.location.lng(),
+        "place_id": this.currentDestination.place_id,
+        "description": this.destinationDescription,
+        "name": this.currentDestination.name
+      }
+      this.currentPlaylistDestinations.push(this.newDestination)
+      this.$http.post(`api/destinations/`, this.newDestination).then(() => {
+        
+        this.currentDestination = {'name': ''}
+        this.destinationDescription = ''
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    },
+    applyGems: function() {
+      console.log(this.currentPlaylist)
+      for (let gem of this.currentPlaylist.destinations) {
+        let coords = { "lat": +gem.lat, "lng": +gem.lng }
+        console.log(coords)
+        var marker = new google.maps.Marker({
+          position: coords,
+          map: map,
+          icon: "https://img.icons8.com/color/48/000000/crystal.png",
+        });
+      }
+      $('#city-playlists-modal').removeClass('is-active')
+      $('#choose-city-modal').removeClass('is-active')
+      $('#playlist-detail-modal').removeClass('is-active')
+      $('#create-playlist-modal').removeClass('is-active')
+      $('#edit-playlist-modal').removeClass('is-active')  
+    }
   }, // close methods
 }) // close vue instance
 
