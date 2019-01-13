@@ -20,65 +20,96 @@
     <script src="{% static 'js/app.js' %}" defer></script>
     {% block header %}{% endblock header %}
   </head>
-    {% comment %} <nav>
-        <ul>
-            <li>
-                <a href="{% url 'home' %}">Home</a>
-            </li>
-            {% if user.is_authenticated %} <li>
-                    <a href="{% url 'auth_logout' %}">Logout</a>
-            </li>
-            {% else %}
-            <li>
-                <a href="{% url 'auth_login' %}">Login</a> 
-            </li>
-            <li>
-                <a href="{% url 'registration_register' %}">Register</a>
-            </li>
-            {% endif %}
-            <li>
-                <a href="{% url 'playlist' %}">Playlist</a>
-            </li>
-        </ul>
-    </nav> {% endcomment %}
 
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <nav class="navbar has-background-light-grey" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://bulma.io">
-        {% comment %} <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28"> {% endcomment %}
+        <img src="{% static 'images/favicon.ico' %}" width="30" height="30"><strong>Stumbl</strong>
       </a>
     </div>
 
-    <div class="navbar-menu">
+    <div class="navbar-menu is-active">
       <div class="navbar-start">
-        <a class="navbar-item">
-          Stumbl
-        </a>
-
-        <a class="navbar-item">
-          About
-        </a>
-
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-          {% if user.is_authenticated %}
-            <a class="button is-light" href="{% url 'auth_logout' %}">
-              Logout
-            </a>
-          {% else %}
-            <a class="button is-primary" href="{% url 'auth_login' %}">
-              <strong>Login</strong>
-            </a>
-            <a class="button is-success" href="{% url 'registration_register' %}">
-              <strong>Sign up</strong>
-            </a>
-          {% endif %}
+        <a class="navbar-item">About</a>
+        <div class="navbar-end is-pulled-right">
+          <div class="navbar-item is-pulled-right">
+            <div class="buttons">
+            {% if user.is_authenticated %}
+              <a class="button is-light" href="{% url 'auth_logout' %}">Logout</a>
+            {% else %}
+              <a class="button is-primary" href="{% url 'auth_login' %}"><strong>Login</strong></a>
+              <a class="button is-success" href="{% url 'registration_register' %}"><strong>Sign up</strong></a>
+            {% endif %}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </nav>
+  </nav> 
+
+
+<!--
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="https://bulma.io">
+      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+    </a>
+
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item">
+        Home
+      </a>
+
+      <a class="navbar-item">
+        Documentation
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            About
+          </a>
+          <a class="navbar-item">
+            Jobs
+          </a>
+          <a class="navbar-item">
+            Contact
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item">
+            Report an issue
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light">
+            Log in
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+ -->
 
 {% if user.is_authenticated %}
 <input type="hidden" id="request-user-pk" value="{{ request.user.pk }}">

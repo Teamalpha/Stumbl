@@ -1,4 +1,6 @@
 
+var map, infoWindow, destWindow, placeCoords, places, autocomplete, lastAutocomplete;
+
 let originX, originY, radius;
 let arrow = document.getElementById('arrow')
 let mapDiv = $('#map')
@@ -26,7 +28,7 @@ window.ondeviceorientationabsolute = function (event) {
   if (finalHeading > 360) { finalHeading -= 360 }
   $('#c-heading').text(`Absolute direction: ${compassHeading}`)
   $('#c-bearing').text(`Destination_______: ${updatebearing}`)
-  $('#c-finalheading').text(`Final Destination : ${finalHeading}`)
+  $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
 
   roundify()
   arrow.style.transform = `rotate(${(finalHeading)}deg)`
@@ -42,28 +44,13 @@ if (window.DeviceOrientationEvent) {
       if (finalHeading < 0) { finalHeading += 360 }
       $('#c-heading').text(`Absolute direction: ${compassHeading}`)
       $('#c-bearing').text(`Destination_______: ${updatebearing}`)
-      $('#c-finalheading').text(`Final Destination : ${finalHeading}`)
+      $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
 
       arrow.style.transform = `rotate(${(finalHeading)}deg)`;
     }
   })
 }
 
-function recenter() {
-  if (navigator.geolocation && stayCentered) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      var pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-
-      map.setCenter(pos);
-
-    }, function () {
-      handleLocationError(true, infoWindow, map.getCenter());
-    });
-  }
-}
 
 $('.open-pl-modal').click(function () {
   $('#choose-city-modal').addClass('is-active')

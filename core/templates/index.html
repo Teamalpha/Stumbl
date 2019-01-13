@@ -117,11 +117,11 @@ Stumbl - {{ block.super }}
       <header class="modal-card-head">
         Create new playlist
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-create-playlist-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" id="exit-create-playlist-modal" aria-label="close">Back</button>
       </header>
       <section id="create-playlist" class="modal-card-body">
 
-        {% comment %} <article v-for="item in newPlaylist" class="message is-success is-small">
+        {% comment %} <article class="message is-success is-small">
           <div class="message-header">
             <p>${item.name}</p>
           </div>
@@ -131,14 +131,14 @@ Stumbl - {{ block.super }}
         <div class="field">
           <label class="label">Title</label>
           <div class="control">
-            <input v-model="newPlaylist.title" class="input" type="text" placeholder="Playlist name">
+            <input v-model="currentTitle" class="input" type="text" placeholder="Playlist name">
           </div>
         </div>
 
         <div class="field">
           <label class="label">City</label>
           <div class="control">
-            <input v-model="newPlaylist.city" class="input is-success" type="text" placeholder="City" value="bulma">
+            <input v-model="currentCity" class="input is-success" type="text" placeholder="City" value="bulma">
           </div>
         </div>
 
@@ -170,7 +170,7 @@ Stumbl - {{ block.super }}
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Create new playlist
+        Add destinations to playlist
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" id="exit-edit-playlist-modal" aria-label="close">Back</button>
       </header>
@@ -181,11 +181,11 @@ Stumbl - {{ block.super }}
           <input id="modal-autocomplete" class="controls top-layer input" type="text" placeholder="choose destination">
         </div>
 
-        <article v-for="item in newPlaylist" class="message is-success is-small">
+        <article v-for="destination in currentPlaylistDestinations" class="message is-success is-small">
           <div class="message-header">
-            <p>${item.name}</p>
+            <p>${destination.name}</p>
           </div>
-          <div class="message-body">${item.description}</div>
+          <div class="message-body">${destination.description}</div>
         </article>
 
         <div class="field">
@@ -206,8 +206,8 @@ Stumbl - {{ block.super }}
         <div class="field">
           <label class="label">Add a comment</label>
           <div class="control">
-            <input v-model="currentDestination.description" id="current-place-description" class="input is-success"
-              type="text" placeholder="Description" value="bulma">
+            <input v-model="destinationDescription" id="current-place-description" class="input is-success" type="text"
+              placeholder="Description" value="bulma">
           </div>
         </div>
 
@@ -233,7 +233,6 @@ Stumbl - {{ block.super }}
 </div>
 
 <script>
-  var map, infoWindow, destWindow, placeCoords, places, autocomplete, lastAutocomplete;
   function initAutocomplete() {
     map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 35.993, lng: -78.905 },
@@ -374,20 +373,18 @@ Stumbl - {{ block.super }}
     searchBox.addListener('places_changed', function () {
       var places = searchBox.getPlaces();
       arrow.style.display = 'inline-block';
-      console.log(places)
-      place_lat = places[0].geometry.location.lat()
-      place_lng = places[0].geometry.location.lng()
+      let place_lat = places[0].geometry.location.lat()
+      let place_lng = places[0].geometry.location.lng()
       placeCoords = { lat: place_lat, lng: place_lng }
-      place_address = places[0].formatted_address
-      place_name = places[0].name
+      let place_address = places[0].formatted_address
+      let place_name = places[0].name
       destWindow = new google.maps.InfoWindow
       destWindow.setPosition({ lat: place_lat, lng: place_lng })
       destWindow.setContent(place_name)
       destWindow.open(map)
       map.setCenter({ lat: place_lat, lng: place_lng });
 
-      console.log(place_lat, place_lng, place_address, place_name)
-      var destination = ({ lat: place_lat, lng: place_lng });
+      let destination = ({ lat: place_lat, lng: place_lng });
       var marker = new google.maps.Marker({
         position: destination,
         map: map,
@@ -402,15 +399,29 @@ Stumbl - {{ block.super }}
 
     autocomplete.addListener('place_changed', function () {
       vm.currentDestination = autocomplete.getPlace();
-      console.log('Most recent autocomplete', vm.newDestination)
     })
+
+    function recenter() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          if (stayCentered) {
+            map.setCenter(pos);
+          }
+        }), function () {
+          handleLocationError(true, infoWindow, map.getCenter());
+        };
+      }
+    }
 
     setInterval(recenter, 1000);
 
     // listen for when user drags map and disable recentering
     map.addListener('center_changed', function () {
       stayCentered = false
-      console.log('center changed')
     });
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {

@@ -11,10 +11,16 @@ const vm = new Vue({
     playlist: [],
     cityPlaylists: [],
     cities: [],
-    currentPlaylist: [],
+    currentPlaylist: {},
+    currentPlaylistDestinations: [],
     playlists: [],
     newPlaylist: {},
-    currentDestination: {}
+    currentDestination: {},
+    currentTitle: null,
+    currentCity: null,
+    newDestination: null,
+    destinationDescription: null,
+    newPlaylistPk: null,
   },
   mounted: function () {
     this.getCities()
@@ -36,6 +42,7 @@ const vm = new Vue({
     getCityPlaylists: function (city) {
       this.$http.get(`/api/playlists/?search=${city}`).then((response) => {
         this.cityPlaylists = response.data;
+        this.currentCity = city
         document.getElementById('city-playlists-modal').classList.add('is-active')
         console.log(this.cityPlaylists)
       })
@@ -49,13 +56,48 @@ const vm = new Vue({
         document.getElementById('playlist-detail-modal').classList.add('is-active')
         console.log(this.currentPlaylist)
       })
+      .catch((err) => {
+        console.log(err);
+      })
     },
     addPlaylist: function () {
       console.log(this.newPlaylist)
-      document.getElementById('edit-playlist-modal').classList.add('is-active')
+      this.newPlaylist = {
+        "user": requestUser,
+        "title": this.currentTitle,
+        "city": this.currentCity
+      }
+      this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
+        this.playlists.push(this.newPlaylist)
+        this.currentPlaylist = this.newPlaylist
+        this.currentDestination = {'name': ''}
+        this.destinationDescription = ''
+        console.log('response, looking for pk', response)
+        this.newPlaylistPk = response.data.pk
+        document.getElementById('edit-playlist-modal').classList.add('is-active')
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     },
     addDestination: function() {
-      console.log(this.newDestination)
+      console.log(this.currentDestination)
+      this.newDestination = {
+        "playlist": this.newPlaylistPk,
+        "lat": this.currentDestination.geometry.location.lat(),
+        "lng": this.currentDestination.geometry.location.lng(),
+        "place_id": this.currentDestination.place_id,
+        "description": this.destinationDescription,
+        "name": this.currentDestination.name
+      }
+      this.$http.post(`api/destinations/`, this.newDestination).then(() => {
+        this.currentPlaylistDestinations.push(this.newDestination)
+        this.currentDestination = {'name': ''}
+        this.destinationDescription = ''
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     }
   }, // close methods
 }) // close vue instance
