@@ -195,8 +195,8 @@ Stumbl - {{ block.super }}
         <div class="field">
           <label class="label">What makes this place a hidden gem?</label>
           <div class="control">
-            <input v-model="destinationDescription" id="current-place-description" class="input is-success" type="text"
-              placeholder="Description" value="bulma">
+            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-success" type="text"
+              placeholder="Description"></textarea>
           </div>
         </div>
 
@@ -321,7 +321,7 @@ Stumbl - {{ block.super }}
             map: map,
             icon: "https://img.icons8.com/color/48/000000/crystal.png",
           });
-          let contentString = `${destination.description}`;
+          let contentString = `${destination.name} - ${destination.description}`;
           console.log(contentString);
           google.maps.event.addListener(marker, 'click', function () {
             var infowindow = new google.maps.InfoWindow({

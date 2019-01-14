@@ -105,11 +105,17 @@ const vm = new Vue({
     applyGems: function() {
       for (let gem of this.currentPlaylist.destinations) {
         let coords = { "lat": +gem.lat, "lng": +gem.lng }
-        console.log(coords)
         var marker = new google.maps.Marker({
           position: coords,
           map: map,
           icon: "https://img.icons8.com/color/48/000000/crystal.png",
+        });
+        let contentString = `${gem.name} - ${gem.description}`;
+        google.maps.event.addListener(marker, 'click', function () {
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+          infowindow.open(map, this);
         });
       }
       $('#city-playlists-modal').removeClass('is-active')
