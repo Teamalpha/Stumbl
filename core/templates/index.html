@@ -321,7 +321,7 @@ Stumbl - {{ block.super }}
             map: map,
             icon: "https://img.icons8.com/color/48/000000/crystal.png",
           });
-          let contentString = `${destination.description}`;
+          let contentString = `${destination.name} - ${destination.description}`;
           console.log(contentString);
           google.maps.event.addListener(marker, 'click', function () {
             var infowindow = new google.maps.InfoWindow({
