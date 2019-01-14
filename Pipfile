@@ -21,7 +21,6 @@ djangorestframework = "*"
 selenium = "*"
 
 [dev-packages]
-"flake8" = "*"
 prospector = "*"
 
 [requires]
