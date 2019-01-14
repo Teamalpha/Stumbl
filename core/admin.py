@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import User, Destination, Playlist
+from core.models import User, Destination, Playlist, Vote
 
 
 class DestinationAdmin(admin.ModelAdmin):
@@ -22,6 +22,13 @@ class PlaylistAdmin(admin.ModelAdmin):
         "city",
     )
 
+class VoteAdmin(admin.ModelAdmin):
+    model = Vote
+    list_display = (
+        "user",
+        "playlist",
+    )
 
 admin.site.register(Destination, DestinationAdmin)
 admin.site.register(Playlist, PlaylistAdmin)
+admin.site.register(Vote, VoteAdmin)
