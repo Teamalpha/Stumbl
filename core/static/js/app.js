@@ -1,6 +1,3 @@
-
-var map, infoWindow, destWindow, placeCoords, places, autocomplete, lastAutocomplete;
-
 let originX, originY, radius;
 let arrow = document.getElementById('arrow')
 let mapDiv = $('#map')
@@ -87,3 +84,8 @@ cancelButtons.forEach((button) => {
     $('#edit-playlist-modal').removeClass('is-active')
   })
 })
+
+function capitalize(word) {
+  capitalizedWord = word[0].toUpperCase() + word.slice(1).toLowerCase()
+  return capitalizedWord
+}

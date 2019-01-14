@@ -8,7 +8,6 @@ Stumbl - {{ block.super }}
 
 {% block content %}
 <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
-<h1>Welcome to Stumbl</h1>
 <div id="vue-instance">
 
   <div id='test'></div>
@@ -21,7 +20,6 @@ Stumbl - {{ block.super }}
   <div id='location2'></div>
 
   <button class="button is-info open-pl-modal">Playlists</button>
-
 
   <div class="control">
     <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
@@ -170,7 +168,7 @@ Stumbl - {{ block.super }}
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Add destinations to playlist
+        ${currentPlaylist}
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" id="exit-edit-playlist-modal" aria-label="close">Back</button>
       </header>
@@ -233,6 +231,8 @@ Stumbl - {{ block.super }}
 </div>
 
 <script>
+  var map, infoWindow, destWindow, placeCoords, places, autocomplete, lastAutocomplete;
+
   function initAutocomplete() {
     map = new google.maps.Map(document.getElementById('map'), {
       center: { lat: 35.993, lng: -78.905 },
@@ -332,29 +332,27 @@ Stumbl - {{ block.super }}
     var gem1 = { lat: 35.993214, lng: -78.904029 };
 
     function loadDefaultPlaylist() {
-      $.get('/api/playlists/1/')
-        .then(function (playlist) {
-          console.log(playlist)
-          for (let gem of playlist.destinations) {
-            let coords = { "lat": +gem.lat, "lng": +gem.lng }
-            console.log(coords)
-            var marker = new google.maps.Marker({
-              position: coords,
-              map: map,
-              icon: "https://img.icons8.com/color/48/000000/crystal.png",
-            });
-          }
-          //   for (let gem of playlist.destinations) {
-          //     var marker = new google.maps.Marker({
-          //       position: JSON.parse(gem.coordinates),
-          //       map: map,
-          //       icon:"https://img.icons8.com/color/48/000000/crystal.png",
-          //     });
-          //     marker.addListener('click', function() {
-          //     infowindow.open(map, marker);
-          //   });
-          // }
-        })
+      $.get('/api/playlists/1/').then(function (playlist) {
+        for (let gem of playlist.destinations) {
+          let coords = { "lat": +gem.lat, "lng": +gem.lng }
+          console.log(coords)
+          var marker = new google.maps.Marker({
+            position: coords,
+            map: map,
+            icon: "https://img.icons8.com/color/48/000000/crystal.png",
+          });
+        }
+        //   for (let gem of playlist.destinations) {
+        //     var marker = new google.maps.Marker({
+        //       position: JSON.parse(gem.coordinates),
+        //       map: map,
+        //       icon:"https://img.icons8.com/color/48/000000/crystal.png",
+        //     });
+        //     marker.addListener('click', function() {
+        //     infowindow.open(map, marker);
+        //   });
+        // }
+      })
     }
 
     loadDefaultPlaylist();
@@ -420,7 +418,7 @@ Stumbl - {{ block.super }}
     setInterval(recenter, 1000);
 
     // listen for when user drags map and disable recentering
-    map.addListener('center_changed', function () {
+    map.addListener('dragstart', function () {
       stayCentered = false
     });
 

@@ -30,8 +30,11 @@ const vm = new Vue({
       this.$http.get("/api/playlists/").then((response) => {
         this.playlists = response.data;
         for (let playlist of this.playlists) {
-          if (!this.cities.includes(playlist.city)) {
-            this.cities.push(playlist.city)
+          console.log(playlist.city)
+          let city = capitalize(playlist.city)
+          console.log(city) 
+          if (!this.cities.includes(city)) {
+            this.cities.push(city)
           }
         }
       })
@@ -64,15 +67,14 @@ const vm = new Vue({
       console.log(this.newPlaylist)
       this.newPlaylist = {
         "user": requestUser,
-        "title": this.currentTitle,
-        "city": this.currentCity
+        "title": capitalize(this.currentTitle),
+        "city": capitalize(this.currentCity)
       }
       this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
         this.playlists.push(this.newPlaylist)
         this.currentPlaylist = this.newPlaylist
         this.currentDestination = {'name': ''}
         this.destinationDescription = ''
-        console.log('response, looking for pk', response)
         this.newPlaylistPk = response.data.pk
         document.getElementById('edit-playlist-modal').classList.add('is-active')
       })
@@ -92,7 +94,7 @@ const vm = new Vue({
       }
       this.currentPlaylistDestinations.push(this.newDestination)
       this.$http.post(`api/destinations/`, this.newDestination).then(() => {
-        
+        document.getElementById('modal-autocomplete').value = ''
         this.currentDestination = {'name': ''}
         this.destinationDescription = ''
       })
@@ -119,8 +121,3 @@ const vm = new Vue({
     }
   }, // close methods
 }) // close vue instance
-
-function getCities() {
-
-  return cities
-}
