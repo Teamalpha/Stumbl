@@ -99,8 +99,8 @@ Stumbl - {{ block.super }}
         <button @click="applyGems()" class="button is-primary apply-playlist">Select playlist</button>
         <button class="button is-danger cancel">Cancel</button>
         {% if user.is_authenticated %}
-        <div>
-          <button class="button is-warning">Edit</button>
+        <div v-if="userOwns()">
+          <button @click="editPlaylist()" class="button is-warning">Edit</button>
           <button class="button is-danger">Delete</button>
         </div>
         {% endif %}
@@ -142,23 +142,15 @@ Stumbl - {{ block.super }}
 
         <div class="field is-grouped">
           <div class="control">
-            <button @click="addPlaylist()" class="button is-link">Submit</button>
           </div>
-          <div class="control">
-            <button class="button is-text">Cancel</button>
-          </div>
+
         </div>
 
       </section>
 
       <footer class="modal-card-foot">
+        <button @click="addPlaylist()" class="button is-link">Create Playlist</button>
         <button class="button is-danger cancel">Cancel</button>
-        {% if user.is_authenticated %}
-        {% comment %} <div>
-          <button class="button is-warning">Edit</button>
-          <button class="button is-danger">Delete</button>
-        </div> {% endcomment %}
-        {% endif %}
       </footer>
     </div>
   </div>
@@ -168,13 +160,12 @@ Stumbl - {{ block.super }}
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        ${currentPlaylist}
-        <p class="modal-card-title"></p>
+        <p class="modal-card-title">Customize *${currentPlaylist.title}*</p>
         <button class="button has-background-grey-lighter	" id="exit-edit-playlist-modal" aria-label="close">Back</button>
       </header>
       <section id="create-playlist" class="modal-card-body">
 
-        <article v-for="destination in currentPlaylistDestinations" class="message is-success is-small">
+        <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
@@ -183,7 +174,7 @@ Stumbl - {{ block.super }}
 
         <label class="label">Search places</label>
         <div class="control">
-          <input id="modal-autocomplete" class="controls top-layer input" type="text" placeholder="choose destination">
+          <input id="modal-autocomplete" class="controls input" type="text" placeholder="choose destination">
         </div>
 
         <div class="field">
@@ -197,33 +188,23 @@ Stumbl - {{ block.super }}
           <label class="label">Address</label>
           <div class="control">
             <input v-model="currentDestination.formatted_address" id="current-place-address" class="input is-success"
-              type="text" placeholder="Address" value="bulma">
+              type="text" placeholder="Address" readonly>
           </div>
         </div>
 
         <div class="field">
-          <label class="label">Add a comment</label>
+          <label class="label">What makes this place a hidden gem?</label>
           <div class="control">
             <input v-model="destinationDescription" id="current-place-description" class="input is-success" type="text"
               placeholder="Description" value="bulma">
           </div>
         </div>
 
-        <div class="field is-grouped">
-          <div class="control">
-            <button @click="addDestination()" class="button is-link">Submit</button>
-          </div>
-        </div>
-
       </section>
 
       <footer class="modal-card-foot">
+        <button @click="addDestination()" class="button is-link">Add Gem</button>
         <button class="button is-danger cancel">Cancel</button>
-        {% if user.is_authenticated %}
-        {% comment %} <div>
-          <button class="button is-danger">Delete</button>
-        </div> {% endcomment %}
-        {% endif %}
       </footer>
     </div>
   </div>
@@ -329,29 +310,28 @@ Stumbl - {{ block.super }}
       ]
     });
 
-function loadDefaultPlaylist () {
-   $.get('/api/playlists/1/')
-     .then(function (playlist) {
-       console.log(playlist);
-       for (let destination of playlist.destinations) {
-         let coords = { "lat": +destination.lat, "lng": +destination.lng };
-         console.log(coords);
-         var marker = new google.maps.Marker({
-           position: coords,
-           map: map,
-           icon:"https://img.icons8.com/color/48/000000/crystal.png",
-         });
-         let contentString = `${destination.description}`;
-       console.log(contentString);
-      google.maps.event.addListener(marker, 'click', function () {
-              var infowindow = new google.maps.InfoWindow({
-                content: contentString
-              });
-              infowindow.open(map, this);
+    function loadDefaultPlaylist() {
+      $.get('/api/playlists/1/').then(function (playlist) {
+        console.log(playlist);
+        for (let destination of playlist.destinations) {
+          let coords = { "lat": +destination.lat, "lng": +destination.lng };
+          console.log(coords);
+          var marker = new google.maps.Marker({
+            position: coords,
+            map: map,
+            icon: "https://img.icons8.com/color/48/000000/crystal.png",
           });
+          let contentString = `${destination.description}`;
+          console.log(contentString);
+          google.maps.event.addListener(marker, 'click', function () {
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+            infowindow.open(map, this);
+          });
+        }
+      });
     }
-   });
-}
 
     loadDefaultPlaylist();
 
@@ -403,7 +383,7 @@ function loadDefaultPlaylist () {
           var pos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          };
+          }
           if (stayCentered) {
             map.setCenter(pos);
           }

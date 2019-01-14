@@ -21,6 +21,7 @@ const vm = new Vue({
     newDestination: null,
     destinationDescription: null,
     newPlaylistPk: null,
+    autocompleteText: '',
   },
   mounted: function () {
     this.getCities()
@@ -30,9 +31,7 @@ const vm = new Vue({
       this.$http.get("/api/playlists/").then((response) => {
         this.playlists = response.data;
         for (let playlist of this.playlists) {
-          console.log(playlist.city)
           let city = capitalize(playlist.city)
-          console.log(city) 
           if (!this.cities.includes(city)) {
             this.cities.push(city)
           }
@@ -47,7 +46,6 @@ const vm = new Vue({
         this.cityPlaylists = response.data;
         this.currentCity = city
         document.getElementById('city-playlists-modal').classList.add('is-active')
-        console.log(this.cityPlaylists)
       })
         .catch((err) => {
           console.log(err);
@@ -57,7 +55,6 @@ const vm = new Vue({
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
         document.getElementById('playlist-detail-modal').classList.add('is-active')
-        console.log(this.currentPlaylist)
       })
       .catch((err) => {
         console.log(err);
@@ -71,11 +68,14 @@ const vm = new Vue({
         "city": capitalize(this.currentCity)
       }
       this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
-        this.playlists.push(this.newPlaylist)
         this.currentPlaylist = this.newPlaylist
+        this.currentPlaylist.pk = response.data.pk
+        this.playlists.push(this.currentPlaylist)
+        if (!this.cities.includes(this.currentPlaylist.city)) {
+          this.cities.push(this.currentPlaylist.city)
+        }
         this.currentDestination = {'name': ''}
         this.destinationDescription = ''
-        this.newPlaylistPk = response.data.pk
         document.getElementById('edit-playlist-modal').classList.add('is-active')
       })
       .catch((err) => {
@@ -83,16 +83,16 @@ const vm = new Vue({
       })
     },
     addDestination: function() {
-      console.log(this.currentDestination)
       this.newDestination = {
-        "playlist": this.newPlaylistPk,
+        "playlist": this.currentPlaylist.pk,
         "lat": this.currentDestination.geometry.location.lat(),
         "lng": this.currentDestination.geometry.location.lng(),
         "place_id": this.currentDestination.place_id,
         "description": this.destinationDescription,
         "name": this.currentDestination.name
       }
-      this.currentPlaylistDestinations.push(this.newDestination)
+      console.log
+      this.currentPlaylist.destinations.push(this.newDestination)
       this.$http.post(`api/destinations/`, this.newDestination).then(() => {
         document.getElementById('modal-autocomplete').value = ''
         this.currentDestination = {'name': ''}
@@ -103,7 +103,6 @@ const vm = new Vue({
       })
     },
     applyGems: function() {
-      console.log(this.currentPlaylist)
       for (let gem of this.currentPlaylist.destinations) {
         let coords = { "lat": +gem.lat, "lng": +gem.lng }
         console.log(coords)
@@ -118,6 +117,12 @@ const vm = new Vue({
       $('#playlist-detail-modal').removeClass('is-active')
       $('#create-playlist-modal').removeClass('is-active')
       $('#edit-playlist-modal').removeClass('is-active')  
-    }
+    },
+    userOwns: function() {
+      return this.currentPlaylist.user == requestUser
+    },
+    editPlaylist: function() {
+      $('#edit-playlist-modal').addClass('is-active')  
+    },
   }, // close methods
 }) // close vue instance
