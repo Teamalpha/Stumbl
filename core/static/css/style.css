@@ -60,6 +60,13 @@ html, body {
     margin-left: 15px;
 }
 
+.brand {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+
+
 /* Navbar code adapted from https://codepen.io/jo_Geek/pen/xgbaEr */
 * {
     box-sizing: border-box;
@@ -157,8 +164,4 @@ html, body {
       height: calc(100vh - 50px);
       overflow-y: auto;
     }
-  }
-
-  .brand {
-      color: #fff
   }

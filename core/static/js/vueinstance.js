@@ -30,9 +30,7 @@ const vm = new Vue({
       this.$http.get("/api/playlists/").then((response) => {
         this.playlists = response.data;
         for (let playlist of this.playlists) {
-          console.log(playlist.city)
           let city = capitalize(playlist.city)
-          console.log(city) 
           if (!this.cities.includes(city)) {
             this.cities.push(city)
           }
@@ -47,7 +45,6 @@ const vm = new Vue({
         this.cityPlaylists = response.data;
         this.currentCity = city
         document.getElementById('city-playlists-modal').classList.add('is-active')
-        console.log(this.cityPlaylists)
       })
         .catch((err) => {
           console.log(err);
@@ -57,7 +54,6 @@ const vm = new Vue({
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
         document.getElementById('playlist-detail-modal').classList.add('is-active')
-        console.log(this.currentPlaylist)
       })
       .catch((err) => {
         console.log(err);
@@ -83,7 +79,6 @@ const vm = new Vue({
       })
     },
     addDestination: function() {
-      console.log(this.currentDestination)
       this.newDestination = {
         "playlist": this.newPlaylistPk,
         "lat": this.currentDestination.geometry.location.lat(),
@@ -103,7 +98,6 @@ const vm = new Vue({
       })
     },
     applyGems: function() {
-      console.log(this.currentPlaylist)
       for (let gem of this.currentPlaylist.destinations) {
         let coords = { "lat": +gem.lat, "lng": +gem.lng }
         console.log(coords)
@@ -118,6 +112,10 @@ const vm = new Vue({
       $('#playlist-detail-modal').removeClass('is-active')
       $('#create-playlist-modal').removeClass('is-active')
       $('#edit-playlist-modal').removeClass('is-active')  
-    }
+    },
+    userOwns: function() {
+      console.log(this.currentPlaylist.user == requestUser)
+      return this.currentPlaylist.user == requestUser
+    },
   }, // close methods
 }) // close vue instance

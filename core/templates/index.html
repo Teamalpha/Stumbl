@@ -99,7 +99,7 @@ Stumbl - {{ block.super }}
         <button @click="applyGems()" class="button is-primary apply-playlist">Select playlist</button>
         <button class="button is-danger cancel">Cancel</button>
         {% if user.is_authenticated %}
-        <div>
+        <div v-if="userOwns()">
           <button class="button is-warning">Edit</button>
           <button class="button is-danger">Delete</button>
         </div>
@@ -142,23 +142,15 @@ Stumbl - {{ block.super }}
 
         <div class="field is-grouped">
           <div class="control">
-            <button @click="addPlaylist()" class="button is-link">Submit</button>
           </div>
-          <div class="control">
-            <button class="button is-text">Cancel</button>
-          </div>
+
         </div>
 
       </section>
 
       <footer class="modal-card-foot">
+        <button @click="addPlaylist()" class="button is-link">Create Playlist</button>
         <button class="button is-danger cancel">Cancel</button>
-        {% if user.is_authenticated %}
-        {% comment %} <div>
-          <button class="button is-warning">Edit</button>
-          <button class="button is-danger">Delete</button>
-        </div> {% endcomment %}
-        {% endif %}
       </footer>
     </div>
   </div>
@@ -168,8 +160,7 @@ Stumbl - {{ block.super }}
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        ${currentPlaylist}
-        <p class="modal-card-title"></p>
+        <p class="modal-card-title">Edit '${currentPlaylist.title}'</p>
         <button class="button has-background-grey-lighter	" id="exit-edit-playlist-modal" aria-label="close">Back</button>
       </header>
       <section id="create-playlist" class="modal-card-body">
