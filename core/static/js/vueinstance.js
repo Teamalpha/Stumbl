@@ -21,6 +21,7 @@ const vm = new Vue({
     newDestination: null,
     destinationDescription: null,
     newPlaylistPk: null,
+    autocompleteText: '',
   },
   mounted: function () {
     this.getCities()
@@ -67,11 +68,14 @@ const vm = new Vue({
         "city": capitalize(this.currentCity)
       }
       this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
-        this.playlists.push(this.newPlaylist)
         this.currentPlaylist = this.newPlaylist
+        this.currentPlaylist.pk = response.data.pk
+        this.playlists.push(this.currentPlaylist)
+        if (!this.cities.includes(this.currentPlaylist.city)) {
+          this.cities.push(this.currentPlaylist.city)
+        }
         this.currentDestination = {'name': ''}
         this.destinationDescription = ''
-        this.newPlaylistPk = response.data.pk
         document.getElementById('edit-playlist-modal').classList.add('is-active')
       })
       .catch((err) => {
@@ -80,14 +84,15 @@ const vm = new Vue({
     },
     addDestination: function() {
       this.newDestination = {
-        "playlist": this.newPlaylistPk,
+        "playlist": this.currentPlaylist.pk,
         "lat": this.currentDestination.geometry.location.lat(),
         "lng": this.currentDestination.geometry.location.lng(),
         "place_id": this.currentDestination.place_id,
         "description": this.destinationDescription,
         "name": this.currentDestination.name
       }
-      this.currentPlaylistDestinations.push(this.newDestination)
+      console.log
+      this.currentPlaylist.destinations.push(this.newDestination)
       this.$http.post(`api/destinations/`, this.newDestination).then(() => {
         document.getElementById('modal-autocomplete').value = ''
         this.currentDestination = {'name': ''}
@@ -114,8 +119,10 @@ const vm = new Vue({
       $('#edit-playlist-modal').removeClass('is-active')  
     },
     userOwns: function() {
-      console.log(this.currentPlaylist.user == requestUser)
       return this.currentPlaylist.user == requestUser
+    },
+    editPlaylist: function() {
+      $('#edit-playlist-modal').addClass('is-active')  
     },
   }, // close methods
 }) // close vue instance
