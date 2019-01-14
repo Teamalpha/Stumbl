@@ -195,8 +195,8 @@ Stumbl - {{ block.super }}
         <div class="field">
           <label class="label">What makes this place a hidden gem?</label>
           <div class="control">
-            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-success" type="text"
-              placeholder="Description"></textarea>
+            <input v-model="destinationDescription" id="current-place-description" class="input is-success" type="text"
+              placeholder="Description" value="bulma">
           </div>
         </div>
 
@@ -309,27 +309,30 @@ Stumbl - {{ block.super }}
         }
       ]
     });
-
+    var activeInfoWindow;
     function loadDefaultPlaylist() {
       $.get('/api/playlists/1/').then(function (playlist) {
         console.log(playlist);
         for (let destination of playlist.destinations) {
           let coords = { "lat": +destination.lat, "lng": +destination.lng };
-          console.log(coords);
+            console.log(coords);
+          }
           var marker = new google.maps.Marker({
             position: coords,
             map: map,
             icon: "https://img.icons8.com/color/48/000000/crystal.png",
           });
-          let contentString = `${destination.name} - ${destination.description}`;
-          console.log(contentString);
-          google.maps.event.addListener(marker, 'click', function () {
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
-            infowindow.open(map, this);
+          let contentString = `${destination.description}`;
+          var infoWindow = new google.maps.InfoWindow({
+            content: contentString
           });
-        }
+          console.log(contentString);
+          google.maps.event.addListener(marker,'click', {passive=true},function () {
+            console.log("activeInfoWindow", activeInfoWindow)
+            if (activeInfoWindow){activeInfoWindow.close()};
+              infoWindow.open(map, marker);
+              activeInfoWindow = infoWindow;
+            });
       });
     }
 
