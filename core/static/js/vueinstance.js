@@ -16,8 +16,10 @@ const vm = new Vue({
     playlists: [],
     newPlaylist: {},
     currentDestination: {},
+    accessible: false,
     currentTitle: null,
     currentCity: null,
+    currentDescription: null,
     newDestination: null,
     destinationDescription: null,
     newPlaylistPk: null,
@@ -65,7 +67,10 @@ const vm = new Vue({
       this.newPlaylist = {
         "user": requestUser,
         "title": capitalize(this.currentTitle),
-        "city": capitalize(this.currentCity)
+        "city": capitalize(this.currentCity),
+        "description": this.currentDescription,
+        "accessible": document.getElementById('accessible').checked,
+        "destinations": []
       }
       this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
         this.currentPlaylist = this.newPlaylist
@@ -76,6 +81,12 @@ const vm = new Vue({
         }
         this.currentDestination = {'name': ''}
         this.destinationDescription = ''
+        this.currentDescription = ''
+        this.accessible = false
+        document.getElementById('accessible').checked = false
+        document.getElementById('create-playlist-modal').classList.remove('is-active')
+        document.getElementById('playlist-detail-modal').classList.remove('is-active')
+        document.getElementById('playlist-detail-modal').classList.add('is-active')
         document.getElementById('edit-playlist-modal').classList.add('is-active')
       })
       .catch((err) => {
@@ -89,7 +100,8 @@ const vm = new Vue({
         "lng": this.currentDestination.geometry.location.lng(),
         "place_id": this.currentDestination.place_id,
         "description": this.destinationDescription,
-        "name": this.currentDestination.name
+        "name": this.currentDestination.name,
+        "user": requestUserPk
       }
       console.log
       this.currentPlaylist.destinations.push(this.newDestination)

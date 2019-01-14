@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from core.models import User, Destination, Playlist
+from core.models import User, Destination, Playlist, Vote
 
 
 class DestinationSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = Destination
-        fields = ('playlist', 'lat', 'lng', 'place_id', 'description', 'name', 'created', 'updated',)
+        fields = ('playlist', 'lat', 'lng', 'place_id', 'description', 'name', 'user', 'created', 'updated',)
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
@@ -15,7 +15,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Playlist
-        fields = ('user', 'title', 'city', 'created', 'destinations', 'pk',)
+        fields = ('user', 'title', 'city', 'created', 'description', 'destinations', 'accessible', 'pk',)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,3 +24,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'playlists', 'pk',)
+
+class VoteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Vote
+        fields = ('playlist', 'user', 'pk',)

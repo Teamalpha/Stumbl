@@ -31,8 +31,9 @@ from django.views.generic import TemplateView
 # Router for api url's
 router = routers.DefaultRouter()
 router.register('users', api_views.UserViewSet)
-router.register('destinations', api_views.DestinationViewSet)
 router.register('playlists', api_views.PlaylistViewSet)
+router.register('destinations', api_views.DestinationViewSet)
+router.register('votes', api_views.VoteViewSet)
 
 urlpatterns = [
     path('', views.index, name='home'),

@@ -141,11 +141,18 @@ Stumbl - {{ block.super }}
           </div>
         </div>
 
-        <div class="field is-grouped">
+        <div class="field">
+          <label class="label">Description</label>
           <div class="control">
+            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-success" type="text"
+              placeholder="Description"></textarea>
           </div>
-
         </div>
+
+        <label class="checkbox">
+          <input id="accessible" type="checkbox" value="true">
+          Accessible
+        </label>
 
       </section>
 
@@ -173,7 +180,7 @@ Stumbl - {{ block.super }}
           <div class="message-body">${destination.description}</div>
         </article>
 
-        <label class="label">Search places</label>
+        <label class="label">Add a gem</label>
         <div class="control">
           <input id="modal-autocomplete" class="controls input" type="text" placeholder="choose destination">
         </div>

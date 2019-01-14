@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, mixins, generics, filters
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
-from api.serializers import UserSerializer, DestinationSerializer, PlaylistSerializer
-from core.models import User, Destination, Playlist
+from api.serializers import UserSerializer, DestinationSerializer, PlaylistSerializer, VoteSerializer
+from core.models import User, Destination, Playlist, Vote
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -24,3 +24,9 @@ class DestinationViewSet(viewsets.ModelViewSet):
     serializer_class = DestinationSerializer
     filter_backends = (filters.SearchFilter, )
     search_fields = ('name', )
+
+class VoteViewSet(viewsets.ModelViewSet):
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
+    filter_backends = (filters.SearchFilter, )
+    search_fields = ('user', )
