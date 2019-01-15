@@ -19,9 +19,11 @@
   <div id='location'></div>
   <div id='location2'></div>
 
+<div id="main-buttons">
   <button class="button is-info open-pl-modal">Playlists</button>
   <button @click="activePlaylistsModal()" class="button is-info ">Active Playlists</button>
   <button class="button is-info" id='center-me'>Center me!</button>
+</div>
 
   <div class="control">
     <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
@@ -367,16 +369,28 @@
       searchBox.setBounds(map.getBounds());
     });
 
+  
+
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     searchBox.addListener('places_changed', function () {
       var places = searchBox.getPlaces();
       arrow.style.display = 'inline-block';
+      console.log(places)
       let place_lat = places[0].geometry.location.lat()
       let place_lng = places[0].geometry.location.lng()
       placeCoords = { lat: place_lat, lng: place_lng }
       let place_address = places[0].formatted_address
       let place_name = places[0].name
+
+      let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`
+      let linkButton = `<a href="${link}" target="_blank" class="button is-info" id='maps-link'>Directions</a>`
+      if ($('#maps-link').length === 0) {
+        $('#main-buttons').append(linkButton)
+      }
+      else {
+        $('#maps-link').attr('href', link)
+      }
       destWindow = new google.maps.InfoWindow
       destWindow.setPosition({ lat: place_lat, lng: place_lng })
       destWindow.setContent(place_name)
