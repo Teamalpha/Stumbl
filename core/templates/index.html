@@ -20,6 +20,7 @@ Stumbl - {{ block.super }}
   <div id='location2'></div>
 
   <button class="button is-info open-pl-modal">Playlists</button>
+  <button class="button is-info" id='center-me'>Center me!</button>
 
   <div class="control">
     <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
@@ -329,7 +330,7 @@ Stumbl - {{ block.super }}
       });
     }
 
-    loadDefaultPlaylist();
+    {% comment %} loadDefaultPlaylist(); {% endcomment %}
 
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
@@ -380,6 +381,11 @@ Stumbl - {{ block.super }}
             lat: position.coords.latitude,
             lng: position.coords.longitude
           }
+          var marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Blue_circle_for_diabetes.svg/20px-Blue_circle_for_diabetes.svg.png",
+          })
           if (stayCentered) {
             map.setCenter(pos);
           }
@@ -395,6 +401,16 @@ Stumbl - {{ block.super }}
     map.addListener('dragstart', function () {
       stayCentered = false
     });
+
+    //listen's to the center me button and reenables recentering
+    let centerme = document.getElementById('center-me');
+    centerme.addEventListener('click', getCentered, false);
+
+    function getCentered () {
+      console.log('working')
+      stayCentered = true;
+      recenter();
+    }
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
       infoWindow.setPosition(pos);
