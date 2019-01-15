@@ -63,7 +63,6 @@ const vm = new Vue({
       })
     },
     addPlaylist: function () {
-      console.log(this.newPlaylist)
       this.newPlaylist = {
         "user": requestUser,
         "title": capitalize(this.currentTitle),
@@ -92,6 +91,17 @@ const vm = new Vue({
       .catch((err) => {
         console.log(err);
       })
+    },
+    deletePlaylist: function() {
+      if (requestUser === this.currentPlaylist.user) {
+        this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
+          this.currentPlaylist = {};
+          this.$http.get(`/api/playlists/?search=${this.currentCity}`).then((response) => {
+            this.cityPlaylists = response.data;
+            $('#playlist-detail-modal').removeClass('is-active');
+          })
+        });
+      }
     },
     addDestination: function() {
       this.newDestination = {
