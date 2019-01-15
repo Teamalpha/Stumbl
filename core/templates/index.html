@@ -144,8 +144,8 @@ Stumbl - {{ block.super }}
         <div class="field">
           <label class="label">Description</label>
           <div class="control">
-            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-success" type="text"
-              placeholder="Description"></textarea>
+            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-success"
+              type="text" placeholder="Description"></textarea>
           </div>
         </div>
 
@@ -177,7 +177,12 @@ Stumbl - {{ block.super }}
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
-          <div class="message-body">${destination.description}</div>
+          <div class="message-body columns">
+            <div class="column">${destination.description}</div>
+            <div v-if="userOwns()" class="column is-one-quarter"> <button @click="deleteDestination(destination.pk)"
+                class="button is-danger cancel">Cancel</button>
+            </div>
+          </div>
         </article>
 
         <label class="label">Add a gem</label>
@@ -203,8 +208,8 @@ Stumbl - {{ block.super }}
         <div class="field">
           <label class="label">What makes this place a hidden gem?</label>
           <div class="control">
-            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-success" type="text"
-              placeholder="Description"></textarea>
+            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-success"
+              type="text" placeholder="Description"></textarea>
           </div>
         </div>
 

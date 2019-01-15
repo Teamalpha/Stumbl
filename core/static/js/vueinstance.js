@@ -101,14 +101,16 @@ const vm = new Vue({
         "place_id": this.currentDestination.place_id,
         "description": this.destinationDescription,
         "name": this.currentDestination.name,
-        "user": requestUserPk
+        "user": requestUserPk,
+        "pk": null
       }
-      console.log
       this.currentPlaylist.destinations.push(this.newDestination)
-      this.$http.post(`api/destinations/`, this.newDestination).then(() => {
+      this.$http.post(`api/destinations/`, this.newDestination).then((response) => {
         document.getElementById('modal-autocomplete').value = ''
         this.currentDestination = {'name': ''}
         this.destinationDescription = ''
+        console.log(this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1])
+        this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1].pk = response.data.pk
       })
       .catch((err) => {
         console.log(err);
@@ -135,6 +137,13 @@ const vm = new Vue({
       $('#playlist-detail-modal').removeClass('is-active')
       $('#create-playlist-modal').removeClass('is-active')
       $('#edit-playlist-modal').removeClass('is-active')  
+    },
+    deleteDestination: function(destinationPk) {
+      this.$http.delete(`/api/destinations/${destinationPk}`).then((response) => {
+        this.$http.get(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
+          this.currentPlaylist = response.data;
+        })
+      })
     },
     userOwns: function() {
       return this.currentPlaylist.user == requestUser
