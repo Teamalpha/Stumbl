@@ -53,14 +53,6 @@ $('.open-pl-modal').click(function () {
   $('#choose-city-modal').addClass('is-active')
 })
 
-const createPlaylistButtons = document.querySelectorAll('.new-playlist')
-
-createPlaylistButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    $('#create-playlist-modal').addClass('is-active')
-  })
-})
-
 function exitButtonListener(buttonSelector, modalSelector) {
   $(buttonSelector).click(function () {
     $(modalSelector).removeClass('is-active')
@@ -72,6 +64,9 @@ exitButtonListener('#exit-choose-city-modal', '#choose-city-modal')
 exitButtonListener('#exit-playlist-detail-modal', '#playlist-detail-modal')
 exitButtonListener('#exit-create-playlist-modal', '#create-playlist-modal')
 exitButtonListener('#exit-edit-playlist-modal', '#edit-playlist-modal')
+exitButtonListener('#exit-duplicate-playlist-modal', '#duplicate-playlist-modal')
+exitButtonListener('#exit-confirm-delete-playlist-modal', '#confirm-delete-playlist-modal')
+exitButtonListener('#exit-duplicate-destination-modal', '#duplicate-destination-modal')
 
 const cancelButtons = document.querySelectorAll('.cancel')
 
@@ -82,6 +77,9 @@ cancelButtons.forEach((button) => {
     $('#playlist-detail-modal').removeClass('is-active')
     $('#create-playlist-modal').removeClass('is-active')
     $('#edit-playlist-modal').removeClass('is-active')
+    $('#duplicate-playlist-modal').removeClass('is-active')
+    $('#confirm-delete-playlist-modal').removeClass('is-active')
+    $('#duplicate-destination-modal').removeClass('is-active')
   })
 })
 
