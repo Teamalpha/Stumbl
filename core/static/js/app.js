@@ -67,6 +67,7 @@ exitButtonListener('#exit-edit-playlist-modal', '#edit-playlist-modal')
 exitButtonListener('#exit-duplicate-playlist-modal', '#duplicate-playlist-modal')
 exitButtonListener('#exit-confirm-delete-playlist-modal', '#confirm-delete-playlist-modal')
 exitButtonListener('#exit-duplicate-destination-modal', '#duplicate-destination-modal')
+exitButtonListener('#exit-active-playlists-modal', '#active-playlists-modal')
 
 const cancelButtons = document.querySelectorAll('.cancel')
 

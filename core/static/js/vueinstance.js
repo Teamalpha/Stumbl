@@ -9,6 +9,7 @@ const vm = new Vue({
   delimiters: ['${', '}'],
   data: {
     playlist: [],
+    activePlaylists: [],
     cityPlaylists: [],
     cities: [],
     currentPlaylist: {},
@@ -56,6 +57,7 @@ const vm = new Vue({
     getPlaylist: function (playlist) {
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
+        document.getElementById('active-playlists-modal').classList.remove('is-active')
         document.getElementById('playlist-detail-modal').classList.add('is-active')
       })
       .catch((err) => {
@@ -166,11 +168,12 @@ const vm = new Vue({
           infowindow.open(map, this);
         });
       }
-      $('#city-playlists-modal').removeClass('is-active')
-      $('#choose-city-modal').removeClass('is-active')
-      $('#playlist-detail-modal').removeClass('is-active')
-      $('#create-playlist-modal').removeClass('is-active')
-      $('#edit-playlist-modal').removeClass('is-active')  
+      this.activePlaylists.push(this.currentPlaylist)
+      document.getElementById('city-playlists-modal').classList.remove('is-active')
+      document.getElementById('choose-city-modal').classList.remove('is-active')
+      document.getElementById('playlist-detail-modal').classList.remove('is-active')
+      document.getElementById('create-playlist-modal').classList.remove('is-active')
+      document.getElementById('edit-playlist-modal').classList.remove('is-active')  
     },
     deleteDestination: function(destinationPk) {
       if (requestUser === this.currentPlaylist.user) {
@@ -199,9 +202,17 @@ const vm = new Vue({
       document.getElementById('duplicate-playlist-modal').classList.remove('is-active')
       document.getElementById('confirm-delete-playlist-modal').classList.remove('is-active')
       document.getElementById('duplicate-destination-modal').classList.remove('is-active')
+      document.getElementById('active-playlists-modal').classList.remove('is-active')
     },
     confirmDeletePlaylist: function() {
       document.getElementById('confirm-delete-playlist-modal').classList.add('is-active')
+    },
+    disablePlaylist: function(playlist) {
+        this.activePlaylists.splice(this.activePlaylists.indexOf(playlist), 1)
+// for now, this just removes the playlist from the list of active playlists. This does not remove the gems!
+    },
+    activePlaylistsModal: function() {
+      document.getElementById('active-playlists-modal').classList.add('is-active')
     },
   }, // close methods
 }) // close vue instance
