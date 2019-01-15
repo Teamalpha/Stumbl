@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title %}
-Stumbl - {{ block.super }}
+  {{ block.super }}
 {% endblock title %}
 
 
@@ -21,6 +21,7 @@ Stumbl - {{ block.super }}
 
 <div id="main-buttons">
   <button class="button is-info open-pl-modal">Playlists</button>
+  <button @click="activePlaylistsModal()" class="button is-info ">Active Playlists</button>
   <button class="button is-info" id='center-me'>Center me!</button>
 </div>
 
@@ -275,6 +276,31 @@ Stumbl - {{ block.super }}
       </section>
       <footer class="modal-card-foot">
         <button @click="deletePlaylist()" class="button is-warning">Delete Playlist</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} Active playlists modal {% endcomment %}
+  <div id="active-playlists-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Active playlists
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" id="exit-active-playlists-modal" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <div v-for="playlist in activePlaylists" class="columns">
+          <div class="column">
+            <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
+          </div>
+          <div class="column is-one-quarter">
+            <button @click="disablePlaylist(playlist)" class="button is-danger">Remove</button>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
