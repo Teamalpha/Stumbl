@@ -25,6 +25,8 @@ const vm = new Vue({
     destinationDescription: null,
     newPlaylistPk: null,
     autocompleteText: '',
+    distance: null,
+    currentHeading: null,
   },
   mounted: function () {
     this.getCities()

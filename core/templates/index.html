@@ -32,7 +32,11 @@
 
   <div class="empty-space"></div>
   <div id="map"></div>
-  <div class="empty-space"></div>
+
+  <div class="empty-space has-text-centered">
+    <span id="chosen-destination">${currentHeading}</span><span id="distance">${distance}</span>
+  </div>
+
   <div id='c-heading'></div>
   <div id='c-bearing'></div>
   <div id='c-finalheading'></div>
@@ -338,28 +342,6 @@
       ]
     });
 
-    function loadDefaultPlaylist() {
-      $.get('/api/playlists/1/').then(function (playlist) {
-        for (let destination of playlist.destinations) {
-          let coords = { "lat": +destination.lat, "lng": +destination.lng };
-          var marker = new google.maps.Marker({
-            position: coords,
-            map: map,
-            icon: "https://img.icons8.com/color/48/000000/crystal.png",
-          });
-          let contentString = `${destination.name} - ${destination.description}`;
-          google.maps.event.addListener(marker, 'click', function () {
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
-            infowindow.open(map, this);
-          });
-        }
-      });
-    }
-
-    {% comment %} loadDefaultPlaylist(); {% endcomment %}
-
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
     var modalAutocomplete = document.getElementById('modal-autocomplete')
@@ -369,20 +351,18 @@
       searchBox.setBounds(map.getBounds());
     });
 
-  
-
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     searchBox.addListener('places_changed', function () {
       var places = searchBox.getPlaces();
       arrow.style.display = 'inline-block';
-      console.log(places)
+      $('#pac-input').val('')
       let place_lat = places[0].geometry.location.lat()
       let place_lng = places[0].geometry.location.lng()
       placeCoords = { lat: place_lat, lng: place_lng }
       let place_address = places[0].formatted_address
       let place_name = places[0].name
-
+      vm.currentHeading = place_name
       let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`
       let linkButton = `<a href="${link}" target="_blank" class="button is-info" id='maps-link'>Directions</a>`
       if ($('#maps-link').length === 0) {
@@ -391,6 +371,9 @@
       else {
         $('#maps-link').attr('href', link)
       }
+
+      $('#chosen-destination').text(`${place_name}`)
+      roundify()
       destWindow = new google.maps.InfoWindow
       destWindow.setPosition({ lat: place_lat, lng: place_lng })
       destWindow.setContent(place_name)

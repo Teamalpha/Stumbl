@@ -16,7 +16,7 @@ function roundify() {
 
 $(document).ready(function () { roundify() })
 $(window).resize(function () { roundify() })
-setInterval(getMySpot, 200);
+setInterval(getMySpot, 1000);
 
 // Set compass arrow for Android Devices
 window.ondeviceorientationabsolute = function (event) {

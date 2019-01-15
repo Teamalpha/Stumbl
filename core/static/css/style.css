@@ -65,6 +65,11 @@ html, body {
     margin-bottom: 10px;
 }
 
+#heading-bar {
+  display: inline-block;
+  margin: 0 auto;
+
+}
 
 
 /* Navbar code adapted from https://codepen.io/jo_Geek/pen/xgbaEr */

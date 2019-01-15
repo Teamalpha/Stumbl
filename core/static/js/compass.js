@@ -11,6 +11,8 @@ function getMySpot() {
             updatebearing = whichWaytoGo()
             updatedistance = getDistance(laT, loNg, placeCoords.lat, placeCoords.lng)
             distance.innerText = `Destination Distance: ${updatedistance}`
+            let headingString = parseFloat((updatedistance * 0.621371)).toFixed(2);
+            vm.distance = `: ${headingString} mi`
         }
 
     })
