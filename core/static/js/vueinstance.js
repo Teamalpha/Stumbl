@@ -98,10 +98,21 @@ const vm = new Vue({
           this.currentPlaylist = {};
           this.$http.get(`/api/playlists/?search=${this.currentCity}`).then((response) => {
             this.cityPlaylists = response.data;
-            $('#playlist-detail-modal').removeClass('is-active');
+            document.getElementById('playlist-detail-modal').classList.remove('is-active')
+
           })
         });
       }
+    },
+    isUniqueDestination: function() {
+      for (let destination of this.currentPlaylist.destinations) {
+        console.log(`destination.name: ${destination.name} this.newDestination.name: ${this.newDestination.name}`)
+        if (destination.name === this.newDestination.name) {
+          document.getElementById('duplicate-destination-modal').classList.add('is-active')
+          return false
+        }
+      }
+      return true
     },
     addDestination: function() {
       this.newDestination = {
@@ -114,17 +125,19 @@ const vm = new Vue({
         "user": requestUserPk,
         "pk": null
       }
-      this.currentPlaylist.destinations.push(this.newDestination)
-      this.$http.post(`api/destinations/`, this.newDestination).then((response) => {
-        document.getElementById('modal-autocomplete').value = ''
-        this.currentDestination = {'name': ''}
-        this.destinationDescription = ''
-        console.log(this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1])
-        this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1].pk = response.data.pk
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      if (this.isUniqueDestination()) {
+        this.currentPlaylist.destinations.push(this.newDestination)
+        this.$http.post(`api/destinations/`, this.newDestination).then((response) => {
+          document.getElementById('modal-autocomplete').value = ''
+          this.currentDestination = {'name': ''}
+          this.destinationDescription = ''
+          console.log(this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1])
+          this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1].pk = response.data.pk
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
     },
     applyGems: function() {
       for (let gem of this.currentPlaylist.destinations) {
