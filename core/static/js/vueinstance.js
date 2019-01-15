@@ -113,7 +113,6 @@ const vm = new Vue({
         "name": this.currentDestination.name,
         "user": requestUserPk
       }
-      console.log
       this.currentPlaylist.destinations.push(this.newDestination)
       this.$http.post(`api/destinations/`, this.newDestination).then(() => {
         document.getElementById('modal-autocomplete').value = ''
