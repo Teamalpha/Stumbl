@@ -153,6 +153,7 @@ const vm = new Vue({
       }
     },
     applyGems: function() {
+      var activeMarkerList = [];
       for (let gem of this.currentPlaylist.destinations) {
         let coords = { "lat": +gem.lat, "lng": +gem.lng }
         var marker = new google.maps.Marker({
@@ -160,6 +161,7 @@ const vm = new Vue({
           map: map,
           icon: "https://img.icons8.com/color/48/000000/crystal.png",
         });
+        activeMarkerList.push(marker)
         let contentString = `${gem.name} - ${gem.description}`;
         google.maps.event.addListener(marker, 'click', function () {
           var infowindow = new google.maps.InfoWindow({
