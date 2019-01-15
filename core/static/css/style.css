@@ -68,9 +68,26 @@ html, body {
 #heading-bar {
   display: inline-block;
   margin: 0 auto;
-
+  position: absolute;
+  z-index: 50;
 }
 
+#recenter-button {
+  height: 40px;
+  width: 40px;
+  display: none;
+  z-index: 50;
+}
+
+#recenter-button:focus {
+  outline: none;
+}
+
+#cone-of-focus {
+  height: 40px;
+  width: 40px;
+  display: none;
+}
 
 /* Navbar code adapted from https://codepen.io/jo_Geek/pen/xgbaEr */
 * {

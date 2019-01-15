@@ -2,6 +2,8 @@ let originX, originY, radius;
 let arrow = document.getElementById('arrow')
 let mapDiv = $('#map')
 let stayCentered = true
+let recenterButton = document.getElementById('recenter-button')
+let coneOfFocus = document.getElementById('cone-of-focus')
 
 function roundify() {
   mapDiv.css({ 'height': mapDiv.width() + 'px' });
@@ -12,6 +14,13 @@ function roundify() {
   arrow.style.paddingBottom = `${radius - 35}px`
   arrow.style.top = `${originY - 60 - radius}px`
   arrow.style.left = `${originX - 30}px`
+  recenterButton.style.top = `${originY - 20 - radius * .91}px`
+  recenterButton.style.left = `${originX - 20 - radius * .91}px`
+  recenterButton.style.display = 'inline-block'
+
+  coneOfFocus.style.top = `${originY - 20 - radius * .91}px`
+  coneOfFocus.style.left = `${originX - 20 + radius * .91}px`
+  coneOfFocus.style.display = 'inline-block'
 }
 
 $(document).ready(function () { roundify() })
@@ -23,11 +32,13 @@ window.ondeviceorientationabsolute = function (event) {
   compassHeading = event.alpha
   var finalHeading = compassHeading + updatebearing
   if (finalHeading > 360) { finalHeading -= 360 }
+
   $('#c-heading').text(`Absolute direction: ${compassHeading}`)
   $('#c-bearing').text(`Destination_______: ${updatebearing}`)
   $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
-
+  
   roundify()
+  coneOfFocus.style.transform = `rotate(${(compassHeading)}deg)`
   arrow.style.transform = `rotate(${(finalHeading)}deg)`
 };
 
@@ -43,6 +54,7 @@ if (window.DeviceOrientationEvent) {
       $('#c-bearing').text(`Destination_______: ${updatebearing}`)
       $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
 
+      coneOfFocus.style.transform = `rotate(${(compassHeading)}deg)`
       arrow.style.transform = `rotate(${(finalHeading)}deg)`;
     }
   })
