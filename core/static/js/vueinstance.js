@@ -62,6 +62,17 @@ const vm = new Vue({
         console.log(err);
       })
     },
+    isUniquePlaylist: function() {
+      for (let playlist of this.playlists) {
+        if (playlist.user === requestUser) {
+          if (playlist.title === this.currentTitle) {
+            document.getElementById('duplicate-playlist-modal').classList.add('is-active')
+            return false
+          }
+        }
+      }
+      return true
+    },
     addPlaylist: function () {
       this.newPlaylist = {
         "user": requestUser,
@@ -71,26 +82,28 @@ const vm = new Vue({
         "accessible": document.getElementById('accessible').checked,
         "destinations": []
       }
-      this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
-        this.currentPlaylist = this.newPlaylist
-        this.currentPlaylist.pk = response.data.pk
-        this.playlists.push(this.currentPlaylist)
-        if (!this.cities.includes(this.currentPlaylist.city)) {
-          this.cities.push(this.currentPlaylist.city)
-        }
-        this.currentDestination = {'name': ''}
-        this.destinationDescription = ''
-        this.currentDescription = ''
-        this.accessible = false
-        document.getElementById('accessible').checked = false
-        document.getElementById('create-playlist-modal').classList.remove('is-active')
-        document.getElementById('playlist-detail-modal').classList.remove('is-active')
-        document.getElementById('playlist-detail-modal').classList.add('is-active')
-        document.getElementById('edit-playlist-modal').classList.add('is-active')
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      if (this.isUniquePlaylist()) {
+          this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
+          this.currentPlaylist = this.newPlaylist
+          this.currentPlaylist.pk = response.data.pk
+          this.playlists.push(this.currentPlaylist)
+          if (!this.cities.includes(this.currentPlaylist.city)) {
+            this.cities.push(this.currentPlaylist.city)
+          }
+          this.currentDestination = {'name': ''}
+          this.destinationDescription = ''
+          this.currentDescription = ''
+          this.accessible = false
+          document.getElementById('accessible').checked = false
+          document.getElementById('create-playlist-modal').classList.remove('is-active')
+          document.getElementById('playlist-detail-modal').classList.remove('is-active')
+          document.getElementById('playlist-detail-modal').classList.add('is-active')
+          document.getElementById('edit-playlist-modal').classList.add('is-active')
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
     },
     deletePlaylist: function() {
       if (requestUser === this.currentPlaylist.user) {
@@ -99,14 +112,13 @@ const vm = new Vue({
           this.$http.get(`/api/playlists/?search=${this.currentCity}`).then((response) => {
             this.cityPlaylists = response.data;
             document.getElementById('playlist-detail-modal').classList.remove('is-active')
-
+            document.getElementById('confirm-delete-playlist-modal').classList.remove('is-active')
           })
         });
       }
     },
     isUniqueDestination: function() {
       for (let destination of this.currentPlaylist.destinations) {
-        console.log(`destination.name: ${destination.name} this.newDestination.name: ${this.newDestination.name}`)
         if (destination.name === this.newDestination.name) {
           document.getElementById('duplicate-destination-modal').classList.add('is-active')
           return false
@@ -131,7 +143,6 @@ const vm = new Vue({
           document.getElementById('modal-autocomplete').value = ''
           this.currentDestination = {'name': ''}
           this.destinationDescription = ''
-          console.log(this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1])
           this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1].pk = response.data.pk
         })
         .catch((err) => {
@@ -162,17 +173,35 @@ const vm = new Vue({
       $('#edit-playlist-modal').removeClass('is-active')  
     },
     deleteDestination: function(destinationPk) {
-      this.$http.delete(`/api/destinations/${destinationPk}`).then((response) => {
-        this.$http.get(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
-          this.currentPlaylist = response.data;
+      if (requestUser === this.currentPlaylist.user) {
+        this.$http.delete(`/api/destinations/${destinationPk}`).then((response) => {
+          this.$http.get(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
+            this.currentPlaylist = response.data;
+          })
         })
-      })
+      }
     },
     userOwns: function() {
       return this.currentPlaylist.user == requestUser
     },
     editPlaylist: function() {
-      $('#edit-playlist-modal').addClass('is-active')  
+      document.getElementById('edit-playlist-modal').classList.add('is-active')
+    },
+    newPlaylistModal: function() {
+      document.getElementById('create-playlist-modal').classList.add('is-active')
+    },
+    closeModals: function() {
+      document.getElementById('city-playlists-modal').classList.remove('is-active')
+      document.getElementById('choose-city-modal').classList.remove('is-active')
+      document.getElementById('playlist-detail-modal').classList.remove('is-active')
+      document.getElementById('create-playlist-modal').classList.remove('is-active')
+      document.getElementById('edit-playlist-modal').classList.remove('is-active')
+      document.getElementById('duplicate-playlist-modal').classList.remove('is-active')
+      document.getElementById('confirm-delete-playlist-modal').classList.remove('is-active')
+      document.getElementById('duplicate-destination-modal').classList.remove('is-active')
+    },
+    confirmDeletePlaylist: function() {
+      document.getElementById('confirm-delete-playlist-modal').classList.add('is-active')
     },
   }, // close methods
 }) // close vue instance

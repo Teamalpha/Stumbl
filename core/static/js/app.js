@@ -53,21 +53,11 @@ $('.open-pl-modal').click(function () {
   $('#choose-city-modal').addClass('is-active')
 })
 
-const createPlaylistButtons = document.querySelectorAll('.new-playlist')
-
-createPlaylistButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    $('#create-playlist-modal').addClass('is-active')
-  })
-})
-
 function exitButtonListener(buttonSelector, modalSelector) {
   $(buttonSelector).click(function () {
     $(modalSelector).removeClass('is-active')
   })
 }
-
-document.getElementById('duplicate-destination-modal').classList.add('is-active')
 
 exitButtonListener('#exit-city-playlists-modal', '#city-playlists-modal')
 exitButtonListener('#exit-choose-city-modal', '#choose-city-modal')
