@@ -8,6 +8,8 @@
 
 {% block content %}
 <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
+<input type="image" src="{% static 'images/recenter.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
+<img src="{% static 'images/Arrow.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
 <div id="vue-instance">
 
   <div id='test'></div>
@@ -29,19 +31,16 @@
     <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
   </div>
 
-
   <div class="empty-space"></div>
   <div id="map"></div>
-
-  <div class="empty-space has-text-centered">
-    <span id="chosen-destination">${currentHeading}</span><span id="distance">${distance}</span>
+  <div class="empty-space"></div>
+  <div class="has-text-centered">
+      <span id="chosen-destination">${currentHeading}</span><span id="distance">${distance}</span>
   </div>
-
   <div id='c-heading'></div>
   <div id='c-bearing'></div>
   <div id='c-finalheading'></div>
   <div id='c-distance'></div>
-
 
   {% comment %} Choose city modal {% endcomment %}
   <div id="choose-city-modal" class="modal">
@@ -95,14 +94,12 @@
         <button class="button has-background-grey-lighter	" id="exit-playlist-detail-modal" aria-label="close">Back</button>
       </header>
       <section id="playlist-detail" class="modal-card-body">
-
         <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
           <div class="message-body has-background-grey-lighter">${destination.description}</div>
         </article>
-
       </section>
       <footer class="modal-card-foot">
         <button @click="applyGems()" class="button is-primary apply-playlist">Select playlist</button>
@@ -127,28 +124,18 @@
         <button class="button has-background-grey-lighter" id="exit-create-playlist-modal" aria-label="close">Back</button>
       </header>
       <section id="create-playlist" class="modal-card-body">
-
-        {% comment %} <article class="message is-success is-small">
-          <div class="message-header">
-            <p>${item.name}</p>
-          </div>
-          <div class="message-body">${item.description}</div>
-        </article> {% endcomment %}
-
         <div class="field">
           <label class="label">Title</label>
           <div class="control">
             <input v-model="currentTitle" class="input" type="text" placeholder="Playlist name">
           </div>
         </div>
-
         <div class="field">
           <label class="label">City</label>
           <div class="control">
             <input v-model="currentCity" class="input is-success" type="text" placeholder="City" value="bulma">
           </div>
         </div>
-
         <div class="field">
           <label class="label">Description</label>
           <div class="control">
@@ -156,14 +143,11 @@
               type="text" placeholder="Description"></textarea>
           </div>
         </div>
-
         <label class="checkbox">
           <input id="accessible" type="checkbox" value="true">
           Accessible
         </label>
-
       </section>
-
       <footer class="modal-card-foot">
         <button @click="addPlaylist()" class="button is-link">Create Playlist</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
@@ -180,7 +164,6 @@
         <button class="button has-background-grey-lighter	" id="exit-edit-playlist-modal" aria-label="close">Back</button>
       </header>
       <section id="create-playlist" class="modal-card-body">
-
         <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
           <div class="message-header">
             <p>${destination.name}</p>
@@ -192,19 +175,16 @@
             </div>
           </div>
         </article>
-
         <label class="label">Add a gem</label>
         <div class="control">
           <input id="modal-autocomplete" class="controls input" type="text" placeholder="choose destination">
         </div>
-
         <div class="field">
           <label class="label">Name</label>
           <div class="control">
             <input v-model="currentDestination.name" id="current-place-name" class="input" type="text" placeholder="Place name">
           </div>
         </div>
-
         <div class="field">
           <label class="label">Address</label>
           <div class="control">
@@ -212,7 +192,6 @@
               type="text" placeholder="Address" readonly>
           </div>
         </div>
-
         <div class="field">
           <label class="label">What makes this place a hidden gem?</label>
           <div class="control">
@@ -220,9 +199,7 @@
               type="text" placeholder="Description"></textarea>
           </div>
         </div>
-
       </section>
-
       <footer class="modal-card-foot">
         <button @click="addDestination()" class="button is-link">Add Gem</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
@@ -313,7 +290,7 @@
 </div> <!-- close vue instance div -->
 
 <script>
-  var map, infoWindow, destWindow, placeCoords, places, autocomplete, lastAutocomplete;
+  var map, infoWindow, destWindow, placeCoords, autocomplete;
 
   function initAutocomplete() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -426,8 +403,7 @@
     });
 
     //listen's to the center me button and reenables recentering
-    let centerme = document.getElementById('center-me');
-    centerme.addEventListener('click', getCentered, false);
+    recenterButton.addEventListener('click', getCentered, false);
 
     function getCentered () {
       console.log('working')
