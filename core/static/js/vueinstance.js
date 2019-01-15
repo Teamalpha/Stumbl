@@ -153,7 +153,7 @@ const vm = new Vue({
       }
     },
     applyGems: function() {
-      var activeMarkerList = [];
+      var markerList = [];
       for (let gem of this.currentPlaylist.destinations) {
         let coords = { "lat": +gem.lat, "lng": +gem.lng }
         var marker = new google.maps.Marker({
@@ -161,7 +161,7 @@ const vm = new Vue({
           map: map,
           icon: "https://img.icons8.com/color/48/000000/crystal.png",
         });
-        activeMarkerList.push(marker)
+        markerList.push(marker)
         let contentString = `${gem.name} - ${gem.description}`;
         google.maps.event.addListener(marker, 'click', function () {
           var infowindow = new google.maps.InfoWindow({
@@ -170,7 +170,9 @@ const vm = new Vue({
           infowindow.open(map, this);
         });
       }
-      this.activePlaylists.push(this.currentPlaylist)
+      this.currentPlaylist['markerList'] = (markerList);
+      this.activePlaylists.push(this.currentPlaylist);
+
       document.getElementById('city-playlists-modal').classList.remove('is-active')
       document.getElementById('choose-city-modal').classList.remove('is-active')
       document.getElementById('playlist-detail-modal').classList.remove('is-active')
@@ -210,7 +212,10 @@ const vm = new Vue({
       document.getElementById('confirm-delete-playlist-modal').classList.add('is-active')
     },
     disablePlaylist: function(playlist) {
-        this.activePlaylists.splice(this.activePlaylists.indexOf(playlist), 1)
+      for (let gem of playlist.markerList) {
+        gem.setMap(null)
+      }
+      this.activePlaylists.splice(this.activePlaylists.indexOf(playlist), 1)
 // for now, this just removes the playlist from the list of active playlists. This does not remove the gems!
     },
     activePlaylistsModal: function() {
