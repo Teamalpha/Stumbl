@@ -50,8 +50,8 @@ Stumbl - {{ block.super }}
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-primary new-playlist">New Playlist</button>
-        <button class="button is-danger cancel">Cancel</button>
+        <button @click="newPlaylistModal()" class="button is-primary">New Playlist</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -71,8 +71,8 @@ Stumbl - {{ block.super }}
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-primary new-playlist">New Playlist</button>
-        <button class="button is-danger cancel">Cancel</button>
+        <button @click="newPlaylistModal()" class="button is-primary">New Playlist</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -98,11 +98,11 @@ Stumbl - {{ block.super }}
       </section>
       <footer class="modal-card-foot">
         <button @click="applyGems()" class="button is-primary apply-playlist">Select playlist</button>
-        <button class="button is-danger cancel">Cancel</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
         {% if user.is_authenticated %}
         <div v-if="userOwns()">
           <button @click="editPlaylist()" class="button is-warning">Edit</button>
-          <button class="button is-danger">Delete</button>
+          <button @click="confirmDeletePlaylist()" class="button is-danger">Delete</button>
         </div>
         {% endif %}
       </footer>
@@ -144,8 +144,8 @@ Stumbl - {{ block.super }}
         <div class="field">
           <label class="label">Description</label>
           <div class="control">
-            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-success" type="text"
-              placeholder="Description"></textarea>
+            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-success"
+              type="text" placeholder="Description"></textarea>
           </div>
         </div>
 
@@ -158,7 +158,7 @@ Stumbl - {{ block.super }}
 
       <footer class="modal-card-foot">
         <button @click="addPlaylist()" class="button is-link">Create Playlist</button>
-        <button class="button is-danger cancel">Cancel</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -177,7 +177,12 @@ Stumbl - {{ block.super }}
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
-          <div class="message-body">${destination.description}</div>
+          <div class="message-body columns">
+            <div class="column">${destination.description}</div>
+            <div v-if="userOwns()" class="column is-one-quarter"> <button @click="deleteDestination(destination.pk)"
+                class="button is-danger cancel">Remove</button>
+            </div>
+          </div>
         </article>
 
         <label class="label">Add a gem</label>
@@ -203,8 +208,8 @@ Stumbl - {{ block.super }}
         <div class="field">
           <label class="label">What makes this place a hidden gem?</label>
           <div class="control">
-            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-success" type="text"
-              placeholder="Description"></textarea>
+            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-success"
+              type="text" placeholder="Description"></textarea>
           </div>
         </div>
 
@@ -212,12 +217,67 @@ Stumbl - {{ block.super }}
 
       <footer class="modal-card-foot">
         <button @click="addDestination()" class="button is-link">Add Gem</button>
-        <button class="button is-danger cancel">Cancel</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
 
-</div>
+  {% comment %} Duplicate Playlist Modal {% endcomment %}
+  <div id="duplicate-playlist-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Duplicate Playlist!
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" id="exit-duplicate-playlist-modal" aria-label="close">Back</button>
+      </header>
+      <section id="city-playlists" class="modal-card-body">
+        <p>You have already created a playlist with that name!</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} Duplicate Destination modal {% endcomment %}
+  <div id="duplicate-destination-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Duplicate Destination
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" id="exit-duplicate-destination-modal" aria-label="close">Back</button>
+      </header>
+      <section id="city-playlists" class="modal-card-body">
+        <p>This playlist already has a destination with that name!</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} Confirm delete playlist modal {% endcomment %}
+  <div id="confirm-delete-playlist-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Confirm delete playlist
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" id="exit-confirm-delete-playlist-modal" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <p>Are you sure you want to delete this playlist?</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="deletePlaylist()" class="button is-warning">Delete Playlist</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+</div> <!-- close vue instance div -->
 
 <script>
   var map, infoWindow, destWindow, placeCoords, places, autocomplete, lastAutocomplete;
@@ -228,109 +288,37 @@ Stumbl - {{ block.super }}
       zoom: 18,
       disableDefaultUI: true,
       styles: [
-        {
-          elementType: 'geometry',
-          stylers: [{ color: '#242f3e' }]
-        },
-        {
-          elementType: 'labels.text.stroke',
-          stylers: [{ color: '#242f3e' }]
-        },
-        {
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#746855' }]
-        },
-        {
-          featureType: 'administrative.locality',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#d59563' }]
-        },
-        {
-          featureType: 'poi',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#d59563' }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'geometry',
-          stylers: [{ color: '#263c3f' }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#6b9a76' }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry',
-          stylers: [{ color: '#38414e' }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry.stroke',
-          stylers: [{ color: '#212a37' }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#9ca5b3' }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry',
-          stylers: [{ color: '#746855' }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry.stroke',
-          stylers: [{ color: '#1f2835' }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#f3d19c' }]
-        },
-        {
-          featureType: 'transit',
-          elementType: 'geometry',
-          stylers: [{ color: '#2f3948' }]
-        },
-        {
-          featureType: 'transit.station',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#d59563' }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'geometry',
-          stylers: [{ color: '#17263c' }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#515c6d' }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.stroke',
-          stylers: [{ color: '#17263c' }]
-        }
+        { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
+        { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
+        { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+        { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
+        { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
+        { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#263c3f' }] },
+        { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#6b9a76' }] },
+        { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#38414e' }] },
+        { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#212a37' }] },
+        { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#9ca5b3' }] },
+        { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#746855' }] },
+        { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#1f2835' }] },
+        { featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{ color: '#f3d19c' }] },
+        { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#2f3948' }] },
+        { featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
+        { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#17263c' }] },
+        { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#515c6d' }] },
+        { featureType: 'water', elementType: 'labels.text.stroke', stylers: [{ color: '#17263c' }] }
       ]
     });
 
     function loadDefaultPlaylist() {
       $.get('/api/playlists/1/').then(function (playlist) {
-        console.log(playlist);
         for (let destination of playlist.destinations) {
           let coords = { "lat": +destination.lat, "lng": +destination.lng };
-          console.log(coords);
           var marker = new google.maps.Marker({
             position: coords,
             map: map,
             icon: "https://img.icons8.com/color/48/000000/crystal.png",
           });
           let contentString = `${destination.name} - ${destination.description}`;
-          console.log(contentString);
           google.maps.event.addListener(marker, 'click', function () {
             var infowindow = new google.maps.InfoWindow({
               content: contentString
@@ -418,5 +406,5 @@ Stumbl - {{ block.super }}
   }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&libraries=places&callback=initAutocomplete"
-  async defer></script>
+  defer></script>
 {% endblock content %}

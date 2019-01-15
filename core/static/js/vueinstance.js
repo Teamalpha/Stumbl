@@ -62,8 +62,18 @@ const vm = new Vue({
         console.log(err);
       })
     },
+    isUniquePlaylist: function() {
+      for (let playlist of this.playlists) {
+        if (playlist.user === requestUser) {
+          if (playlist.title === this.currentTitle) {
+            document.getElementById('duplicate-playlist-modal').classList.add('is-active')
+            return false
+          }
+        }
+      }
+      return true
+    },
     addPlaylist: function () {
-      console.log(this.newPlaylist)
       this.newPlaylist = {
         "user": requestUser,
         "title": capitalize(this.currentTitle),
@@ -72,26 +82,49 @@ const vm = new Vue({
         "accessible": document.getElementById('accessible').checked,
         "destinations": []
       }
-      this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
-        this.currentPlaylist = this.newPlaylist
-        this.currentPlaylist.pk = response.data.pk
-        this.playlists.push(this.currentPlaylist)
-        if (!this.cities.includes(this.currentPlaylist.city)) {
-          this.cities.push(this.currentPlaylist.city)
+      if (this.isUniquePlaylist()) {
+          this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
+          this.currentPlaylist = this.newPlaylist
+          this.currentPlaylist.pk = response.data.pk
+          this.playlists.push(this.currentPlaylist)
+          if (!this.cities.includes(this.currentPlaylist.city)) {
+            this.cities.push(this.currentPlaylist.city)
+          }
+          this.currentDestination = {'name': ''}
+          this.destinationDescription = ''
+          this.currentDescription = ''
+          this.accessible = false
+          document.getElementById('accessible').checked = false
+          document.getElementById('create-playlist-modal').classList.remove('is-active')
+          document.getElementById('playlist-detail-modal').classList.remove('is-active')
+          document.getElementById('playlist-detail-modal').classList.add('is-active')
+          document.getElementById('edit-playlist-modal').classList.add('is-active')
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
+    },
+    deletePlaylist: function() {
+      if (requestUser === this.currentPlaylist.user) {
+        this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
+          this.currentPlaylist = {};
+          this.$http.get(`/api/playlists/?search=${this.currentCity}`).then((response) => {
+            this.cityPlaylists = response.data;
+            document.getElementById('playlist-detail-modal').classList.remove('is-active')
+            document.getElementById('confirm-delete-playlist-modal').classList.remove('is-active')
+          })
+        });
+      }
+    },
+    isUniqueDestination: function() {
+      for (let destination of this.currentPlaylist.destinations) {
+        if (destination.name === this.newDestination.name) {
+          document.getElementById('duplicate-destination-modal').classList.add('is-active')
+          return false
         }
-        this.currentDestination = {'name': ''}
-        this.destinationDescription = ''
-        this.currentDescription = ''
-        this.accessible = false
-        document.getElementById('accessible').checked = false
-        document.getElementById('create-playlist-modal').classList.remove('is-active')
-        document.getElementById('playlist-detail-modal').classList.remove('is-active')
-        document.getElementById('playlist-detail-modal').classList.add('is-active')
-        document.getElementById('edit-playlist-modal').classList.add('is-active')
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      }
+      return true
     },
     addDestination: function() {
       this.newDestination = {
@@ -101,18 +134,21 @@ const vm = new Vue({
         "place_id": this.currentDestination.place_id,
         "description": this.destinationDescription,
         "name": this.currentDestination.name,
-        "user": requestUserPk
+        "user": requestUserPk,
+        "pk": null
       }
-      console.log
-      this.currentPlaylist.destinations.push(this.newDestination)
-      this.$http.post(`api/destinations/`, this.newDestination).then(() => {
-        document.getElementById('modal-autocomplete').value = ''
-        this.currentDestination = {'name': ''}
-        this.destinationDescription = ''
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      if (this.isUniqueDestination()) {
+        this.currentPlaylist.destinations.push(this.newDestination)
+        this.$http.post(`api/destinations/`, this.newDestination).then((response) => {
+          document.getElementById('modal-autocomplete').value = ''
+          this.currentDestination = {'name': ''}
+          this.destinationDescription = ''
+          this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1].pk = response.data.pk
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
     },
     applyGems: function() {
       for (let gem of this.currentPlaylist.destinations) {
@@ -136,11 +172,36 @@ const vm = new Vue({
       $('#create-playlist-modal').removeClass('is-active')
       $('#edit-playlist-modal').removeClass('is-active')  
     },
+    deleteDestination: function(destinationPk) {
+      if (requestUser === this.currentPlaylist.user) {
+        this.$http.delete(`/api/destinations/${destinationPk}`).then((response) => {
+          this.$http.get(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
+            this.currentPlaylist = response.data;
+          })
+        })
+      }
+    },
     userOwns: function() {
       return this.currentPlaylist.user == requestUser
     },
     editPlaylist: function() {
-      $('#edit-playlist-modal').addClass('is-active')  
+      document.getElementById('edit-playlist-modal').classList.add('is-active')
+    },
+    newPlaylistModal: function() {
+      document.getElementById('create-playlist-modal').classList.add('is-active')
+    },
+    closeModals: function() {
+      document.getElementById('city-playlists-modal').classList.remove('is-active')
+      document.getElementById('choose-city-modal').classList.remove('is-active')
+      document.getElementById('playlist-detail-modal').classList.remove('is-active')
+      document.getElementById('create-playlist-modal').classList.remove('is-active')
+      document.getElementById('edit-playlist-modal').classList.remove('is-active')
+      document.getElementById('duplicate-playlist-modal').classList.remove('is-active')
+      document.getElementById('confirm-delete-playlist-modal').classList.remove('is-active')
+      document.getElementById('duplicate-destination-modal').classList.remove('is-active')
+    },
+    confirmDeletePlaylist: function() {
+      document.getElementById('confirm-delete-playlist-modal').classList.add('is-active')
     },
   }, // close methods
 }) // close vue instance
