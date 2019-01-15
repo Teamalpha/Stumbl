@@ -120,7 +120,7 @@ html, body {
     display: none;
   }
   
-  @media (max-width:60px) {
+
     .nav > .nav-btn {
       display: inline-block;
       position: absolute;
@@ -152,10 +152,12 @@ html, body {
       overflow-y: hidden;
       top: 50px;
       left: 0px;
+      z-index: 1000;
     }
     .nav > .nav-links > a {
       display: block;
       width: 100%;
+
     }
     .nav > #nav-check:not(:checked) + .nav-links {
       height: 0px;
