@@ -23,8 +23,7 @@
 
 <div id="main-buttons">
   <button class="button is-info open-pl-modal">Playlists</button>
-  <button @click="activePlaylistsModal()" class="button is-info ">Active Playlists</button>
-  <button class="button is-info" id='center-me'>Center me!</button>
+  <button v-if="activePlaylists.length > 0" @click="activePlaylistsModal()" class="button is-info ">Active Playlists</button>
 </div>
 
   <div class="control">
@@ -274,9 +273,7 @@
       <section class="modal-card-body">
         <div v-for="playlist in activePlaylists" class="columns">
           <div class="column">
-            <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
-          </div>
-          <div class="column is-one-quarter">
+            <button @click="getPlaylist(playlist)" class="button is-success">${playlist.title}</button>
             <button @click="disablePlaylist(playlist)" class="button is-danger">Remove</button>
           </div>
         </div>
@@ -337,7 +334,6 @@
       let place_lat = places[0].geometry.location.lat()
       let place_lng = places[0].geometry.location.lng()
       placeCoords = { lat: place_lat, lng: place_lng }
-      let place_address = places[0].formatted_address
       let place_name = places[0].name
       vm.currentHeading = place_name
       let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`

@@ -34,7 +34,7 @@ window.ondeviceorientationabsolute = function (event) {
   if (finalHeading > 360) { finalHeading -= 360 }
 
   $('#c-heading').text(`Absolute direction: ${compassHeading}`)
-  $('#c-bearing').text(`Destination_______: ${updatebearing}`)
+  $('#c-bearing').text(`Destination______: ${updatebearing}`)
   $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
   
   roundify()
@@ -51,7 +51,7 @@ if (window.DeviceOrientationEvent) {
       var finalHeading = updatebearing - compassHeading
       if (finalHeading < 0) { finalHeading += 360 }
       $('#c-heading').text(`Absolute direction: ${compassHeading}`)
-      $('#c-bearing').text(`Destination_______: ${updatebearing}`)
+      $('#c-bearing').text(`Destination______: ${updatebearing}`)
       $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
 
       coneOfFocus.style.transform = `rotate(${(compassHeading)}deg)`

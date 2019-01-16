@@ -76,7 +76,7 @@ html, body {
   height: 40px;
   width: 40px;
   display: none;
-  z-index: 50;
+  z-index: 30;
 }
 
 #recenter-button:focus {
