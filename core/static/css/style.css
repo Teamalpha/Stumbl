@@ -189,3 +189,9 @@ html, body {
     height: auto;
     overflow-y: auto;
   }
+.modal-card-body {
+  font-family: monospace;
+}
+.modal-card-head {
+  font-family: monospace;
+}

@@ -74,6 +74,7 @@ exitButtonListener('#exit-confirm-delete-playlist-modal', '#confirm-delete-playl
 exitButtonListener('#exit-duplicate-destination-modal', '#duplicate-destination-modal')
 exitButtonListener('#exit-active-playlists-modal', '#active-playlists-modal')
 exitButtonListener('#exit-playlist-already-applied-modal', '#playlist-already-applied-modal')
+exitButtonListener('#exit-about-modal', '#about-modal')
 
 function capitalize(word) {
   capitalizedWord = word[0].toUpperCase() + word.slice(1).toLowerCase()

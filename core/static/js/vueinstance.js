@@ -242,5 +242,8 @@ const vm = new Vue({
     activePlaylistsModal: function() {
       document.getElementById('active-playlists-modal').classList.add('is-active')
     },
+    openAboutModal: function() {
+      document.getElementById('about-modal').classList.add('is-active')
+    },
   }, // close methods
 }) // close vue instance
