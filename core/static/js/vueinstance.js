@@ -238,7 +238,6 @@ const vm = new Vue({
         gem.setMap(null)
       }
       this.activePlaylists.splice(this.activePlaylists.indexOf(playlist), 1)
-// for now, this just removes the playlist from the list of active playlists. This does not remove the gems!
     },
     activePlaylistsModal: function() {
       document.getElementById('active-playlists-modal').classList.add('is-active')
