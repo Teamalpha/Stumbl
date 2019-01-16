@@ -1,72 +1,137 @@
-{% extends 'base.html' %}
+{% extends 'aboutbase.html' %}
+{% load staticfiles %}
 {% block title %}
     About Us {{ block.super }}
 {% endblock title %}
 
 {% block content %}
-<h1>Meet The Team</h1>
+<body>
 <br>
 <br>
-<div class="profile pics">
+<section class="section">
+    <div class="container fue">
+      <h1 class="title">LocalGems</h1>
+      <h3 class="paragraph">
+        LocalGems is an app about discovering things on the journey - not about "turn-by-turn" directions.  
+    </h3>  
+    <br>
+    <h3 class="paragraph">
+            Imagine this: You're walking around a new city and looking for cool places to discover. You have the ability to load up curated "playlists" of amazing locations to check out as you eventually make your way to a wonderful restaurant or event.  This is what the magic of travel is all about.  This is how to discover LocalGems.
+    </h3>
+    <br>
+    <br>
+    <h2 class="subtitle"><strong>How to Use LocalGems</strong></h2>
+    <h3 class="paragraph">
+        Make sure you're in the city you'd like to explore. This app will detect where you are standing, and you will be able to see your position on the map.  
+    </h3>
+    <br>
+    <br>
+    <h2 class="subtitle"><strong>Pick Your Destination</strong></h2>
+    <h3 class="paragraph">
+        In the search field above the map, pick your FINAL destination.  Now LocalGems will help you discover amazing places along the way.  
+    </h3>
+    <br>
+    <br>
+    <h2 class="subtitle"><strong>Navigation Arrow</strong></h2>
+    <h3 class="paragraph">
+        Once you've chosen your final destination a navigation arrow will appear around the map, which will point to your final destination so you know the general direction in which to walk.   
+    </h3>
+    <br>
+    <br>
+    <h2 class="subtitle"><strong>Discover Cool Places to Check Out!</strong></h2>
+    <h3 class="paragraph">
+        In the top right corner of the screen click "Playlists" and choose the city.  Then, choose a playlist that matches the mood you're in.  As you walk along towards your final destination, LocalGems will populate the map so that you can check them out along the way.    
+    </h3>
+    <br>
+    <br>
+    <br>
+    <br>
+    </div>
+  </section>
+<div>
+<section class="section">
+<div class="container">
+<h1 class="title">Meet The Team</h1>
+<br>
+<div class="profile-pics">
     <div class="tile is-ancestor">
-        <div class="tile is-horizontal">
-        <div class="tile is-11 is-parent">
-                <article class="tile is-child notification is-info">
-                <p class="title">Peter</p>
-                <figure class="image is-1by1">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf_Bf0-x44hsGqqcQwrTcNeLUSnYjlDuoql-hQHydDdBwxeCT2">
-                </figure>
-                <div class="content">
-                <p>If you do too much it's going to lose its effectiveness. I spend a lot of time walking around in the woods and talking to trees, and squirrels, and little rabbits and stuff. Don't be bashful drop me a line. This is truly an almighty mountain. The very fact that you're aware of suffering is enough reason to be overjoyed that you're alive and can experience it.
 
-                All you need is a dream in your heart, and an almighty knife. There is no right or wrong - as long as it makes you happy and doesn't hurt anyone. Now then, let's play.</p>
+    <div class="container">
+        <div class="columns is-mobile">
+            <div class="tile is-11 is-parent">
+                    <article class="tile is-child notification hue profile-card">
+                    <p class="title">Peter</p>
+                    {% comment %} <figure class="image is-1by1"> {% endcomment %}
+                            <img src="{% static 'images/peteprp.jpg'%}" class="petepp">
+                    </figure>
+                    <div class="content">
+                    <div class="pls-work">
+                    <p>I am a software developer based in Durham, NC. I enjoy the process of creating software that solves problems in creative and unique ways, such as a program which can play the card game 'Set'. As a former mountain guide in Western North Carolina, I enjoy rock climbing, skiing, whitewater kayaking, and backpacking.</p>
+                    </div>
+                    </div>
+                    <br><a href="https://www.linkedin.com/in/peter-oas/"><i class="fab fa-linkedin fa-3x"></i></a>
+                    </article>
                 </div>
-                </article>
             </div>
+        <div class="columns is-mobile">
+            <div class="tile is-11 is-parent">
+                    <article class="tile is-child notification hue profile-card">
+                    <p class="title">Steve</p>
+                    {% comment %} <figure class="image is-1by1"> {% endcomment %}
+                        <img src="{% static 'images/stevepprr.jpg'%}" class="stevepp">
+                    </figure>
+                    <div class="content">
+                    <div class="pls-work">
+                    <p>
+                    I'm currently a software developer in the Research Triangle Area of Raleigh-Durham, North Carolina.</p>
+                    
+                    <p>I have a diverse business background combining several disciplines: entrepreneurship, marketing, real estate brokerage management, management consulting, and entertainment. I have a B.S. from New York University in mass media communications, and am also a licensed real estate broker in Illinois and North Carolina.</p>
+                    </div>
+                    </div>
+                    <br><a href="https://www.linkedin.com/in/stevenmarks/"><i class="fab fa-linkedin fa-3x"></i></a>
+                    </article>
+                </div>
             </div>
-            <div class="tile is-ancestor">
-        <div class="tile is-11 is-parent">
-                <article class="tile is-child notification is-info">
-                <p class="title">Steve</p>
-                <figure class="image is-1by1">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf_Bf0-x44hsGqqcQwrTcNeLUSnYjlDuoql-hQHydDdBwxeCT2">
-                </figure>
-                <div class="content">
-                <p>If you do too much it's going to lose its effectiveness. I spend a lot of time walking around in the woods and talking to trees, and squirrels, and little rabbits and stuff. Don't be bashful drop me a line. This is truly an almighty mountain. The very fact that you're aware of suffering is enough reason to be overjoyed that you're alive and can experience it.
+        </div>
+    <div class="container">
+        <div class="columns is-mobile">
+            <div class="tile is-11 is-parent">
+                    <article class="tile is-child notification hue profile-card">
+                    <p class="title">Maxwell</p>
+                    {% comment %} <figure class="image is-1by1"> {% endcomment %}
+                        <img src="{% static 'images/maxpp.jpg'%}" class="maxpp">
+                    </figure>
+                    <div class="content">
+                    <div class="pls-work">
+                    <p>I am formerly from Kenosha, Wisconsin.  I am a Cheesehead and a HUGE Packers fan.  I currently am a software developer in the Research Triangle area of Raleigh-Durham, North Carolina. I also am a real estate broker serving in the Triagle area as well.</p><p>When I am not coding or selling homes, I am either doing volunteer work, playing tennis, or sleeping.</p>
+                    </div>
+                    </div>
+                    <br><a href="https://www.linkedin.com/in/maxwell-ehiorobo/"><i class="fab fa-linkedin fa-3x"></i></a>
 
-                All you need is a dream in your heart, and an almighty knife. There is no right or wrong - as long as it makes you happy and doesn't hurt anyone. Now then, let's play.</p>
+                    </article>
                 </div>
-                </article>
             </div>
-            </div>
-            <div class="tile is-ancestor">
-        <div class="tile is-11 is-parent">
-                <article class="tile is-child notification is-info">
-                <p class="title">Max</p>
-                <figure class="image is-1by1">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf_Bf0-x44hsGqqcQwrTcNeLUSnYjlDuoql-hQHydDdBwxeCT2">
-                </figure>
-                <div class="content">
-                <p>If you do too much it's going to lose its effectiveness. I spend a lot of time walking around in the woods and talking to trees, and squirrels, and little rabbits and stuff. Don't be bashful drop me a line. This is truly an almighty mountain. The very fact that you're aware of suffering is enough reason to be overjoyed that you're alive and can experience it.
+        <div class="columns is-mobile">
+            <div class="tile is-11 is-parent">
+                    <article class="tile is-child notification hue profile-card">
+                    <p class="title">Sean</p>
+                    {% comment %} <figure class="image is-1by1"> {% endcomment %}
+                        <img src="{% static 'images/seanpp.jpg'%} " class="seanpp">
+                    </figure>
+                    <div class="content">
+                    <div class="pls-work">
+                    <p>If you do too much it's going to lose its effectiveness. I spend a lot of time walking around in the woods and talking to trees, and squirrels, and little rabbits and stuff. Don't be bashful drop me a line. This is truly an almighty mountain. The very fact that you're aware of suffering is enough reason to be overjoyed that you're alive and can experience it.
 
-                All you need is a dream in your heart, and an almighty knife. There is no right or wrong - as long as it makes you happy and doesn't hurt anyone. Now then, let's play.</p>
-                </div>
-                </article>
-            </div>
-            </div>
-            <div class="tile is-ancestor">
-        <div class="tile is-11 is-parent">
-                <article class="tile is-child notification is-info">
-                <p class="title">Sean</p>
-                <figure class="image is-1by1">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf_Bf0-x44hsGqqcQwrTcNeLUSnYjlDuoql-hQHydDdBwxeCT2">
-                </figure>
-                <div class="content">
-                <p>If you do too much it's going to lose its effectiveness. I spend a lot of time walking around in the woods and talking to trees, and squirrels, and little rabbits and stuff. Don't be bashful drop me a line. This is truly an almighty mountain. The very fact that you're aware of suffering is enough reason to be overjoyed that you're alive and can experience it.
+                    All you need is a dream in your heart, and an almighty knife. There is no right or wrong - as long as it makes you happy and doesn't hurt anyone. Now then, let's play.</p>
+                    </div>
+                    </div>
+                    <br><a href="https://www.linkedin.com/in/sean-houde/"><i class="fab fa-linkedin fa-3x"></i></a>
 
-                All you need is a dream in your heart, and an almighty knife. There is no right or wrong - as long as it makes you happy and doesn't hurt anyone. Now then, let's play.</p>
+                    </article>
                 </div>
-                </article>
             </div>
-            </div>
-        {% endblock content %}
+        </div>
+    </div>
+</section>
+</body>
+{% endblock content %}
