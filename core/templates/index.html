@@ -90,7 +90,7 @@
       <header class="modal-card-head">
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-playlist-detail-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" id="exit-playlist-detail-modal" aria-label="close">Back</button>
       </header>
       <section id="playlist-detail" class="modal-card-body">
         <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
@@ -168,7 +168,7 @@
             <p>${destination.name}</p>
           </div>
           <div class="message-body columns">
-            <div class="column">${destination.description}</div>
+            <div class="column has-background-grey-lighter">${destination.description}</div>
             <div v-if="userOwns()" class="column is-one-quarter"> <button @click="deleteDestination(destination.pk)"
                 class="button is-danger cancel">Remove</button>
             </div>
@@ -176,7 +176,7 @@
         </article>
         <label class="label">Add a gem</label>
         <div class="control">
-          <input id="modal-autocomplete" class="controls input" type="text" placeholder="choose destination">
+          <input id="modal-autocomplete" class="controls input is-success" type="text" placeholder="choose destination">
         </div>
         <div class="field">
           <label class="label">Name</label>
@@ -187,7 +187,7 @@
         <div class="field">
           <label class="label">Address</label>
           <div class="control">
-            <input v-model="currentDestination.formatted_address" id="current-place-address" class="input is-success"
+            <input v-model="currentDestination.formatted_address" id="current-place-address" class="input"
               type="text" placeholder="Address" readonly>
           </div>
         </div>
@@ -231,7 +231,7 @@
       <header class="modal-card-head">
         Duplicate Destination
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-duplicate-destination-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" id="exit-duplicate-destination-modal" aria-label="close">Back</button>
       </header>
       <section id="city-playlists" class="modal-card-body">
         <p>This playlist already has a destination with that name!</p>
