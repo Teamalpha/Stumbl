@@ -154,6 +154,23 @@ const vm = new Vue({
         })
       }
     },
+    isActivePlaylist: function() {
+      if (this.activePlaylists.length > 0) {
+        if (this.activePlaylists.length === 1) {
+          if (this.activePlaylists[0].title === this.currentPlaylist.title) {
+            document.getElementById('playlist-already-applied-modal').classList.add('is-active')
+            return true
+          }
+        }
+        for (let playlist of this.ActivePlaylists) {
+          if (playlist.title === this.currentPlaylist.title) {
+            document.getElementById('playlist-already-applied-modal').classList.add('is-active')
+            return true
+          }
+        }
+      }
+      return false
+    },
     applyGems: function() {
       var markerList = [];
       for (let gem of this.currentPlaylist.destinations) {
@@ -173,13 +190,15 @@ const vm = new Vue({
         });
       }
       this.currentPlaylist['markerList'] = (markerList);
-      this.activePlaylists.push(this.currentPlaylist);
 
-      document.getElementById('city-playlists-modal').classList.remove('is-active')
-      document.getElementById('choose-city-modal').classList.remove('is-active')
-      document.getElementById('playlist-detail-modal').classList.remove('is-active')
-      document.getElementById('create-playlist-modal').classList.remove('is-active')
-      document.getElementById('edit-playlist-modal').classList.remove('is-active')  
+      if (!this.isActivePlaylist()) {
+        this.activePlaylists.push(this.currentPlaylist);
+        document.getElementById('city-playlists-modal').classList.remove('is-active')
+        document.getElementById('choose-city-modal').classList.remove('is-active')
+        document.getElementById('playlist-detail-modal').classList.remove('is-active')
+        document.getElementById('create-playlist-modal').classList.remove('is-active')
+        document.getElementById('edit-playlist-modal').classList.remove('is-active')  
+      }
     },
     deleteDestination: function(destinationPk) {
       if (requestUser === this.currentPlaylist.user) {
@@ -209,6 +228,7 @@ const vm = new Vue({
       document.getElementById('confirm-delete-playlist-modal').classList.remove('is-active')
       document.getElementById('duplicate-destination-modal').classList.remove('is-active')
       document.getElementById('active-playlists-modal').classList.remove('is-active')
+      document.getElementById('playlist-already-applied-modal').classList.remove('is-active')
     },
     confirmDeletePlaylist: function() {
       document.getElementById('confirm-delete-playlist-modal').classList.add('is-active')
@@ -218,7 +238,6 @@ const vm = new Vue({
         gem.setMap(null)
       }
       this.activePlaylists.splice(this.activePlaylists.indexOf(playlist), 1)
-// for now, this just removes the playlist from the list of active playlists. This does not remove the gems!
     },
     activePlaylistsModal: function() {
       document.getElementById('active-playlists-modal').classList.add('is-active')
