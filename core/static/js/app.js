@@ -33,10 +33,6 @@ window.ondeviceorientationabsolute = function (event) {
   var finalHeading = compassHeading + updatebearing
   if (finalHeading > 360) { finalHeading -= 360 }
 
-  $('#c-heading').text(`Absolute direction: ${compassHeading}`)
-  $('#c-bearing').text(`Destination______: ${updatebearing}`)
-  $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
-  
   roundify()
   coneOfFocus.style.transform = `rotate(${(compassHeading)}deg)`
   arrow.style.transform = `rotate(${(finalHeading)}deg)`
@@ -46,14 +42,11 @@ window.ondeviceorientationabsolute = function (event) {
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", function (event) {
     if (event.webkitCompassHeading) {
-      roundify()
       compassHeading = event.webkitCompassHeading
       var finalHeading = updatebearing - compassHeading
       if (finalHeading < 0) { finalHeading += 360 }
-      $('#c-heading').text(`Absolute direction: ${compassHeading}`)
-      $('#c-bearing').text(`Destination______: ${updatebearing}`)
-      $('#c-finalheading').text(`Final Destination_: ${finalHeading}`)
-
+      
+      roundify()
       coneOfFocus.style.transform = `rotate(${(compassHeading)}deg)`
       arrow.style.transform = `rotate(${(finalHeading)}deg)`;
     }
