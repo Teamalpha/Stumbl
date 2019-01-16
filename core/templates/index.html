@@ -24,6 +24,7 @@
   <div id="main-buttons">
     <button class="button is-info open-pl-modal">Playlists</button>
     <button v-if="activePlaylists.length > 0" @click="activePlaylistsModal()" class="button is-info ">Active Playlists</button>
+    <button class="button is-info about-modal" @click="openAboutModal()"><strong>?</strong></button>
   </div>
 
   <div class="control">
@@ -35,6 +36,40 @@
   <div class="empty-space"></div>
   <div class="has-text-centered">
     <span id="chosen-destination">${currentHeading}</span><span id="distance">${distance}</span>
+  </div>
+{% comment %} Info Modal {% endcomment %}
+    <div id="about-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <strong>About LocalGems</strong>
+        <p class="modal-card-title"></p>
+      </header>
+      <section class="modal-card-body">
+        <p>LocalGems is an app about discovering things on the journey - not about "turn-by-turn" directions.</p>
+        <br>
+        <p>Imagine this: You're walking around a new city and looking for cool places to discover. You have the ability to load up curated "playlists" of amazing locations to check out as you eventually make your way to a wonderful restaurant or event.  This is what the magic of travel is all about.  This is how to discover LocalGems.</p>
+        <br>
+        <h3><strong>How to Use LocalGems</strong></h3>
+        <p> Make sure you're in the city you'd like to explore. This app will detect where you are standing, and you will be able to see your position on the map.
+        <br>
+        <br>
+        <h3><strong>Pick Your Destination</strong></h3>
+        <p>  In the search field above the map, pick your FINAL destination.  Now LocalGems will help you discover amazing places along the way.
+        <br>
+        <br>
+        <h3><strong>Navigation Arrow</strong></h3>
+        <p> Once you've chosen your final destination a navigation arrow will appear around the map, which will point to your final destination so you know the general direction in which to walk.
+        <br>
+        <br>
+        <h3><strong>Discover Cool Places to Check Out!</strong></h3>
+        <p>In the top right corner of the screen click "Playlists" and choose the city.  Then, choose a playlist that matches the mood you're in.  As you walk along towards your final destination, LocalGems will populate the map so that you can check them out along the way.  
+        <br>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button has-background-grey-lighter" id="exit-about-modal" aria-label="close">Close</button>
+      </footer>
+    </div>
   </div>
 
   {% comment %} Choose city modal {% endcomment %}
