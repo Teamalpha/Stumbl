@@ -384,6 +384,18 @@
       vm.currentDestination = autocomplete.getPlace();
     })
 
+    function testSensors () {
+      navigator.permissions.query({name:'geolocation'}).then(function(result) {
+        if (result.state == 'denied') {
+          window.alert("Geolocation data cannot be accessed. Please provide geolocation permission!");
+        }
+      });
+      if(!( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+        window.alert('This device does not have orientation sensors. Please use this app on a mobile device!')
+      }
+    }
+    setTimeout(testSensors, 5000)
+
     function recenter() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
