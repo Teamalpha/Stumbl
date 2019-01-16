@@ -157,18 +157,13 @@ const vm = new Vue({
       }
     },
     isActivePlaylist: function() {
-      if (this.activePlaylists.length > 0) {
-        if (this.activePlaylists.length === 1) {
-          if (this.activePlaylists[0].title === this.currentPlaylist.title) {
-            document.getElementById('playlist-already-applied-modal').classList.add('is-active')
-            return true
-          }
+      if (this.activePlaylists.length === 0) {
+          return false
         }
-        for (let playlist of this.ActivePlaylists) {
-          if (playlist.title === this.currentPlaylist.title) {
-            document.getElementById('playlist-already-applied-modal').classList.add('is-active')
-            return true
-          }
+      for (let playlist of this.activePlaylists) {
+        if (playlist.title === this.currentPlaylist.title) {
+          document.getElementById('playlist-already-applied-modal').classList.add('is-active')
+          return true
         }
       }
       return false
@@ -180,7 +175,7 @@ const vm = new Vue({
         var marker = new google.maps.Marker({
           position: coords,
           map: map,
-          icon: "https://i.imgur.com/D8UwFco.png",
+          icon: "https://images2.imgbox.com/cd/70/ochtsykD_o.png",
         });
         markerList.push(marker)
         let contentString = `${gem.name} - ${gem.description}`;
