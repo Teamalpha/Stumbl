@@ -249,5 +249,8 @@ const vm = new Vue({
           console.log(err);
       })
     }
+    openAboutModal: function() {
+      document.getElementById('about-modal').classList.add('is-active')
+    },
   }, // close methods
 }) // close vue instance

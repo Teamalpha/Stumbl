@@ -1,3 +1,4 @@
+
 #map {
     width: 88%;
     border-radius: 100%;
@@ -10,6 +11,7 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
+    /* background-color: 	#89cff0; */
 }
 
 .absolute {
@@ -187,3 +189,9 @@ html, body {
     height: auto;
     overflow-y: auto;
   }
+.modal-card-body {
+  font-family: monospace;
+}
+.modal-card-head {
+  font-family: monospace;
+}
