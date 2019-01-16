@@ -180,7 +180,7 @@ const vm = new Vue({
         var marker = new google.maps.Marker({
           position: coords,
           map: map,
-          icon: "https://i.imgur.com/ovAEesr.png",
+          icon: "https://i.imgur.com/D8UwFco.png",
         });
         markerList.push(marker)
         let contentString = `${gem.name} - ${gem.description}`;
