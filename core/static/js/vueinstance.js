@@ -26,6 +26,7 @@ const vm = new Vue({
     newPlaylistPk: null,
     autocompleteText: '',
     distance: null,
+    searchField: '',
     currentHeading: null,
   },
   mounted: function () {
@@ -47,10 +48,11 @@ const vm = new Vue({
         })
     },
     getCityPlaylists: function (city) {
-      this.$http.get(`/api/playlists/?search=${city}`).then((response) => {
+      this.$http.get(`/api/playlists/?city=${city}`).then((response) => {
         this.cityPlaylists = response.data;
         this.currentCity = city
         document.getElementById('city-playlists-modal').classList.add('is-active')
+        this.searchField = ''
       })
         .catch((err) => {
           console.log(err);
@@ -155,18 +157,13 @@ const vm = new Vue({
       }
     },
     isActivePlaylist: function() {
-      if (this.activePlaylists.length > 0) {
-        if (this.activePlaylists.length === 1) {
-          if (this.activePlaylists[0].title === this.currentPlaylist.title) {
-            document.getElementById('playlist-already-applied-modal').classList.add('is-active')
-            return true
-          }
+      if (this.activePlaylists.length === 0) {
+          return false
         }
-        for (let playlist of this.ActivePlaylists) {
-          if (playlist.title === this.currentPlaylist.title) {
-            document.getElementById('playlist-already-applied-modal').classList.add('is-active')
-            return true
-          }
+      for (let playlist of this.activePlaylists) {
+        if (playlist.title === this.currentPlaylist.title) {
+          document.getElementById('playlist-already-applied-modal').classList.add('is-active')
+          return true
         }
       }
       return false
@@ -178,7 +175,7 @@ const vm = new Vue({
         var marker = new google.maps.Marker({
           position: coords,
           map: map,
-          icon: "https://img.icons8.com/color/48/000000/crystal.png",
+          icon: "https://images2.imgbox.com/cd/70/ochtsykD_o.png",
         });
         markerList.push(marker)
         let contentString = `${gem.name} - ${gem.description}`;
@@ -242,6 +239,16 @@ const vm = new Vue({
     activePlaylistsModal: function() {
       document.getElementById('active-playlists-modal').classList.add('is-active')
     },
+    searchPlaylists: function() {
+      let isAccessible = document.getElementById('is-accessible').checked
+      if (!isAccessible) {isAccessible = ''}
+      this.$http.get(`/api/playlists/?city=${this.currentCity}&title=${this.searchField}&accessible=${isAccessible}`).then((response) => {
+        this.cityPlaylists = response.data;
+      })
+        .catch((err) => {
+          console.log(err);
+      })
+    }
     openAboutModal: function() {
       document.getElementById('about-modal').classList.add('is-active')
     },
