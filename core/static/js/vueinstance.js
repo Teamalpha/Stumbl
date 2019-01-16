@@ -178,7 +178,7 @@ const vm = new Vue({
         var marker = new google.maps.Marker({
           position: coords,
           map: map,
-          icon: "https://img.icons8.com/color/48/000000/crystal.png",
+          icon: "https://i.imgur.com/ovAEesr.png",
         });
         markerList.push(marker)
         let contentString = `${gem.name} - ${gem.description}`;
