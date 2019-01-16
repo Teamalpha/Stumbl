@@ -9,6 +9,7 @@ const vm = new Vue({
   delimiters: ['${', '}'],
   data: {
     playlist: [],
+    activePlaylists: [],
     cityPlaylists: [],
     cities: [],
     currentPlaylist: {},
@@ -24,6 +25,8 @@ const vm = new Vue({
     destinationDescription: null,
     newPlaylistPk: null,
     autocompleteText: '',
+    distance: null,
+    currentHeading: null,
   },
   mounted: function () {
     this.getCities()
@@ -56,6 +59,7 @@ const vm = new Vue({
     getPlaylist: function (playlist) {
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
+        document.getElementById('active-playlists-modal').classList.remove('is-active')
         document.getElementById('playlist-detail-modal').classList.add('is-active')
       })
       .catch((err) => {
@@ -150,7 +154,25 @@ const vm = new Vue({
         })
       }
     },
+    isActivePlaylist: function() {
+      if (this.activePlaylists.length > 0) {
+        if (this.activePlaylists.length === 1) {
+          if (this.activePlaylists[0].title === this.currentPlaylist.title) {
+            document.getElementById('playlist-already-applied-modal').classList.add('is-active')
+            return true
+          }
+        }
+        for (let playlist of this.ActivePlaylists) {
+          if (playlist.title === this.currentPlaylist.title) {
+            document.getElementById('playlist-already-applied-modal').classList.add('is-active')
+            return true
+          }
+        }
+      }
+      return false
+    },
     applyGems: function() {
+      var markerList = [];
       for (let gem of this.currentPlaylist.destinations) {
         let coords = { "lat": +gem.lat, "lng": +gem.lng }
         var marker = new google.maps.Marker({
@@ -158,6 +180,7 @@ const vm = new Vue({
           map: map,
           icon: "https://img.icons8.com/color/48/000000/crystal.png",
         });
+        markerList.push(marker)
         let contentString = `${gem.name} - ${gem.description}`;
         google.maps.event.addListener(marker, 'click', function () {
           var infowindow = new google.maps.InfoWindow({
@@ -166,11 +189,16 @@ const vm = new Vue({
           infowindow.open(map, this);
         });
       }
-      $('#city-playlists-modal').removeClass('is-active')
-      $('#choose-city-modal').removeClass('is-active')
-      $('#playlist-detail-modal').removeClass('is-active')
-      $('#create-playlist-modal').removeClass('is-active')
-      $('#edit-playlist-modal').removeClass('is-active')  
+      this.currentPlaylist['markerList'] = (markerList);
+
+      if (!this.isActivePlaylist()) {
+        this.activePlaylists.push(this.currentPlaylist);
+        document.getElementById('city-playlists-modal').classList.remove('is-active')
+        document.getElementById('choose-city-modal').classList.remove('is-active')
+        document.getElementById('playlist-detail-modal').classList.remove('is-active')
+        document.getElementById('create-playlist-modal').classList.remove('is-active')
+        document.getElementById('edit-playlist-modal').classList.remove('is-active')  
+      }
     },
     deleteDestination: function(destinationPk) {
       if (requestUser === this.currentPlaylist.user) {
@@ -199,9 +227,20 @@ const vm = new Vue({
       document.getElementById('duplicate-playlist-modal').classList.remove('is-active')
       document.getElementById('confirm-delete-playlist-modal').classList.remove('is-active')
       document.getElementById('duplicate-destination-modal').classList.remove('is-active')
+      document.getElementById('active-playlists-modal').classList.remove('is-active')
+      document.getElementById('playlist-already-applied-modal').classList.remove('is-active')
     },
     confirmDeletePlaylist: function() {
       document.getElementById('confirm-delete-playlist-modal').classList.add('is-active')
+    },
+    disablePlaylist: function(playlist) {
+      for (let gem of playlist.markerList) {
+        gem.setMap(null)
+      }
+      this.activePlaylists.splice(this.activePlaylists.indexOf(playlist), 1)
+    },
+    activePlaylistsModal: function() {
+      document.getElementById('active-playlists-modal').classList.add('is-active')
     },
   }, // close methods
 }) // close vue instance

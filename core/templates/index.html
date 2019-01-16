@@ -2,12 +2,14 @@
 {% load staticfiles %}
 
 {% block title %}
-Stumbl - {{ block.super }}
+{{ block.super }}
 {% endblock title %}
 
 
 {% block content %}
 <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
+<input type="image" src="{% static 'images/recenter.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
+<img src="{% static 'images/Arrow.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
 <div id="vue-instance">
 
   <div id='test'></div>
@@ -19,21 +21,21 @@ Stumbl - {{ block.super }}
   <div id='location'></div>
   <div id='location2'></div>
 
-  <button class="button is-info open-pl-modal">Playlists</button>
+  <div id="main-buttons">
+    <button class="button is-info open-pl-modal">Playlists</button>
+    <button v-if="activePlaylists.length > 0" @click="activePlaylistsModal()" class="button is-info ">Active Playlists</button>
+  </div>
 
   <div class="control">
     <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
   </div>
 
-
   <div class="empty-space"></div>
   <div id="map"></div>
   <div class="empty-space"></div>
-  <div id='c-heading'></div>
-  <div id='c-bearing'></div>
-  <div id='c-finalheading'></div>
-  <div id='c-distance'></div>
-
+  <div class="has-text-centered">
+    <span id="chosen-destination">${currentHeading}</span><span id="distance">${distance}</span>
+  </div>
 
   {% comment %} Choose city modal {% endcomment %}
   <div id="choose-city-modal" class="modal">
@@ -44,7 +46,7 @@ Stumbl - {{ block.super }}
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" id="exit-choose-city-modal" aria-label="close">Back</button>
       </header>
-      <section id="city-list" class="modal-card-body">
+      <section class="modal-card-body">
         <div v-for="city in cities">
           <button @click="getCityPlaylists(city)" class="button is-success is-fullwidth">${city}</button>
         </div>
@@ -65,7 +67,7 @@ Stumbl - {{ block.super }}
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" id="exit-city-playlists-modal" aria-label="close">Back</button>
       </header>
-      <section id="city-playlists" class="modal-card-body">
+      <section class="modal-card-body">
         <div v-for="playlist in cityPlaylists">
           <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
         </div>
@@ -84,17 +86,15 @@ Stumbl - {{ block.super }}
       <header class="modal-card-head">
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-playlist-detail-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" id="exit-playlist-detail-modal" aria-label="close">Back</button>
       </header>
-      <section id="playlist-detail" class="modal-card-body">
-
+      <section class="modal-card-body">
         <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
           <div class="message-body has-background-grey-lighter">${destination.description}</div>
         </article>
-
       </section>
       <footer class="modal-card-foot">
         <button @click="applyGems()" class="button is-primary apply-playlist">Select playlist</button>
@@ -118,29 +118,19 @@ Stumbl - {{ block.super }}
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" id="exit-create-playlist-modal" aria-label="close">Back</button>
       </header>
-      <section id="create-playlist" class="modal-card-body">
-
-        {% comment %} <article class="message is-success is-small">
-          <div class="message-header">
-            <p>${item.name}</p>
-          </div>
-          <div class="message-body">${item.description}</div>
-        </article> {% endcomment %}
-
+      <section class="modal-card-body">
         <div class="field">
           <label class="label">Title</label>
           <div class="control">
             <input v-model="currentTitle" class="input" type="text" placeholder="Playlist name">
           </div>
         </div>
-
         <div class="field">
           <label class="label">City</label>
           <div class="control">
             <input v-model="currentCity" class="input is-success" type="text" placeholder="City" value="bulma">
           </div>
         </div>
-
         <div class="field">
           <label class="label">Description</label>
           <div class="control">
@@ -148,14 +138,11 @@ Stumbl - {{ block.super }}
               type="text" placeholder="Description"></textarea>
           </div>
         </div>
-
         <label class="checkbox">
           <input id="accessible" type="checkbox" value="true">
           Accessible
         </label>
-
       </section>
-
       <footer class="modal-card-foot">
         <button @click="addPlaylist()" class="button is-link">Create Playlist</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
@@ -171,40 +158,35 @@ Stumbl - {{ block.super }}
         <p class="modal-card-title">Customize *${currentPlaylist.title}*</p>
         <button class="button has-background-grey-lighter	" id="exit-edit-playlist-modal" aria-label="close">Back</button>
       </header>
-      <section id="create-playlist" class="modal-card-body">
-
+      <section class="modal-card-body">
         <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
           <div class="message-body columns">
-            <div class="column">${destination.description}</div>
+            <div class="column has-background-grey-lighter">${destination.description}</div>
             <div v-if="userOwns()" class="column is-one-quarter"> <button @click="deleteDestination(destination.pk)"
                 class="button is-danger cancel">Remove</button>
             </div>
           </div>
         </article>
-
         <label class="label">Add a gem</label>
         <div class="control">
-          <input id="modal-autocomplete" class="controls input" type="text" placeholder="choose destination">
+          <input id="modal-autocomplete" class="controls input is-success" type="text" placeholder="choose destination">
         </div>
-
         <div class="field">
           <label class="label">Name</label>
           <div class="control">
             <input v-model="currentDestination.name" id="current-place-name" class="input" type="text" placeholder="Place name">
           </div>
         </div>
-
         <div class="field">
           <label class="label">Address</label>
           <div class="control">
-            <input v-model="currentDestination.formatted_address" id="current-place-address" class="input is-success"
-              type="text" placeholder="Address" readonly>
+            <input v-model="currentDestination.formatted_address" id="current-place-address" class="input" type="text"
+              placeholder="Address" readonly>
           </div>
         </div>
-
         <div class="field">
           <label class="label">What makes this place a hidden gem?</label>
           <div class="control">
@@ -212,9 +194,7 @@ Stumbl - {{ block.super }}
               type="text" placeholder="Description"></textarea>
           </div>
         </div>
-
       </section>
-
       <footer class="modal-card-foot">
         <button @click="addDestination()" class="button is-link">Add Gem</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
@@ -227,11 +207,11 @@ Stumbl - {{ block.super }}
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Duplicate Playlist!
+        Playlist already exists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" id="exit-duplicate-playlist-modal" aria-label="close">Back</button>
       </header>
-      <section id="city-playlists" class="modal-card-body">
+      <section class="modal-card-body">
         <p>You have already created a playlist with that name!</p>
       </section>
       <footer class="modal-card-foot">
@@ -247,9 +227,9 @@ Stumbl - {{ block.super }}
       <header class="modal-card-head">
         Duplicate Destination
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-duplicate-destination-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" id="exit-duplicate-destination-modal" aria-label="close">Back</button>
       </header>
-      <section id="city-playlists" class="modal-card-body">
+      <section class="modal-card-body">
         <p>This playlist already has a destination with that name!</p>
       </section>
       <footer class="modal-card-foot">
@@ -277,10 +257,51 @@ Stumbl - {{ block.super }}
     </div>
   </div>
 
+  {% comment %} Playlist already applied modal {% endcomment %}
+  <div id="playlist-already-applied-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Playlist already applied
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" id="exit-playlist-already-applied-modal" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <p>That playlist has already been applied!</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} Active playlists modal {% endcomment %}
+  <div id="active-playlists-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Active playlists
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" id="exit-active-playlists-modal" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <div v-for="playlist in activePlaylists" class="columns">
+          <div class="column">
+            <button @click="getPlaylist(playlist)" class="button is-success">${playlist.title}</button>
+            <button @click="disablePlaylist(playlist)" class="button is-danger">Remove</button>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
 </div> <!-- close vue instance div -->
 
 <script>
-  var map, infoWindow, destWindow, placeCoords, places, autocomplete, lastAutocomplete;
+  var map, infoWindow, destWindow, placeCoords, autocomplete;
 
   function initAutocomplete() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -309,28 +330,6 @@ Stumbl - {{ block.super }}
       ]
     });
 
-    function loadDefaultPlaylist() {
-      $.get('/api/playlists/1/').then(function (playlist) {
-        for (let destination of playlist.destinations) {
-          let coords = { "lat": +destination.lat, "lng": +destination.lng };
-          var marker = new google.maps.Marker({
-            position: coords,
-            map: map,
-            icon: "https://img.icons8.com/color/48/000000/crystal.png",
-          });
-          let contentString = `${destination.name} - ${destination.description}`;
-          google.maps.event.addListener(marker, 'click', function () {
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-            });
-            infowindow.open(map, this);
-          });
-        }
-      });
-    }
-
-    loadDefaultPlaylist();
-
     var input = document.getElementById('pac-input');
     var searchBox = new google.maps.places.SearchBox(input);
     var modalAutocomplete = document.getElementById('modal-autocomplete')
@@ -345,11 +344,23 @@ Stumbl - {{ block.super }}
     searchBox.addListener('places_changed', function () {
       var places = searchBox.getPlaces();
       arrow.style.display = 'inline-block';
+      $('#pac-input').val('')
       let place_lat = places[0].geometry.location.lat()
       let place_lng = places[0].geometry.location.lng()
       placeCoords = { lat: place_lat, lng: place_lng }
-      let place_address = places[0].formatted_address
       let place_name = places[0].name
+      vm.currentHeading = place_name
+      let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`
+      let linkButton = `<a href="${link}" target="_blank" class="button is-info" id='maps-link'>Directions</a>`
+      if ($('#maps-link').length === 0) {
+        $('#main-buttons').append(linkButton)
+      }
+      else {
+        $('#maps-link').attr('href', link)
+      }
+
+      $('#chosen-destination').text(`${place_name}`)
+      roundify()
       destWindow = new google.maps.InfoWindow
       destWindow.setPosition({ lat: place_lat, lng: place_lng })
       destWindow.setContent(place_name)
@@ -380,6 +391,11 @@ Stumbl - {{ block.super }}
             lat: position.coords.latitude,
             lng: position.coords.longitude
           }
+          var marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Blue_circle_for_diabetes.svg/20px-Blue_circle_for_diabetes.svg.png",
+          })
           if (stayCentered) {
             map.setCenter(pos);
           }
@@ -395,6 +411,15 @@ Stumbl - {{ block.super }}
     map.addListener('dragstart', function () {
       stayCentered = false
     });
+
+    //listen's to the center me button and reenables recentering
+    recenterButton.addEventListener('click', getCentered, false);
+
+    function getCentered() {
+      console.log('working')
+      stayCentered = true;
+      recenter();
+    }
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
       infoWindow.setPosition(pos);
