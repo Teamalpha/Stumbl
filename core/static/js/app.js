@@ -45,7 +45,7 @@ if (window.DeviceOrientationEvent) {
       compassHeading = event.webkitCompassHeading
       var finalHeading = updatebearing - compassHeading
       if (finalHeading < 0) { finalHeading += 360 }
-      
+
       roundify()
       coneOfFocus.style.transform = `rotate(${(compassHeading)}deg)`
       arrow.style.transform = `rotate(${(finalHeading)}deg)`;
@@ -73,21 +73,7 @@ exitButtonListener('#exit-duplicate-playlist-modal', '#duplicate-playlist-modal'
 exitButtonListener('#exit-confirm-delete-playlist-modal', '#confirm-delete-playlist-modal')
 exitButtonListener('#exit-duplicate-destination-modal', '#duplicate-destination-modal')
 exitButtonListener('#exit-active-playlists-modal', '#active-playlists-modal')
-
-const cancelButtons = document.querySelectorAll('.cancel')
-
-cancelButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    $('#city-playlists-modal').removeClass('is-active')
-    $('#choose-city-modal').removeClass('is-active')
-    $('#playlist-detail-modal').removeClass('is-active')
-    $('#create-playlist-modal').removeClass('is-active')
-    $('#edit-playlist-modal').removeClass('is-active')
-    $('#duplicate-playlist-modal').removeClass('is-active')
-    $('#confirm-delete-playlist-modal').removeClass('is-active')
-    $('#duplicate-destination-modal').removeClass('is-active')
-  })
-})
+exitButtonListener('#exit-playlist-already-applied-modal', '#playlist-already-applied-modal')
 
 function capitalize(word) {
   capitalizedWord = word[0].toUpperCase() + word.slice(1).toLowerCase()
