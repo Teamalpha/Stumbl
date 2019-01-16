@@ -2,7 +2,6 @@ var updatebearing;
 
 function getMySpot() {
     navigator.geolocation.getCurrentPosition(function (position) {
-        const distance = document.getElementById('c-distance');
         // const location2 = document.getElementById('location2');
         // location.innerText = `My coordinates are: ${position.coords.latitude}, ${position.coords.longitude}`
         loNg = position.coords.longitude
@@ -10,7 +9,6 @@ function getMySpot() {
         if (placeCoords) {
             updatebearing = whichWaytoGo()
             updatedistance = getDistance(laT, loNg, placeCoords.lat, placeCoords.lng)
-            distance.innerText = `Destination Distance: ${updatedistance}`
             let headingString = parseFloat((updatedistance * 0.621371)).toFixed(2);
             vm.distance = `: ${headingString} mi`
         }
