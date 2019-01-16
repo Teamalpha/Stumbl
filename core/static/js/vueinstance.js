@@ -26,6 +26,7 @@ const vm = new Vue({
     newPlaylistPk: null,
     autocompleteText: '',
     distance: null,
+    searchField: '',
     currentHeading: null,
   },
   mounted: function () {
@@ -47,10 +48,11 @@ const vm = new Vue({
         })
     },
     getCityPlaylists: function (city) {
-      this.$http.get(`/api/playlists/?search=${city}`).then((response) => {
+      this.$http.get(`/api/playlists/?city=${city}`).then((response) => {
         this.cityPlaylists = response.data;
         this.currentCity = city
         document.getElementById('city-playlists-modal').classList.add('is-active')
+        this.searchField = ''
       })
         .catch((err) => {
           console.log(err);
@@ -242,5 +244,15 @@ const vm = new Vue({
     activePlaylistsModal: function() {
       document.getElementById('active-playlists-modal').classList.add('is-active')
     },
+    searchPlaylists: function() {
+      let isAccessible = document.getElementById('is-accessible').checked
+      if (!isAccessible) {isAccessible = ''}
+      this.$http.get(`/api/playlists/?city=${this.currentCity}&title=${this.searchField}&accessible=${isAccessible}`).then((response) => {
+        this.cityPlaylists = response.data;
+      })
+        .catch((err) => {
+          console.log(err);
+      })
+    }
   }, // close methods
 }) // close vue instance

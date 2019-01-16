@@ -6,6 +6,15 @@ from api.serializers import UserSerializer, DestinationSerializer, PlaylistSeria
 from core.models import User, Destination, Playlist, Vote
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework as djangofilters
+
+class PlaylistFilter(djangofilters.FilterSet):
+    city = djangofilters.CharFilter(lookup_expr='icontains')
+    title = djangofilters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Playlist
+        fields = ['city', 'title', 'accessible', ]
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -16,8 +25,8 @@ class UserViewSet(viewsets.ModelViewSet):
 class PlaylistViewSet(viewsets.ModelViewSet):
     queryset = Playlist.objects.all().order_by('-created')
     serializer_class = PlaylistSerializer
-    filter_backends = (filters.SearchFilter, )
-    search_fields = ('city', )
+    filter_backends = (djangofilters.DjangoFilterBackend, )
+    filterset_class = (PlaylistFilter)
 
 class DestinationViewSet(viewsets.ModelViewSet):
     queryset = Destination.objects.all().order_by('-created')

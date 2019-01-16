@@ -44,3 +44,8 @@ class Vote(TimeStamp):
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name="votes")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="voted_users")
 
+    class Meta:
+        unique_together = ('playlist', 'user',)
+
+    def __str__(self):
+        return f"User: {self.user}, Playlist: {self.playlist}"

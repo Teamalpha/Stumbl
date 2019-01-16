@@ -63,11 +63,20 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Search playlists
+      Search playlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" id="exit-city-playlists-modal" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
+        <div class="field">
+          <input class="input" type="text" id="search-field" placeholder="Search playlists" v-model="searchField">
+          <button class="button has-background-grey-lighter" @click="searchPlaylists()">Search</button>
+          <label class="checkbox">
+            <input id="is-accessible" type="checkbox" value="true">
+            Accessible
+          </label>
+          <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">Clear</button>
+        </div>
         <div v-for="playlist in cityPlaylists">
           <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
         </div>
@@ -155,7 +164,8 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Customize *${currentPlaylist.title}*</p>
+        <p>Customize *${currentPlaylist.title}*</p>
+        <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" id="exit-edit-playlist-modal" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
