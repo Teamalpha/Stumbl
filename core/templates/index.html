@@ -431,6 +431,9 @@
     }
     setTimeout(testSensors, 5000)
 
+    var markerCount = false;
+    var markerArray = []
+
     function recenter() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -438,11 +441,20 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude
           }
-          var marker = new google.maps.Marker({
-            position: pos,
-            map: map,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Blue_circle_for_diabetes.svg/20px-Blue_circle_for_diabetes.svg.png",
-          })
+          if (markerCount === false) {
+            for (let gem of markerArray) {
+              gem.setMap(null)
+              console.log('nulling!')
+            }
+            markerArray = [];
+            var marker = new google.maps.Marker({
+              position: pos,
+              map: map,
+              icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Blue_circle_for_diabetes.svg/20px-Blue_circle_for_diabetes.svg.png",
+            });
+            markerArray.push(marker);
+            console.log(markerArray[0].position.lat());
+          }
           if (stayCentered) {
             map.setCenter(pos);
           }
