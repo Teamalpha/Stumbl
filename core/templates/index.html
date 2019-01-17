@@ -2,15 +2,21 @@
 {% load staticfiles %}
 
 {% block title %}
-{{ block.super }}
+  {{ block.super }}
 {% endblock title %}
 
 
 {% block content %}
-<img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
-<input type="image" src="{% static 'images/recenter.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
-<img src="{% static 'images/cone-of-focus.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
 <div id="vue-instance">
+
+<img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
+<input type="image" src="{% static 'images/center.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
+<input type="image" src="{% static 'images/thick-about.png' %}" id="about-button" class="absolute" @click="openAboutModal()"></input>
+
+<a target="_blank" id='maps-link'>
+  <input type="image" src="{% static 'images/bw-google-maps.png' %}" id="directions-button" class="absolute" @click="openAboutModal()"></input>
+</a>
+<img src="{% static 'images/cone-of-focus.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
 
   <div id='test'></div>
   <div id='alpha'></div>
@@ -21,22 +27,24 @@
   <div id='location'></div>
   <div id='location2'></div>
 
-  <div id="main-buttons">
-    <button class="button is-info open-pl-modal">Playlists</button>
-    <button v-if="activePlaylists.length > 0" @click="activePlaylistsModal()" class="button is-info ">Active Playlists</button>
-    <button class="button is-info about-modal" @click="openAboutModal()"><strong>?</strong></button>
+  <div class="control center-children">
+    <input id="pac-input" class="controls top-layer input is-info" type="text" placeholder="Where are you headed?">
   </div>
-
-  <div class="control">
-    <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
-  </div>
-
   <div class="empty-space"></div>
+
   <div id="map"></div>
   <div class="empty-space"></div>
   <div class="has-text-centered">
     <span id="chosen-destination">${currentHeading}</span><span id="distance">${distance}</span>
   </div>
+
+  <div id="main-buttons columns">
+    <div class="column center-children">
+      <button class="button is-info open-pl-modal">Playlists</button>
+      {% comment %} <button v-if="activePlaylists.length > 0" @click="activePlaylistsModal()" class="button is-info">Active Playlists</button> {% endcomment %}
+    </div>
+  </div>
+
   {% comment %} Info Modal {% endcomment %}
   <div id="about-modal" class="modal">
     <div class="modal-background"></div>
