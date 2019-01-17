@@ -449,7 +449,7 @@
         window.alert('This device does not have orientation sensors. Please use this app on a mobile device!')
       }
     }
-    setTimeout(testSensors, 5000)
+    {% comment %} setTimeout(testSensors, 5000) {% endcomment %}
 
     var markerCount = false;
     var markerArray = []
@@ -464,7 +464,6 @@
           if (markerCount === false) {
             for (let gem of markerArray) {
               gem.setMap(null)
-              console.log('nulling!')
             }
             markerArray = [];
             var marker = new google.maps.Marker({
@@ -473,7 +472,6 @@
               icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Blue_circle_for_diabetes.svg/20px-Blue_circle_for_diabetes.svg.png",
             });
             markerArray.push(marker);
-            console.log(markerArray[0].position.lat());
           }
           if (stayCentered) {
             map.setCenter(pos);
