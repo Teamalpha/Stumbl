@@ -28,6 +28,7 @@ html, body {
     padding: 0;
     display: none;
     transform-origin: bottom center;
+    z-index: 100;
 }
 
 .button {
@@ -86,8 +87,8 @@ html, body {
 }
 
 #cone-of-focus {
-  height: 40px;
-  width: 40px;
+  height: 80px;
+  width: 80px;
   display: none;
 }
 

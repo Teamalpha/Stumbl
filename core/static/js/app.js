@@ -18,8 +18,9 @@ function roundify() {
   recenterButton.style.left = `${originX - 20 - radius * .91}px`
   recenterButton.style.display = 'inline-block'
 
-  coneOfFocus.style.top = `${originY - 20 - radius * .91}px`
-  coneOfFocus.style.left = `${originX - 20 + radius * .91}px`
+  coneOfFocus.style.top = `${originY - 40 - radius * .91}px`
+  coneOfFocus.style.left = `${originX - 40 + radius * .91}px`
+  coneOfFocus.style.paddingBottom = '40px';
   coneOfFocus.style.display = 'inline-block'
 }
 
@@ -34,7 +35,7 @@ window.ondeviceorientationabsolute = function (event) {
   if (finalHeading > 360) { finalHeading -= 360 }
 
   roundify()
-  coneOfFocus.style.transform = `rotate(${(compassHeading)}deg)`
+  coneOfFocus.style.transform = `rotate(${(360 - compassHeading)}deg)`
   arrow.style.transform = `rotate(${(finalHeading)}deg)`
 };
 
