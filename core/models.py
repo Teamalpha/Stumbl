@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
+
 class TimeStamp(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True, null=True)
@@ -17,6 +19,7 @@ class Playlist(TimeStamp):
     description = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="playlists")
     accessible = models.BooleanField(default=False)
+    default = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('user', 'title',)
@@ -41,8 +44,8 @@ class Destination(TimeStamp):
         return self.name
 
 class Vote(TimeStamp):
-    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name="votes")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="voted_users")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='votes')
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='playlist_votes')
 
     class Meta:
         unique_together = ('playlist', 'user',)

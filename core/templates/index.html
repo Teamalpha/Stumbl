@@ -37,8 +37,8 @@
   <div class="has-text-centered">
     <span id="chosen-destination">${currentHeading}</span><span id="distance">${distance}</span>
   </div>
-{% comment %} Info Modal {% endcomment %}
-    <div id="about-modal" class="modal">
+  {% comment %} Info Modal {% endcomment %}
+  <div id="about-modal" class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -106,7 +106,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-      Search playlists
+        Search playlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" id="exit-city-playlists-modal" aria-label="close">Back</button>
       </header>
@@ -121,7 +121,7 @@
           <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">Clear</button>
         </div>
         <div v-for="playlist in cityPlaylists">
-          <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
+          <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -137,10 +137,13 @@
     <div class="modal-card">
       <header class="modal-card-head">
         ${currentPlaylist.title}
+        <button @click="toggleVote(currentPlaylist)" class="button is-success">${liked}</button>
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" id="exit-playlist-detail-modal" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
+        <h3>Description: ${currentPlaylist.description}</h3>
+        <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
           <div class="message-header">
             <p>${destination.name}</p>
@@ -436,13 +439,13 @@
       vm.currentDestination = autocomplete.getPlace();
     })
 
-    function testSensors () {
-      navigator.permissions.query({name:'geolocation'}).then(function(result) {
+    function testSensors() {
+      navigator.permissions.query({ name: 'geolocation' }).then(function (result) {
         if (result.state == 'denied') {
           window.alert("Geolocation data cannot be accessed. Please provide geolocation permission!");
         }
       });
-      if(!( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+      if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
         window.alert('This device does not have orientation sensors. Please use this app on a mobile device!')
       }
     }

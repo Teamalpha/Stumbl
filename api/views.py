@@ -19,8 +19,6 @@ class PlaylistFilter(djangofilters.FilterSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    filter_backends = (filters.SearchFilter, )
-    search_fields = ('username', )
 
 class PlaylistViewSet(viewsets.ModelViewSet):
     queryset = Playlist.objects.all().order_by('-created')
