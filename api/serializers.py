@@ -17,10 +17,11 @@ class VoteSerializer(serializers.ModelSerializer):
 class PlaylistSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(slug_field="username", queryset=User.objects.all())
     destinations = DestinationSerializer(read_only=True, many=True)
+    playlist_votes = VoteSerializer(read_only=True, many=True)
 
     class Meta:
         model = Playlist
-        fields = ('user', 'title', 'city', 'created', 'description', 'destinations', 'accessible', 'pk',)
+        fields = ('user', 'title', 'city', 'created', 'description', 'destinations', 'accessible', 'playlist_votes', 'pk',)
 
 class UserSerializer(serializers.ModelSerializer):
     votes = VoteSerializer(read_only=True, many=True)
@@ -28,4 +29,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'playlists', 'votes', 'pk',)
+        fields = ('username', 'votes', 'playlists', 'pk',)

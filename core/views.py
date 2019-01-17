@@ -5,7 +5,7 @@ from django.db.models import Count
 # Create your views here.
 
 def index(request):
-    playlists = Playlist.objects.all().annotate(num_votes=Count('votes')).order_by('-num_votes', '-created')
+    playlists = Playlist.objects.all().annotate(num_votes=Count('playlist_votes')).order_by('default', '-num_votes', '-created')
     return render(request, 'index.html', 
     { 
         'google_api_key': settings.GOOGLE_MAPS_API_KEY,

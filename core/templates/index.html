@@ -121,7 +121,7 @@
           <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">Clear</button>
         </div>
         <div v-for="playlist in cityPlaylists">
-          <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title}</button>
+          <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
         </div>
       </section>
       <footer class="modal-card-foot">
