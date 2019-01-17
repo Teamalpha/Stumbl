@@ -8,10 +8,12 @@
 
 {% block content %}
 <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
-<input type="image" src="{% static 'images/recenter.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
-<input type="image" src="{% static 'images/about.png' %}" id="about-button" class="absolute" @click="openAboutModal()"></input>
-<input type="image" src="{% static 'images/google-maps.png' %}" id="directions-button" class="absolute" @click="openAboutModal()"><a href="#" target="_blank" id='maps-link'></a></input>
+<input type="image" src="{% static 'images/center.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
+<input type="image" src="{% static 'images/thick-about.png' %}" id="about-button" class="absolute" @click="openAboutModal()"></input>
 
+<a href="#" target="_blank" id='maps-link'>
+  <input type="image" src="{% static 'images/google-maps.png' %}" id="directions-button" class="absolute" @click="openAboutModal()"></input>
+</a>
 <img src="{% static 'images/cone-of-focus.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
 <div id="vue-instance">
 
@@ -25,7 +27,7 @@
   <div id='location2'></div>
 
   <div class="control center-children">
-    <input id="pac-input" class="controls top-layer input" type="text" placeholder="Choose a final destination">
+    <input id="pac-input" class="controls top-layer input is-info" type="text" placeholder="Where are you headed?">
   </div>
   <div class="empty-space"></div>
 
@@ -41,7 +43,6 @@
       {% comment %} <button v-if="activePlaylists.length > 0" @click="activePlaylistsModal()" class="button is-info">Active Playlists</button> {% endcomment %}
     </div>
   </div>
-
 
   {% comment %} Info Modal {% endcomment %}
   <div id="about-modal" class="modal">

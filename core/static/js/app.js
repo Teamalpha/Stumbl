@@ -16,10 +16,10 @@ function roundify() {
   arrow.style.paddingBottom = `${radius - 35}px`
   arrow.style.top = `${originY - 60 - radius}px`
   arrow.style.left = `${originX - 30}px`
+  
   recenterButton.style.top = `${originY - 20 + radius * .91}px`
   recenterButton.style.left = `${originX - 20 - radius * .91}px`
   recenterButton.style.display = 'inline-block'
-
 
   aboutButton.style.top = `${originY - 20 - radius * .91}px`
   aboutButton.style.left = `${originX - 20 - radius * .91}px`
