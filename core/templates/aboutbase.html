@@ -5,23 +5,43 @@
   <head>
     
     <title>
-      {% block title %} Stumbl {% endblock title %}
+      {% block title %} LocalGems {% endblock title %}
     </title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    {% comment %} check if there are better ways to prevent user scaling {% endcomment %}
+    <meta charset="utf-8">
+    <meta name="google-site-verification" content="LxRKXxbx-5TCeA5NckaoDS_KytGGYo-N3X4J7rtMd3Q" />
+    <meta name="google-site-verification" content="T9nLocSBThIav4QXdlONfHdcJ1wsTi4L4C7fntxV9Mo" />
+    
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"/>
     <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="{% static 'js/compass.js' %}" defer></script>
+    <script src="{% static 'js/vueinstance.js' %}" defer></script>
+    <script src="{% static 'js/app.js' %}" defer></script>
     {% block header %}{% endblock header %}
   </head>
 
 <div class="nav">
   <div class="nav-header">
     <div class="nav-title">
-      <img class="pr1" src="{% static 'images/favicon.ico' %}" width="30" height="30"><strong class="brand"> Stumbl</strong>
+      <img class="pr1" src="{% static 'images/LocalGems_Logo.png' %}" width="150" height="40">
     </div>
+  </div>
+  
+  <div class="nav-btn">
+    <label for="nav-check">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
   </div>
 
   <input type="checkbox" id="nav-check">

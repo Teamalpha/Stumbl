@@ -403,9 +403,13 @@
       searchBox.setBounds(map.getBounds());
     });
 
+    var currentPlace = [];
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     searchBox.addListener('places_changed', function () {
+      for (let place of currentPlace) {
+        place.setMap(null)
+      }
       var places = searchBox.getPlaces();
       arrow.style.display = 'inline-block';
       $('#pac-input').val('')
@@ -414,23 +418,33 @@
       placeCoords = { lat: place_lat, lng: place_lng }
       let place_name = places[0].name
       vm.currentHeading = place_name
-      let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`    
-      $('#maps-link').attr('href', link)
+      let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`
+      let linkButton = `<a href="${link}" target="_blank" class="button is-info" id='maps-link'>Directions</a>`
+      if ($('#maps-link').length === 0) {
+        $('#main-buttons').append(linkButton)
+      }
+      else {
+        $('#maps-link').attr('href', link)
+      }
       $('#chosen-destination').text(`${place_name}`)
       roundify()
-      document.getElementById("directions-button").src='static/images/google-maps.png';
-      destWindow = new google.maps.InfoWindow
-      destWindow.setPosition({ lat: place_lat, lng: place_lng })
-      destWindow.setContent(place_name)
-      destWindow.open(map)
-      map.setCenter({ lat: place_lat, lng: place_lng });
-
       let destination = ({ lat: place_lat, lng: place_lng });
       var marker = new google.maps.Marker({
         position: destination,
         map: map,
         icon: "https://images2.imgbox.com/a5/4d/uDuAc98v_o.png",
       });
+      currentPlace.push(marker);
+
+      let contentString = `${place_name}`;
+
+      google.maps.event.addListener(marker, 'click', function () {
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+          infowindow.open(map, this);
+        });
+
     });
 
 
