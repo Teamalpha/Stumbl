@@ -284,8 +284,10 @@ const vm = new Vue({
           this.liked = 'like'
           this.newVote.pk = response.data.pk
           this.currentPlaylist.playlist_votes.splice(this.currentPlaylist.playlist_votes.indexOf(this.newVote), 1)
+          // this.cityPlaylists.indexOf(playlist).playlist_votes.splice(this.cityPlaylists.indexOf(playlist).playlist_votes.indexOf(this.newVote), 1)
           this.userVotes.splice(this.userVotes.indexOf(this.newVote), 1)
           delete this.newVote['pk']
+          this.getCityPlaylists(this.currentCity) // Extra api hit - If performance unsatisfactory, will look for better solution.
         })
         .catch((err) => {
           console.log(err);
@@ -296,8 +298,12 @@ const vm = new Vue({
           this.liked = 'Unlike'
           this.newVote.pk = response.data.pk
           this.currentPlaylist.playlist_votes.push(this.newVote)
+          // let playlistIndex = this.cityPlaylists.indexOf(playlist)
+          // console.log('playlist index:', playlistIndex)
+          // this.cityPlaylists[playlistIndex].playlist_votes.push(this.newVote)
           this.userVotes.push(this.newVote)
           this.voteToDeletePk = response.data.pk
+          this.getCityPlaylists(this.currentCity) // Extra api hit - If performance unsatisfactory, will look for better solution.
         })
         .catch((err) => {
           console.log(err);
