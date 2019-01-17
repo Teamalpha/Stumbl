@@ -14,7 +14,7 @@
 <input type="image" src="{% static 'images/thick-about.png' %}" id="about-button" class="absolute" @click="openAboutModal()"></input>
 
 <a target="_blank" id='maps-link'>
-  <input type="image" src="{% static 'images/bw-google-maps.png' %}" id="directions-button" class="absolute" @click="openAboutModal()"></input>
+  <input type="image" src="{% static 'images/bw-google-maps.png' %}" id="directions-button" class="absolute"></input>
 </a>
 <img src="{% static 'images/cone-of-focus.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
 
@@ -420,6 +420,7 @@
       vm.currentHeading = place_name
       let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`
       let linkButton = `<a href="${link}" target="_blank" class="button is-info" id='maps-link'>Directions</a>`
+      document.getElementById("directions-button").src="static/images/google-maps.png";
       if ($('#maps-link').length === 0) {
         $('#main-buttons').append(linkButton)
       }
