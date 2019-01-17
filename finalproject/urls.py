@@ -46,7 +46,6 @@ urlpatterns = [
     path('accounts/password/done/', PasswordResetCompleteView,
         {'template_name': 'registration/password_reset_complete.html'},
         name="password_reset_complete"),
-    path('accounts/', include('registration.backends.simple.urls')),
     path('accounts/register/', MyRegistrationView.as_view(), name='registration_register'),
     path('accounts/', include('registration.backends.simple.urls')),
     path('api/', include((router.urls, 'core'), namespace='api')),

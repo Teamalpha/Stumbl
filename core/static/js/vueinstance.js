@@ -15,6 +15,8 @@ const vm = new Vue({
     currentPlaylist: {},
     currentPlaylistDestinations: [],
     playlists: [],
+    userVotes: [],
+    newVote: {},
     newPlaylist: {},
     currentDestination: {},
     accessible: false,
@@ -28,6 +30,7 @@ const vm = new Vue({
     distance: null,
     searchField: '',
     currentHeading: null,
+    liked: 'Like'
   },
   mounted: function () {
     this.getCities()
@@ -97,6 +100,7 @@ const vm = new Vue({
           if (!this.cities.includes(this.currentPlaylist.city)) {
             this.cities.push(this.currentPlaylist.city)
           }
+          // clear variables
           this.currentDestination = {'name': ''}
           this.destinationDescription = ''
           this.currentDescription = ''
@@ -114,7 +118,7 @@ const vm = new Vue({
     },
     deletePlaylist: function() {
       if (requestUser === this.currentPlaylist.user) {
-        this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
+        this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then(() => {
           this.currentPlaylist = {};
           this.$http.get(`/api/playlists/?search=${this.currentCity}`).then((response) => {
             this.cityPlaylists = response.data;
@@ -249,6 +253,31 @@ const vm = new Vue({
         .catch((err) => {
           console.log(err);
       })
+    },
+    toggleVote: function() {
+      this.newVote = {
+        "user": requestUserPk,
+        "playlist": this.currentPlaylist.pk,
+      }
+      if (this.userVotes.length === 0) {
+        this.$http.get(`api/users/${requestUserPk}`).then((response) => {
+          console.log(response.data)
+          this.userVotes = response.data
+        })
+      
+      // if (this.isUniqueDestination()) {
+      //   this.currentPlaylist.destinations.push(this.newDestination)
+      //   this.$http.post(`api/destinations/`, this.newDestination).then((response) => {
+      //     document.getElementById('modal-autocomplete').value = ''
+      //     this.currentDestination = {'name': ''}
+      //     this.destinationDescription = ''
+      //     this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1].pk = response.data.pk
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   })
+      // }
+      }
     },
     openAboutModal: function() {
       document.getElementById('about-modal').classList.add('is-active')
