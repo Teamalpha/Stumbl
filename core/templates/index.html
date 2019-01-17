@@ -42,37 +42,37 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <strong>About LocalGems</strong>
+        <strong>LocalGems: Enjoy the Journey</strong>
         <p class="modal-card-title"></p>
       </header>
       <section class="modal-card-body">
-        <p>LocalGems is an app about discovering things on the journey - not about "turn-by-turn" directions.</p>
+        <h3>About Local Gems</h3>
         <br>
-        <p>Imagine this: You're walking around a new city and looking for cool places to discover. You have the ability
-          to load up curated "playlists" of amazing locations to check out as you eventually make your way to a
-          wonderful restaurant or event. This is what the magic of travel is all about. This is how to discover
-          LocalGems.</p>
+        <p><a href="#What-is-LocalGems">What is LocalGems?</a></p>
         <br>
-        <h3><strong>How to Use LocalGems</strong></h3>
-        <p> Make sure you're in the city you'd like to explore. This app will detect where you are standing, and you
-          will be able to see your position on the map.
-          <br>
-          <br>
-          <h3><strong>Pick Your Destination</strong></h3>
-          <p> In the search field above the map, pick your FINAL destination. Now LocalGems will help you discover
-            amazing places along the way.
-            <br>
-            <br>
-            <h3><strong>Navigation Arrow</strong></h3>
-            <p> Once you've chosen your final destination a navigation arrow will appear around the map, which will
-              point to your final destination so you know the general direction in which to walk.
-              <br>
-              <br>
-              <h3><strong>Discover Cool Places to Check Out!</strong></h3>
-              <p>In the top right corner of the screen click "Playlists" and choose the city. Then, choose a playlist
-                that matches the mood you're in. As you walk along towards your final destination, LocalGems will
-                populate the map so that you can check them out along the way.
-                <br>
+        <p><a href="#How-to-use">How to Use LocalGems</a></p>
+        <br>
+        <p><a href="#Interface">The LocalGems Interface</a></p>
+        <br>
+        <p><a href="#Navigation-Arrow">The Navigation Arrow</a></p>
+        <br>
+        <p><a href="#Turn-by-turn">Get Turn-by-Turn Directions</a></p>
+        <br>
+        <br>
+        <h3><strong><a name="What-is-LocalGems">What is LocalGems?</a></strong></h3>
+        <p>LocalGems helps you experience the magic of travel by discovering amazing local places along the way to a destination.  Imagine you're in a new city, and you have dinner reservations, and you'd like to explore before dinner.  Enter the restaurant into LocalGems as your "final destination" and then load a Playlist containing amazing local places to explore as you make your way towards the restaurant.  There are Playlists for every mood, all searchable by city.  Enjoy the journey with LocalGems.</p>
+        <br>
+        <h3><strong><a name="How-to-use">How to use LocalGems</a></strong></h3>
+        <p>Choose your final destination from the dropdown menu, and then click "Playlists."  A Playlist is a collection of amazing local businesses, experiences, and places.  Choose a Playlist to suit your mood.</p>
+        <br>
+        <h3><strong><a name="Interface">LocalGems Interface</a></strong></h3>
+        <p>The LocalGems map shows your position.  Your destination is represented by a gold star on the map, and the LocalGems in your loaded Playlist are represented by blue diamonds on the map.  Change out a Playlist or add a new one at any time.</p>
+        <br>
+        <h3><strong><a name="Navigation-Arrow">Navigation Arrow</a></strong></h3>
+        <p>The black arrow that appears around your map is the Navigation Arrow.  It points in the direction of your final destination so you know which way to walk, and your distance to destination is found below the map.</p>
+        <br>
+        <h3><strong><a name="Turn-by-turn">Get Turn-by-Turn Directions</a></strong></h3>
+        <p>Sometimes you've had enough exploring and are ready to walk straight to your destiation.  If a final destiation has been chosen, the "Directions" button will be available for turn-by-turn directions.</p>
       </section>
       <footer class="modal-card-foot">
         <button class="button has-background-grey-lighter" id="exit-about-modal" aria-label="close">Close</button>
@@ -451,6 +451,9 @@
     }
     setTimeout(testSensors, 5000)
 
+    var markerCount = false;
+    var markerArray = []
+
     function recenter() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -458,11 +461,20 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude
           }
-          var marker = new google.maps.Marker({
-            position: pos,
-            map: map,
-            icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Blue_circle_for_diabetes.svg/20px-Blue_circle_for_diabetes.svg.png",
-          })
+          if (markerCount === false) {
+            for (let gem of markerArray) {
+              gem.setMap(null)
+              console.log('nulling!')
+            }
+            markerArray = [];
+            var marker = new google.maps.Marker({
+              position: pos,
+              map: map,
+              icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Blue_circle_for_diabetes.svg/20px-Blue_circle_for_diabetes.svg.png",
+            });
+            markerArray.push(marker);
+            console.log(markerArray[0].position.lat());
+          }
           if (stayCentered) {
             map.setCenter(pos);
           }
