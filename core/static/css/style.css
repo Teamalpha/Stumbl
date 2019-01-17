@@ -1,3 +1,4 @@
+
 #map {
     width: 88%;
     border-radius: 100%;
@@ -10,6 +11,7 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
+    /* background-color: 	#89cff0; */
 }
 
 .absolute {
@@ -26,6 +28,7 @@ html, body {
     padding: 0;
     display: none;
     transform-origin: bottom center;
+    z-index: 100;
 }
 
 .button {
@@ -84,8 +87,8 @@ html, body {
 }
 
 #cone-of-focus {
-  height: 40px;
-  width: 40px;
+  height: 80px;
+  width: 80px;
   display: none;
 }
 
@@ -187,3 +190,9 @@ html, body {
     height: auto;
     overflow-y: auto;
   }
+.modal-card-body {
+  font-family: monospace;
+}
+.modal-card-head {
+  font-family: monospace;
+}
