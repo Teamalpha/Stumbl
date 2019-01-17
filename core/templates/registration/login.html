@@ -1,0 +1,58 @@
+{% extends 'base.html' %} 
+{% block title %}
+    Login - {{ block.super }} 
+{% endblock title %}
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<div class="columns is-mobile">
+<div class ="box container has-background-grey-lighter avenir"> 
+    <h2 class="title has-text-dark"><i class="far fa-gem en-color"></i>LocalGems Login</h2>
+    <form role="form" action="" method="post">
+        {% csrf_token %}
+        <div class="edit-form">
+        {{ form.as_p}}
+    </div>
+        <br>
+        <button class= " button is-rounded is-info" type="submit">Submit</button>
+    </form>
+
+    <p>
+        <br>
+      <a href="{% url 'password_reset' %}">
+        Forgot your password?
+      </a>
+    </p>
+    <p>
+            <a href="{% url 'registration_register' %}">
+                    Sign up!
+                   </a>
+    </p>
+
+</div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+    
+{% endblock content %}
+
+
+{% comment %} <h1>Login</h1>
+    <form role="form" action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+    </form> {% endcomment %}

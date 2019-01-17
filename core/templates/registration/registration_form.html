@@ -1,0 +1,41 @@
+{% extends 'base.html' %} 
+
+{% block title %}
+Registration Form - {{ block.super }} 
+{% endblock title %}
+
+{% block content %}
+
+<div class='columns is-mobile'></div>
+<div class ="box container has-background-grey-lighter avenir"> 
+     <h1 class= "title"> Register Account</h1>
+     
+     
+    <form role="form" action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <br>
+        <br>
+        <button class= " button is-rounded is-info ehi-no" type="submit">Submit</button>
+    </form>
+
+</div>
+</div>
+
+<br>
+<br>
+<br>
+
+
+
+{% endblock content %}
+
+
+{% comment %} 
+<h1>Registration Form</h1>
+<form role="form" action="" method="post">
+{% csrf_token %}
+
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form> {% endcomment %}
