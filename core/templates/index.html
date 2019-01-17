@@ -321,6 +321,29 @@
     </div>
   </div>
 
+  {% comment %} login required modal {% endcomment %}
+  <div id="login-required-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Login required
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('login-required-modal')" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <p>You must be logged in to do that! Please login to use this feature.</p>
+        <br>
+        <a href="{% url 'auth_login' %}"><strong>Login</strong></a>
+        <br>
+        <a href="{% url 'registration_register' %}"><strong>Sign up</strong></a>
+
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
   {% comment %} Playlist already applied modal {% endcomment %}
   <div id="playlist-already-applied-modal" class="modal">
     <div class="modal-background"></div>

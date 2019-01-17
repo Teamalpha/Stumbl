@@ -35,7 +35,9 @@ const vm = new Vue({
   },
   mounted: function () {
     this.getCities()
-    this.getUserVotes()
+    if (requestUserPk !== -1) {
+      this.getUserVotes()
+    }
   },
   methods: {
     getCities: function () {
@@ -62,6 +64,12 @@ const vm = new Vue({
         .catch((err) => {
           console.log(err);
         })
+    },
+    openModal: function(id) {
+      document.getElementById(id).classList.add('is-active')
+    },
+    closeModal: function(id) {
+      document.getElementById(id).classList.remove('is-active')
     },
     voteExists: function() {
       if (this.userVotes.length > 0) {
@@ -96,38 +104,42 @@ const vm = new Vue({
       }
       return true
     },
-    addPlaylist: function () {
-      this.newPlaylist = {
-        "user": requestUser,
-        "title": capitalize(this.currentTitle),
-        "city": capitalize(this.currentCity),
-        "description": this.currentDescription,
-        "accessible": document.getElementById('accessible').checked,
-      }
-      if (this.isUniquePlaylist()) {
-          this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
-          this.newPlaylist = response.data
-          this.currentPlaylist = this.newPlaylist
-          this.currentPlaylist.pk = response.data.pk
-          this.playlists.push(this.currentPlaylist)
-          this.cityPlaylists.push(this.currentPlaylist)
-          if (!this.cities.includes(this.currentPlaylist.city)) {
-            this.cities.push(this.currentPlaylist.city)
-          }
-          // clear variables
-          this.currentDestination = {'name': ''}
-          this.destinationDescription = ''
-          this.currentDescription = ''
-          this.accessible = false
-          document.getElementById('accessible').checked = false
-          document.getElementById('create-playlist-modal').classList.remove('is-active')
-          document.getElementById('playlist-detail-modal').classList.remove('is-active')
-          document.getElementById('playlist-detail-modal').classList.add('is-active')
-          document.getElementById('edit-playlist-modal').classList.add('is-active')
-        })
-        .catch((err) => {
-          console.log(err);
-        })
+      addPlaylist: function () {
+      if (requestUserPk !== -1) {
+        this.newPlaylist = {
+          "user": requestUser,
+          "title": capitalize(this.currentTitle),
+          "city": capitalize(this.currentCity),
+          "description": this.currentDescription,
+          "accessible": document.getElementById('accessible').checked,
+        }
+        if (this.isUniquePlaylist()) {
+            this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
+            this.newPlaylist = response.data
+            this.currentPlaylist = this.newPlaylist
+            this.currentPlaylist.pk = response.data.pk
+            this.playlists.push(this.currentPlaylist)
+            this.cityPlaylists.push(this.currentPlaylist)
+            if (!this.cities.includes(this.currentPlaylist.city)) {
+              this.cities.push(this.currentPlaylist.city)
+            }
+            // clear variables
+            this.currentDestination = {'name': ''}
+            this.destinationDescription = ''
+            this.currentDescription = ''
+            this.accessible = false
+            document.getElementById('accessible').checked = false
+            document.getElementById('create-playlist-modal').classList.remove('is-active')
+            document.getElementById('playlist-detail-modal').classList.remove('is-active')
+            document.getElementById('playlist-detail-modal').classList.add('is-active')
+            document.getElementById('edit-playlist-modal').classList.add('is-active')
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+        }
+      } else {
+        this.openModal('login-required-modal')
       }
     },
     deletePlaylist: function() {
@@ -232,7 +244,12 @@ const vm = new Vue({
       document.getElementById('edit-playlist-modal').classList.add('is-active')
     },
     newPlaylistModal: function() {
-      document.getElementById('create-playlist-modal').classList.add('is-active')
+      if (requestUserPk !== -1) {
+        document.getElementById('create-playlist-modal').classList.add('is-active')
+      } else {
+        this.openModal('login-required-modal')
+      }
+
     },
     closeModals: function() {
       document.getElementById('city-playlists-modal').classList.remove('is-active')
