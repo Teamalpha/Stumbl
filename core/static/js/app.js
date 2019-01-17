@@ -3,6 +3,8 @@ let arrow = document.getElementById('arrow')
 let mapDiv = $('#map')
 let stayCentered = true
 let recenterButton = document.getElementById('recenter-button')
+let aboutButton = document.getElementById('about-button')
+let directionsButton = document.getElementById('directions-button')
 let coneOfFocus = document.getElementById('cone-of-focus')
 
 function roundify() {
@@ -14,9 +16,18 @@ function roundify() {
   arrow.style.paddingBottom = `${radius - 35}px`
   arrow.style.top = `${originY - 60 - radius}px`
   arrow.style.left = `${originX - 30}px`
-  recenterButton.style.top = `${originY - 20 - radius * .91}px`
+  recenterButton.style.top = `${originY - 20 + radius * .91}px`
   recenterButton.style.left = `${originX - 20 - radius * .91}px`
   recenterButton.style.display = 'inline-block'
+
+
+  aboutButton.style.top = `${originY - 20 - radius * .91}px`
+  aboutButton.style.left = `${originX - 20 - radius * .91}px`
+  aboutButton.style.display = 'inline-block'
+
+  directionsButton.style.top = `${originY - 20 + radius * .91}px`
+  directionsButton.style.left = `${originX - 20 + radius * .91}px`
+  directionsButton.style.display = 'inline-block'
 
   coneOfFocus.style.top = `${originY - 40 - radius * .91}px`
   coneOfFocus.style.left = `${originX - 40 + radius * .91}px`

@@ -2,13 +2,16 @@
 {% load staticfiles %}
 
 {% block title %}
-{{ block.super }}
+  {{ block.super }}
 {% endblock title %}
 
 
 {% block content %}
 <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
 <input type="image" src="{% static 'images/recenter.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
+<input type="image" src="{% static 'images/about.png' %}" id="about-button" class="absolute" @click="openAboutModal()"></input>
+<input type="image" src="{% static 'images/google-maps.png' %}" id="directions-button" class="absolute" @click="openAboutModal()"><a href="#" target="_blank" id='maps-link'></a></input>
+
 <img src="{% static 'images/cone-of-focus.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
 <div id="vue-instance">
 
@@ -21,22 +24,25 @@
   <div id='location'></div>
   <div id='location2'></div>
 
-  <div id="main-buttons">
-    <button class="button is-info open-pl-modal">Playlists</button>
-    <button v-if="activePlaylists.length > 0" @click="activePlaylistsModal()" class="button is-info ">Active Playlists</button>
-    <button class="button is-info about-modal" @click="openAboutModal()"><strong>?</strong></button>
+  <div class="control center-children">
+    <input id="pac-input" class="controls top-layer input" type="text" placeholder="Choose a final destination">
   </div>
-
-  <div class="control">
-    <input id="pac-input" class="controls top-layer input" type="text" placeholder="choose destination">
-  </div>
-
   <div class="empty-space"></div>
+
   <div id="map"></div>
   <div class="empty-space"></div>
   <div class="has-text-centered">
     <span id="chosen-destination">${currentHeading}</span><span id="distance">${distance}</span>
   </div>
+
+  <div id="main-buttons columns">
+    <div class="column center-children">
+      <button class="button is-info open-pl-modal">Playlists</button>
+      {% comment %} <button v-if="activePlaylists.length > 0" @click="activePlaylistsModal()" class="button is-info">Active Playlists</button> {% endcomment %}
+    </div>
+  </div>
+
+
   {% comment %} Info Modal {% endcomment %}
   <div id="about-modal" class="modal">
     <div class="modal-background"></div>
@@ -406,15 +412,8 @@
       placeCoords = { lat: place_lat, lng: place_lng }
       let place_name = places[0].name
       vm.currentHeading = place_name
-      let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`
-      let linkButton = `<a href="${link}" target="_blank" class="button is-info" id='maps-link'>Directions</a>`
-      if ($('#maps-link').length === 0) {
-        $('#main-buttons').append(linkButton)
-      }
-      else {
-        $('#maps-link').attr('href', link)
-      }
-
+      let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`    
+      $('#maps-link').attr('href', link)
       $('#chosen-destination').text(`${place_name}`)
       roundify()
       destWindow = new google.maps.InfoWindow
