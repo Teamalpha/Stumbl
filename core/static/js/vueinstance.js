@@ -30,7 +30,8 @@ const vm = new Vue({
     distance: null,
     searchField: '',
     currentHeading: null,
-    liked: 'Like'
+    liked: 'Like',
+    voteToDeletePk: null,
   },
   mounted: function () {
     this.getCities()
@@ -66,6 +67,7 @@ const vm = new Vue({
         this.currentPlaylist = response.data;
         document.getElementById('active-playlists-modal').classList.remove('is-active')
         document.getElementById('playlist-detail-modal').classList.add('is-active')
+        this.liked = (this.voteExists() ? "Unlike" : "Like")
       })
       .catch((err) => {
         console.log(err);
@@ -254,16 +256,33 @@ const vm = new Vue({
           console.log(err);
       })
     },
+    voteExists: function() {
+      for (let vote of this.userVotes) {
+        if (vote.playlist === this.currentPlaylist.pk)
+        this.voteToDeletePk = vote.pk
+        return True
+      }
+      return false
+    },
     toggleVote: function(playlist) {
       this.newVote = {
-        "user": requestUserPk,
         "playlist": playlist.pk,
+        "user": requestUserPk,
       }
-      if (this.userVotes.length === 0) {
-        this.$http.get(`api/users/${requestUserPk}`).then((response) => {
-          console.log(response.data)
-          this.userVotes = response.data
+      this.$http.get(`api/users/${requestUserPk}`).then((response) => {
+        console.log(response.data)
+        this.userVotes = response.data.votes
+      })
+
+      if (this.voteExists()) {
+        this.$http.delete(`api/votes/${this.voteToDeletePk}`).then(() => {
+          this.liked = 'like'
         })
+      } else {
+        this.$http.post(`api/votes`, this.newVote).then((response) => {
+          this.liked = 'unlike'
+        })
+      }
       
       // if (this.isUniqueDestination()) {
       //   this.currentPlaylist.destinations.push(this.newDestination)
@@ -277,7 +296,7 @@ const vm = new Vue({
       //     console.log(err);
       //   })
       // }
-      }
+      
     },
     openAboutModal: function() {
       document.getElementById('about-modal').classList.add('is-active')
