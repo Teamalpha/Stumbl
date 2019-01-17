@@ -11,8 +11,8 @@
 <input type="image" src="{% static 'images/center.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
 <input type="image" src="{% static 'images/thick-about.png' %}" id="about-button" class="absolute" @click="openAboutModal()"></input>
 
-<a href="#" target="_blank" id='maps-link'>
-  <input type="image" src="{% static 'images/google-maps.png' %}" id="directions-button" class="absolute" @click="openAboutModal()"></input>
+<a target="_blank" id='maps-link'>
+  <input type="image" src="{% static 'images/bw-google-maps.png' %}" id="directions-button" class="absolute" @click="openAboutModal()"></input>
 </a>
 <img src="{% static 'images/cone-of-focus.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
 <div id="vue-instance">
@@ -417,6 +417,7 @@
       $('#maps-link').attr('href', link)
       $('#chosen-destination').text(`${place_name}`)
       roundify()
+      document.getElementById("directions-button").src='static/images/google-maps.png';
       destWindow = new google.maps.InfoWindow
       destWindow.setPosition({ lat: place_lat, lng: place_lng })
       destWindow.setContent(place_name)
