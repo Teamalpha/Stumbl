@@ -20,7 +20,6 @@ function roundify() {
 
   coneOfFocus.style.top = `${originY - 40 - radius * .91}px`
   coneOfFocus.style.left = `${originX - 40 + radius * .91}px`
-  coneOfFocus.style.paddingBottom = '40px';
   coneOfFocus.style.display = 'inline-block'
 }
 

@@ -29,6 +29,9 @@ GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if DEBUG is False:
+    SECURE_SSL_REDIRECT = True
+
 ALLOWED_HOSTS = []
 
 
