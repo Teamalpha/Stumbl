@@ -103,10 +103,10 @@ const vm = new Vue({
         "city": capitalize(this.currentCity),
         "description": this.currentDescription,
         "accessible": document.getElementById('accessible').checked,
-        "destinations": []
       }
       if (this.isUniquePlaylist()) {
           this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
+          this.newPlaylist = response.data
           this.currentPlaylist = this.newPlaylist
           this.currentPlaylist.pk = response.data.pk
           this.playlists.push(this.currentPlaylist)

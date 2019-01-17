@@ -1,16 +1,16 @@
 from django.shortcuts import render
 from django.conf import settings
 from core.models import User, Playlist, Destination
-from django.db.models import Count
+
 # Create your views here.
 
 def index(request):
-    playlists = Playlist.objects.all().annotate(num_votes=Count('playlist_votes')).order_by('default', '-num_votes', '-created')
+    playlists = Playlist.objects.all()
     return render(request, 'index.html', 
     { 
         'google_api_key': settings.GOOGLE_MAPS_API_KEY,
         'playlists': playlists
-        }
+    }
     )
 
 def about(request):

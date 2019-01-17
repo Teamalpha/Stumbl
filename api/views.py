@@ -7,6 +7,7 @@ from core.models import User, Destination, Playlist, Vote
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as djangofilters
+from django.db.models import Count
 
 class PlaylistFilter(djangofilters.FilterSet):
     city = djangofilters.CharFilter(lookup_expr='icontains')
@@ -21,7 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 class PlaylistViewSet(viewsets.ModelViewSet):
-    queryset = Playlist.objects.all().order_by('-created')
+    queryset = Playlist.objects.all().annotate(num_likes=Count('playlist_votes')).order_by('-default', '-num_likes', '-created')
     serializer_class = PlaylistSerializer
     filter_backends = (djangofilters.DjangoFilterBackend, )
     filterset_class = (PlaylistFilter)
