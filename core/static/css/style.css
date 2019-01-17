@@ -196,3 +196,56 @@ html, body {
 .modal-card-head {
   font-family: monospace;
 }
+
+.form-styling{
+  background-color: aqua;
+}
+
+/* .edit-form {
+  background-color: aqua;
+  width: 375px;
+  padding-inline-start: 40px;
+  size: 30px;
+} */
+
+#id_username {
+  width: 375px;
+  height: 35px;
+  margin-bottom: 10px;
+  font-size: 20px
+}
+
+#id_password {
+  width: 375px;
+  height: 35px;
+  margin-bottom: 10px;
+  margin-left: -1px;
+  font-size: 20px;
+}
+.en-color{
+  color: rgb(6, 167, 216);
+}
+.ehi-no {
+  margin-left: -15px;
+}
+#id_email {
+  width: 375px;
+  height: 35px;
+  margin-bottom: 10px;
+  font-size: 20px
+}
+
+#id_password1{
+  width: 375px;
+  height: 35px;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+#id_password2 {
+  width: 375px;
+  height: 35px;
+  margin-bottom: 10px;
+  margin-left: -1px;
+  font-size: 20px;
+}
