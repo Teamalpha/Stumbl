@@ -89,6 +89,8 @@
         <button class="button has-background-grey-lighter" id="exit-playlist-detail-modal" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
+        <h3>Description: ${currentPlaylist.description}</h3>
+        <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
           <div class="message-header">
             <p>${destination.name}</p>

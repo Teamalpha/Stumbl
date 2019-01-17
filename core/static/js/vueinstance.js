@@ -91,6 +91,7 @@ const vm = new Vue({
           this.currentPlaylist = this.newPlaylist
           this.currentPlaylist.pk = response.data.pk
           this.playlists.push(this.currentPlaylist)
+          this.cityPlaylists.push(this.currentPlaylist)
           if (!this.cities.includes(this.currentPlaylist.city)) {
             this.cities.push(this.currentPlaylist.city)
           }
