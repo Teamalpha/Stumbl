@@ -20,10 +20,11 @@ class PlaylistSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     playlists = PlaylistSerializer(read_only=True, many=True)
+    votes = VoteSerializer(read_only=True, many=True)
 
     class Meta:
         model = User
-        fields = ('username', 'playlists', 'pk',)
+        fields = ('username', 'playlists', 'votes', 'pk',)
 
 class VoteSerializer(serializers.ModelSerializer):
 

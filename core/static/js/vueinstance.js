@@ -254,10 +254,10 @@ const vm = new Vue({
           console.log(err);
       })
     },
-    toggleVote: function() {
+    toggleVote: function(playlist) {
       this.newVote = {
         "user": requestUserPk,
-        "playlist": this.currentPlaylist.pk,
+        "playlist": playlist.pk,
       }
       if (this.userVotes.length === 0) {
         this.$http.get(`api/users/${requestUserPk}`).then((response) => {
