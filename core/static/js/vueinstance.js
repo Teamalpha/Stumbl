@@ -328,11 +328,6 @@ const vm = new Vue({
           pk: parseInt(sharedPlaylistPk)
         }
         this.getPlaylist(sharedPlaylist)
-        setTimeout(() => {
-          this.applyGems
-          this.openModal('shared-playlist-applied-modal')
-        }, 2000);
-        
       }
     },
     closeModals: function() {
