@@ -88,6 +88,7 @@ const vm = new Vue({
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
         this.closeModal('active-playlists-modal')
+        this.closeModal('user-playlists-modal')
         this.openModal('playlist-detail-modal')
         this.liked = (this.voteExists() ? "Unlike" : "Like")
       })
