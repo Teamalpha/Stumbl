@@ -11,7 +11,7 @@
 
   <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
   <input type="image" src="{% static 'images/center.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
-  <input type="image" src="{% static 'images/thick-about.png' %}" id="about-button" class="absolute" @click="openModal('about-modal')"></input>
+  <input type="image" src="{% static 'images/thick-about.png' %}" id="about-button" class="absolute" @click="openModal('playlist-main-menu')"></input>
 
   <a target="_blank" id='maps-link'>
     <input type="image" src="{% static 'images/bw-google-maps.png' %}" id="directions-button" class="absolute"></input>
@@ -40,9 +40,7 @@
 
   <div id="main-buttons columns">
     <div class="column center-children">
-      <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Playlists</button>
-      {% comment %} <button v-if="activePlaylists.length > 0" @click="openModal('active-playlists-modal')" class="button is-info">Active
-        Playlists</button> {% endcomment %}
+      <button class="button is-info" id="playlist-button" @click="openModal('playlist-main-menu')">Playlists</button>
     </div>
   </div>
 
@@ -98,6 +96,30 @@
     </div>
   </div>
 
+  {% comment %} Playlists Main Menu {% endcomment %}
+    <div id="playlist-main-menu" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Playlist Main menu
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter	" @click="closeModal('playlist-main-menu')" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <button v-if="activePlaylists.length == 0" id="playlist-button" class="button is-light">Active
+        Playlists</button>
+        <button v-else @click="openModal('active-playlists-modal')"  id="playlist-button" class="button is-info">Active
+        Playlists</button>
+        <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Playlists</button>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="newPlaylistModal()" class="button is-primary">Create New Playlist</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+
   {% comment %} Choose city modal {% endcomment %}
   <div id="choose-city-modal" class="modal">
     <div class="modal-background"></div>
@@ -131,11 +153,12 @@
       <section class="modal-card-body">
         <div class="field">
           <input class="input" type="text" id="search-field" placeholder="Search playlists" v-model="searchField">
-          <button class="button has-background-grey-lighter" @click="searchPlaylists()">Search</button>
           <label class="checkbox">
             <input id="is-accessible" type="checkbox" value="true">
             Accessible
           </label>
+          <button class="button has-background-grey-lighter" @click="searchPlaylists()">Search</button>
+          
           <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">Clear</button>
         </div>
       </section>
@@ -166,7 +189,7 @@
       <section class="modal-card-body">
         <h3>Description: ${currentPlaylist.description}</h3>
         <br>
-        <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
+        <article v-for="destination in currentPlaylist.destinations" class="message is-info">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>

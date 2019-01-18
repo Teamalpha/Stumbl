@@ -226,7 +226,8 @@ const vm = new Vue({
         this.closeModal('choose-city-modal')
         this.closeModal('playlist-detail-modal')
         this.closeModal('create-playlist-modal')
-        this.closeModal('edit-playlist-modal')  
+        this.closeModal('edit-playlist-modal')
+        this.closeModal('playlist-main-menu')  
       }
     },
     deleteDestination: function(destinationPk) {
@@ -322,6 +323,7 @@ const vm = new Vue({
       this.closeModal('active-playlists-modal')
       this.closeModal('playlist-already-applied-modal')
       this.closeModal('login-required-modal')
+      this.closeModal('playlist-main-menu')
     },
   }, // close methods
 }) // close vue instance
