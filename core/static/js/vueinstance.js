@@ -40,6 +40,12 @@ const vm = new Vue({
     }
   },
   methods: {
+    openModal: function(id) {
+      document.getElementById(id).classList.add('is-active')
+    },
+    closeModal: function(id) {
+      document.getElementById(id).classList.remove('is-active')
+    },
     getCities: function () {
       this.$http.get("/api/playlists/").then((response) => {
         this.playlists = response.data;
@@ -58,18 +64,12 @@ const vm = new Vue({
       this.$http.get(`/api/playlists/?city=${city}`).then((response) => {
         this.cityPlaylists = response.data;
         this.currentCity = city
-        document.getElementById('city-playlists-modal').classList.add('is-active')
+        this.openModal('city-playlists-modal')
         this.searchField = ''
       })
         .catch((err) => {
           console.log(err);
         })
-    },
-    openModal: function(id) {
-      document.getElementById(id).classList.add('is-active')
-    },
-    closeModal: function(id) {
-      document.getElementById(id).classList.remove('is-active')
     },
     voteExists: function() {
       if (this.userVotes.length > 0) {
@@ -85,8 +85,8 @@ const vm = new Vue({
     getPlaylist: function (playlist) {
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
-        document.getElementById('active-playlists-modal').classList.remove('is-active')
-        document.getElementById('playlist-detail-modal').classList.add('is-active')
+        this.closeModal('active-playlists-modal')
+        this.openModal('playlist-detail-modal')
         this.liked = (this.voteExists() ? "Unlike" : "Like")
       })
       .catch((err) => {
@@ -97,7 +97,7 @@ const vm = new Vue({
       for (let playlist of this.playlists) {
         if (playlist.user === requestUser) {
           if (playlist.title === this.currentTitle) {
-            document.getElementById('duplicate-playlist-modal').classList.add('is-active')
+            this.openModal('duplicate-playlist-modal')
             return false
           }
         }
@@ -129,10 +129,10 @@ const vm = new Vue({
             this.currentDescription = ''
             this.accessible = false
             document.getElementById('accessible').checked = false
-            document.getElementById('create-playlist-modal').classList.remove('is-active')
-            document.getElementById('playlist-detail-modal').classList.remove('is-active')
-            document.getElementById('playlist-detail-modal').classList.add('is-active')
-            document.getElementById('edit-playlist-modal').classList.add('is-active')
+            this.closeModal('create-playlist-modal')
+            this.closeModal('playlist-detail-modal')
+            this.openModal('playlist-detail-modal')
+            this.openModal('edit-playlist-modal')
           })
           .catch((err) => {
             console.log(err);
@@ -148,8 +148,8 @@ const vm = new Vue({
           this.currentPlaylist = {};
           this.$http.get(`/api/playlists/?search=${this.currentCity}`).then((response) => {
             this.cityPlaylists = response.data;
-            document.getElementById('playlist-detail-modal').classList.remove('is-active')
-            document.getElementById('confirm-delete-playlist-modal').classList.remove('is-active')
+            this.closeModal('playlist-detail-modal')
+            this.closeModal('confirm-delete-playlist-modal')
           })
         });
       }
@@ -157,7 +157,7 @@ const vm = new Vue({
     isUniqueDestination: function() {
       for (let destination of this.currentPlaylist.destinations) {
         if (destination.name === this.newDestination.name) {
-          document.getElementById('duplicate-destination-modal').classList.add('is-active')
+          this.openModal('duplicate-destination-modal')
           return false
         }
       }
@@ -193,7 +193,7 @@ const vm = new Vue({
         }
       for (let playlist of this.activePlaylists) {
         if (playlist.title === this.currentPlaylist.title) {
-          document.getElementById('playlist-already-applied-modal').classList.add('is-active')
+          this.openModal('playlist-already-applied-modal')
           return true
         }
       }
@@ -217,15 +217,14 @@ const vm = new Vue({
           infowindow.open(map, this);
         });
       }
-      this.currentPlaylist['markerList'] = (markerList);
-
+      this.currentPlaylist['markerList'] = markerList;
       if (!this.isActivePlaylist()) {
         this.activePlaylists.push(this.currentPlaylist);
-        document.getElementById('city-playlists-modal').classList.remove('is-active')
-        document.getElementById('choose-city-modal').classList.remove('is-active')
-        document.getElementById('playlist-detail-modal').classList.remove('is-active')
-        document.getElementById('create-playlist-modal').classList.remove('is-active')
-        document.getElementById('edit-playlist-modal').classList.remove('is-active')  
+        this.closeModal('city-playlists-modal')
+        this.closeModal('choose-city-modal')
+        this.closeModal('playlist-detail-modal')
+        this.closeModal('create-playlist-modal')
+        this.closeModal('edit-playlist-modal')  
       }
     },
     deleteDestination: function(destinationPk) {
@@ -240,40 +239,18 @@ const vm = new Vue({
     userOwns: function() {
       return this.currentPlaylist.user == requestUser
     },
-    editPlaylist: function() {
-      document.getElementById('edit-playlist-modal').classList.add('is-active')
-    },
     newPlaylistModal: function() {
       if (requestUserPk !== -1) {
-        document.getElementById('create-playlist-modal').classList.add('is-active')
+        this.openModal('create-playlist-modal')
       } else {
         this.openModal('login-required-modal')
       }
-
-    },
-    closeModals: function() {
-      document.getElementById('city-playlists-modal').classList.remove('is-active')
-      document.getElementById('choose-city-modal').classList.remove('is-active')
-      document.getElementById('playlist-detail-modal').classList.remove('is-active')
-      document.getElementById('create-playlist-modal').classList.remove('is-active')
-      document.getElementById('edit-playlist-modal').classList.remove('is-active')
-      document.getElementById('duplicate-playlist-modal').classList.remove('is-active')
-      document.getElementById('confirm-delete-playlist-modal').classList.remove('is-active')
-      document.getElementById('duplicate-destination-modal').classList.remove('is-active')
-      document.getElementById('active-playlists-modal').classList.remove('is-active')
-      document.getElementById('playlist-already-applied-modal').classList.remove('is-active')
-    },
-    confirmDeletePlaylist: function() {
-      document.getElementById('confirm-delete-playlist-modal').classList.add('is-active')
     },
     disablePlaylist: function(playlist) {
       for (let gem of playlist.markerList) {
         gem.setMap(null)
       }
       this.activePlaylists.splice(this.activePlaylists.indexOf(playlist), 1)
-    },
-    activePlaylistsModal: function() {
-      document.getElementById('active-playlists-modal').classList.add('is-active')
     },
     searchPlaylists: function() {
       let isAccessible = document.getElementById('is-accessible').checked
@@ -291,44 +268,58 @@ const vm = new Vue({
       })
     },
     toggleVote: function(playlist) {
-      this.newVote = {
-        "playlist": playlist.pk,
-        "user": requestUserPk,
-      }
-      // delete vote if vote exists
-      if (this.voteExists()) {
-        this.$http.delete(`api/votes/${this.voteToDeletePk}`).then((response) => {
-          this.liked = 'like'
-          this.newVote.pk = response.data.pk
-          this.currentPlaylist.playlist_votes.splice(this.currentPlaylist.playlist_votes.indexOf(this.newVote), 1)
-          // this.cityPlaylists.indexOf(playlist).playlist_votes.splice(this.cityPlaylists.indexOf(playlist).playlist_votes.indexOf(this.newVote), 1)
-          this.userVotes.splice(this.userVotes.indexOf(this.newVote), 1)
-          delete this.newVote['pk']
-          this.getCityPlaylists(this.currentCity) // Extra api hit - If performance unsatisfactory, will look for better solution.
+      if (requestUserPk !== -1) {
+        this.newVote = {
+          "playlist": playlist.pk,
+          "user": requestUserPk,
+        }
+        // delete vote if vote exists
+        if (this.voteExists()) {
+          this.$http.delete(`api/votes/${this.voteToDeletePk}`).then((response) => {
+            this.liked = 'like'
+            this.newVote.pk = response.data.pk
+            this.currentPlaylist.playlist_votes.splice(this.currentPlaylist.playlist_votes.indexOf(this.newVote), 1)
+            // this.cityPlaylists.indexOf(playlist).playlist_votes.splice(this.cityPlaylists.indexOf(playlist).playlist_votes.indexOf(this.newVote), 1)
+            this.userVotes.splice(this.userVotes.indexOf(this.newVote), 1)
+            delete this.newVote['pk']
+            this.getCityPlaylists(this.currentCity) // Extra api hit - If performance unsatisfactory, will look for better solution.
+          })
+          .catch((err) => {
+            console.log(err);
         })
-        .catch((err) => {
-          console.log(err);
-      })
-      // create vote if it doesn't already exist
+        // create vote if it doesn't already exist
+        } else {
+          this.$http.post(`api/votes/`, this.newVote).then((response) => {
+            this.liked = 'Unlike'
+            this.newVote.pk = response.data.pk
+            this.currentPlaylist.playlist_votes.push(this.newVote)
+            // let playlistIndex = this.cityPlaylists.indexOf(playlist)
+            // console.log('playlist index:', playlistIndex)
+            // this.cityPlaylists[playlistIndex].playlist_votes.push(this.newVote)
+            this.userVotes.push(this.newVote)
+            this.voteToDeletePk = response.data.pk
+            this.getCityPlaylists(this.currentCity) // Extra api hit - If performance unsatisfactory, will look for better solution.
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+        }
       } else {
-        this.$http.post(`api/votes/`, this.newVote).then((response) => {
-          this.liked = 'Unlike'
-          this.newVote.pk = response.data.pk
-          this.currentPlaylist.playlist_votes.push(this.newVote)
-          // let playlistIndex = this.cityPlaylists.indexOf(playlist)
-          // console.log('playlist index:', playlistIndex)
-          // this.cityPlaylists[playlistIndex].playlist_votes.push(this.newVote)
-          this.userVotes.push(this.newVote)
-          this.voteToDeletePk = response.data.pk
-          this.getCityPlaylists(this.currentCity) // Extra api hit - If performance unsatisfactory, will look for better solution.
-        })
-        .catch((err) => {
-          console.log(err);
-        })
+        this.openModal('login-required-modal')
       }
     },
-    openAboutModal: function() {
-      document.getElementById('about-modal').classList.add('is-active')
+    closeModals: function() {
+      this.closeModal('city-playlists-modal')
+      this.closeModal('choose-city-modal')
+      this.closeModal('playlist-detail-modal')
+      this.closeModal('create-playlist-modal')
+      this.closeModal('edit-playlist-modal')
+      this.closeModal('duplicate-playlist-modal')
+      this.closeModal('confirm-delete-playlist-modal')
+      this.closeModal('duplicate-destination-modal')
+      this.closeModal('active-playlists-modal')
+      this.closeModal('playlist-already-applied-modal')
+      this.closeModal('login-required-modal')
     },
   }, // close methods
 }) // close vue instance
