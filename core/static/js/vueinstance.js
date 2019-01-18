@@ -16,7 +16,7 @@ const vm = new Vue({
     currentPlaylistDestinations: [],
     playlists: [],
     userVotes: [],
-    newVote: {},
+    userPlaylists: {},
     newPlaylist: {},
     currentDestination: {},
     accessible: false,
@@ -267,11 +267,12 @@ const vm = new Vue({
     getUserVotes: function() {
       this.$http.get(`api/users/${requestUserPk}`).then((response) => {
         this.userVotes = response.data.votes
+        this.userPlaylists = response.data.playlists
       })
     },
     toggleVote: function(playlist) {
       if (requestUserPk !== -1) {
-        this.newVote = {
+        let newVote = {
           "playlist": playlist.pk,
           "user": requestUserPk,
         }
@@ -279,11 +280,10 @@ const vm = new Vue({
         if (this.voteExists()) {
           this.$http.delete(`api/votes/${this.voteToDeletePk}`).then((response) => {
             this.liked = 'like'
-            this.newVote.pk = response.data.pk
-            this.currentPlaylist.playlist_votes.splice(this.currentPlaylist.playlist_votes.indexOf(this.newVote), 1)
+            newVote.pk = response.data.pk
+            this.currentPlaylist.playlist_votes.splice(this.currentPlaylist.playlist_votes.indexOf(newVote), 1)
             // this.cityPlaylists.indexOf(playlist).playlist_votes.splice(this.cityPlaylists.indexOf(playlist).playlist_votes.indexOf(this.newVote), 1)
-            this.userVotes.splice(this.userVotes.indexOf(this.newVote), 1)
-            delete this.newVote['pk']
+            this.userVotes.splice(this.userVotes.indexOf(newVote), 1)
             this.getCityPlaylists(this.currentCity) // Extra api hit - If performance unsatisfactory, will look for better solution.
           })
           .catch((err) => {
@@ -291,15 +291,14 @@ const vm = new Vue({
         })
         // create vote if it doesn't already exist
         } else {
-          this.$http.post(`api/votes/`, this.newVote).then((response) => {
+          this.$http.post(`api/votes/`, newVote).then((response) => {
             this.liked = 'Unlike'
-            this.newVote.pk = response.data.pk
-            this.currentPlaylist.playlist_votes.push(this.newVote)
+            newVote.pk = response.data.pk
+            this.currentPlaylist.playlist_votes.push(newVote)
             // let playlistIndex = this.cityPlaylists.indexOf(playlist)
             // console.log('playlist index:', playlistIndex)
-            // this.cityPlaylists[playlistIndex].playlist_votes.push(this.newVote)
-            this.userVotes.push(this.newVote)
-            this.voteToDeletePk = response.data.pk
+            // this.cityPlaylists[playlistIndex].playlist_votes.push(newVote)
+            this.userVotes.push(newVote)
             this.getCityPlaylists(this.currentCity) // Extra api hit - If performance unsatisfactory, will look for better solution.
           })
           .catch((err) => {
@@ -322,6 +321,7 @@ const vm = new Vue({
       this.closeModal('active-playlists-modal')
       this.closeModal('playlist-already-applied-modal')
       this.closeModal('login-required-modal')
+      this.closeModal('user-playlists-modal')
     },
   }, // close methods
 }) // close vue instance
