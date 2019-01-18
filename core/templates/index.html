@@ -101,20 +101,21 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Playlist Main menu
+        <h1> Playlist Main menu </h1>
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" @click="closeModal('playlist-main-menu')" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" @click="closeModal('playlist-main-menu')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
-        <button v-if="activePlaylists.length == 0" id="playlist-button" class="button is-light">Active
+        <button v-if="activePlaylists.length == 0" id="playlist-button" class="button is-light is-static">Active
         Playlists</button>
         <button v-else @click="openModal('active-playlists-modal')"  id="playlist-button" class="button is-info">Active
         Playlists</button>
         <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Playlists</button>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-primary">Create New Playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+        <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
+
       </footer>
     </div>
   </div>
@@ -128,15 +129,16 @@
         Choose a city
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('choose-city-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div v-for="city in cities">
-          <button @click="getCityPlaylists(city)" class="button is-success is-fullwidth">${city}</button>
+          <button @click="getCityPlaylists(city)" class="button is-info playlist-menu-bar">${city}</button>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-primary">Create New Playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+        <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
+        
       </footer>
     </div>
   </div>
@@ -157,19 +159,20 @@
             <input id="is-accessible" type="checkbox" value="true">
             Accessible
           </label>
+          <br/>
           <button class="button has-background-grey-lighter" @click="searchPlaylists()">Search</button>
           
-          <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">Clear</button>
+          <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">X</button>
         </div>
       </section>
       <section class="modal-card-body">
         <div v-for="playlist in cityPlaylists">
-          <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes:
+          <button @click="getPlaylist(playlist)" class="button is-info playlist-menu-bar">${playlist.title} - Likes:
             (${playlist.playlist_votes.length})</button>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-primary">Create New Playlist</button>
+        <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
@@ -183,8 +186,11 @@
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
         <button v-if="requestUser === currentPlaylist.user" @click="toggleVote(currentPlaylist)" class="button is-warning">${liked}</button>
-        <button v-else @click="toggleVote(currentPlaylist)" class="button is-success">${liked}</button>
+        <button v-else @click="toggleVote(currentPlaylist)" class="button is-success">
+        ${liked}
+        </button>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
+                <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <h3>Description: ${currentPlaylist.description}</h3>
@@ -197,8 +203,7 @@
         </article>
       </section>
       <footer class="modal-card-foot">
-        <button @click="applyGems()" class="button is-primary apply-playlist">Select playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+        <button @click="applyGems()" class="button is-link apply-playlist">Select playlist</button>
         {% if user.is_authenticated %}
         <div v-if="userOwns()">
           <button @click="openModal('edit-playlist-modal')" class="button is-warning">Edit</button>
@@ -262,7 +267,7 @@
       <section class="modal-card-body">
         <h3>Description: ${currentPlaylist.description}</h3>
         <br>
-        <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
+        <article v-for="destination in currentPlaylist.destinations" class="message is-info is-small">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
@@ -275,7 +280,7 @@
         </article>
         <label class="label">Add a gem</label>
         <div class="control">
-          <input id="modal-autocomplete" class="controls input is-success" type="text" placeholder="choose destination">
+          <input id="modal-autocomplete" class="controls input is-info" type="text" placeholder="choose destination">
         </div>
         <div class="field">
           <label class="label">Name</label>
@@ -293,7 +298,7 @@
         <div class="field">
           <label class="label">What makes this place a hidden gem?</label>
           <div class="control">
-            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-success"
+            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-info"
               type="text" placeholder="Description"></textarea>
           </div>
         </div>
@@ -414,17 +419,18 @@
         Active playlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('active-playlists-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </header>
       <section class="modal-card-body">
         <div v-for="playlist in activePlaylists" class="columns">
           <div class="column">
-            <button @click="getPlaylist(playlist)" class="button is-success">${playlist.title}</button>
+            <button @click="getPlaylist(playlist)" class="button is-info ">${playlist.title}</button>
             <button @click="disablePlaylist(playlist)" class="button is-danger">Remove</button>
           </div>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+        
       </footer>
     </div>
   </div>
