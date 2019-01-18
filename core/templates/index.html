@@ -159,8 +159,8 @@
       <header class="modal-card-head">
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
-        <button v-if="requestUser === currentPlaylist.user" @click="toggleVote(currentPlaylist)" class="button is-success">${liked}</button>
-        <button v-else @click="openModal('login-required-modal')" class="button is-success">${liked}</button>
+        <button v-if="requestUser === currentPlaylist.user" @click="toggleVote(currentPlaylist)" class="button is-warning">${liked}</button>
+        <button v-else @click="toggleVote(currentPlaylist)" class="button is-success">${liked}</button>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
