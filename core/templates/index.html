@@ -159,7 +159,8 @@
       <header class="modal-card-head">
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
-        <button @click="toggleVote(currentPlaylist)" class="button is-success">${liked}</button>
+        <button v-if="requestUser === currentPlaylist.user" @click="toggleVote(currentPlaylist)" class="button is-success">${liked}</button>
+        <button v-else @click="openModal('login-required-modal')" class="button is-success">${liked}</button>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
@@ -351,6 +352,8 @@
         <p>You must be logged in to do that! Please login to use this feature.</p>
         <br>
         <a href="{% url 'auth_login' %}"><strong>Login</strong></a>
+        <br>
+        <br>
         <br>
         <a href="{% url 'registration_register' %}"><strong>Sign up</strong></a>
 

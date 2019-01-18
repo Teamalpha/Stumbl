@@ -32,6 +32,8 @@ const vm = new Vue({
     currentHeading: null,
     liked: 'Like',
     voteToDeletePk: null,
+    requestUserPk: requestUserPk,
+    requestUser: requestUser,
   },
   mounted: function () {
     this.getCities()
