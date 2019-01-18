@@ -94,42 +94,46 @@ display: none;
 
 .profile-card {
     border: solid rgb(202, 201, 201) 10px;
-    border-radius: 5%;
+    border-radius: 30px;
+
 }
 .hue {
-    min-width: 572px;
-    max-width: 572px;
-    min-height: 743px;
-    max-height: 743px;
+    min-width: 100%;
+    max-width: 100%;
     background-color: #F0FFFF;
+    padding: 1rem;
+}
+
+.is-centered {
+  text-align: center;
+}
+
+.tile.is-parent{
+  padding-left: 45px;
 }
 .sum{
     max-width: 572;
     min-width: 572;
 }
-.pls-work{
-    min-height: 290px;
+.pls-work1{
+  min-height: 390px;
 }
-
-
+.pls-work2{
+  max-height: 390px;
+}
+.pls-work3{
+  min-height: 390px;
+}
+.pls-work4{
+  min-height: 390px;
+}
 .fue{
     font-size: 30px;
 }
-.petepp {
-    width: 220px;
-    height: 220px;
-}
-.maxpp {
-    width:220px;
-    height: 220px;
-}
-.seanpp {
-    width: 220px;
-    height: 220px;
-}
-.stevepp {
-    width: 220px;
-    height: 220px;
+
+.profile-pic {
+  width: 300px;
+  height: 300px;
 }
 
 .margin {
@@ -146,7 +150,7 @@ display: none;
 
 body {
   margin: 0px;
-  font-family: monospace\;
+  font-family: monospace;
 }
 
 .nav {
