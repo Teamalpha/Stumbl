@@ -94,6 +94,11 @@ const vm = new Vue({
         this.closeModal('user-playlists-modal')
         this.openModal('playlist-detail-modal')
         this.liked = (this.voteExists() ? "Unlike" : "Like")
+
+        if (((/Android/i.test(navigator.userAgent)))) {
+          document.getElementById('share-link').href = `sms:?body=Check%20out%20this%20LocalGems%20playlist%20*${playlist.title}*%20for%20${playlist.city}%20at https://www.localgems.io/shared_playlist/${playlist.pk}`
+        } else 
+          document.getElementById('share-link').href = `sms:&body=Check%20out%20this%20LocalGems%20playlist%20*${playlist.title}*%20for%20${playlist.city}%20at https://www.localgems.io/shared_playlist/${playlist.pk}`
       })
       .catch((err) => {
         console.log(err);
