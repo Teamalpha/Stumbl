@@ -3,7 +3,6 @@
     width: 88%;
     border-radius: 100%;
     margin: 0 auto;
-    border: solid 4px rgb(30, 59, 114);
     -webkit-transform: translate3d(0px, 0px, 0px);
     -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
@@ -39,6 +38,22 @@ html, body {
 
 .message-header {
     background-color: chartreuse
+}
+
+.is-90 {
+  min-width: 90%;
+}
+
+.is-80 {
+  min-width: 80%;
+}
+
+.is-70 {
+  min-width: 70%;
+}
+
+.is-25 {
+  min-width: 25%;
 }
 
 #pac-input {

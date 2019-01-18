@@ -37,6 +37,7 @@ router.register('votes', api_views.VoteViewSet)
 
 urlpatterns = [
     path('', views.index, name='home'),
+    path('shared_playlist/<sharedPlaylistPk>/', views.shared, name='shared_playlist'),    
     path('about/', views.about, name='about'),
     path('playlist', views.playlist, name='playlist'),
     path('destinations', views.destinations, name='destinations'),

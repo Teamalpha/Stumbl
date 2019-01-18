@@ -41,7 +41,9 @@
 <div class="nav">
   <div class="nav-header">
     <div class="nav-title">
+      <a href="{% url 'home' %}">
       <img class="pr1" src="{% static 'images/LocalGems_Logo.png' %}" width="150" height="40">
+      </a>
     </div>
   </div>
   
@@ -72,6 +74,8 @@
 <input type="hidden" id="request-user-pk" value="-1">
 {% endif %}
 <input type="hidden" id="request-user" value="{{ request.user }}">
+
+<input type="hidden" id="shared-playlist-pk" value="{{ sharedPlaylistPk }}">
 
 <body>
     {% block content %}{% endblock content %}

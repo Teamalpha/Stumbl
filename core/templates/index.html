@@ -167,8 +167,8 @@
       </section>
       <section class="modal-card-body">
         <div v-for="playlist in cityPlaylists">
-          <button @click="getPlaylist(playlist)" class="button is-info playlist-menu-bar">${playlist.title} - Likes:
-            (${playlist.playlist_votes.length})</button>
+          <button v-if="requestUser === playlist.user" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
+          <button v-else @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -186,14 +186,16 @@
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
         <button v-if="requestUser === currentPlaylist.user" @click="toggleVote(currentPlaylist)" class="button is-warning">${liked}</button>
-        <button v-else @click="toggleVote(currentPlaylist)" class="button is-success">
-        ${liked}
-        </button>
+        <button v-else @click="toggleVote(currentPlaylist)" class="button is-info">${liked}</button>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
                 <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
-        <h3>Description: ${currentPlaylist.description}</h3>
+        <h3><strong>${currentPlaylist.description}</strong></h3>
+        <br>
+        <div class="center-children">
+          <a class="button is-link is-90" id="share-link">Share this playlist!</a>
+        </div>
         <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-info">
           <div class="message-header">
@@ -381,8 +383,6 @@
         <br>
         <a href="{% url 'auth_login' %}"><strong>Login</strong></a>
         <br>
-        <br>
-        <br>
         <a href="{% url 'registration_register' %}"><strong>Sign up</strong></a>
 
       </section>
@@ -411,6 +411,25 @@
     </div>
   </div>
 
+  {% comment %} Playlist already applied modal {% endcomment %}
+  <div id="shared-playlist-applied-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Shared Playlist Applied!
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('shared-playlist-applied-modal')"
+          aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <p>The playlist *${currentPlaylist.title}* has been applied!</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
   {% comment %} Active playlists modal {% endcomment %}
   <div id="active-playlists-modal" class="modal">
     <div class="modal-background"></div>
@@ -431,6 +450,28 @@
       </section>
       <footer class="modal-card-foot">
         
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} User playlists modal {% endcomment %}
+  <div id="user-playlists-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        User playlists
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('user-playlists-modal')" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <div v-for="playlist in userPlaylists" class="columns">
+          <div class="column">
+            <button @click="getPlaylist(playlist)" class="button is-info">${playlist.title}</button>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
