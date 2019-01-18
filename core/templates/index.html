@@ -2,21 +2,21 @@
 {% load staticfiles %}
 
 {% block title %}
-  {{ block.super }}
+{{ block.super }}
 {% endblock title %}
 
 
 {% block content %}
 <div id="vue-instance">
 
-<img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
-<input type="image" src="{% static 'images/center.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
-<input type="image" src="{% static 'images/thick-about.png' %}" id="about-button" class="absolute" @click="openAboutModal()"></input>
+  <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
+  <input type="image" src="{% static 'images/center.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
+  <input type="image" src="{% static 'images/thick-about.png' %}" id="about-button" class="absolute" @click="openModal('about-modal')"></input>
 
-<a target="_blank" id='maps-link'>
-  <input type="image" src="{% static 'images/bw-google-maps.png' %}" id="directions-button" class="absolute"></input>
-</a>
-<img src="{% static 'images/cone-of-focus.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
+  <a target="_blank" id='maps-link'>
+    <input type="image" src="{% static 'images/bw-google-maps.png' %}" id="directions-button" class="absolute"></input>
+  </a>
+  <img src="{% static 'images/cone-of-focus.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
 
   <div id='test'></div>
   <div id='alpha'></div>
@@ -40,8 +40,9 @@
 
   <div id="main-buttons columns">
     <div class="column center-children">
-      <button class="button is-info open-pl-modal">Playlists</button>
-      {% comment %} <button v-if="activePlaylists.length > 0" @click="activePlaylistsModal()" class="button is-info">Active Playlists</button> {% endcomment %}
+      <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Playlists</button>
+      {% comment %} <button v-if="activePlaylists.length > 0" @click="openModal('active-playlists-modal')" class="button is-info">Active
+        Playlists</button> {% endcomment %}
     </div>
   </div>
 
@@ -50,7 +51,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <strong>LocalGems: Enjoy the Journey</strong>
+        <strong>LocalGems: Celebrate the Journey</strong>
         <p class="modal-card-title"></p>
       </header>
       <section class="modal-card-body">
@@ -68,22 +69,31 @@
         <br>
         <br>
         <h3><strong><a name="What-is-LocalGems">What is LocalGems?</a></strong></h3>
-        <p>LocalGems helps you experience the magic of travel by discovering amazing local places along the way to a destination.  Imagine you're in a new city, and you have dinner reservations, and you'd like to explore before dinner.  Enter the restaurant into LocalGems as your "final destination" and then load a Playlist containing amazing local places to explore as you make your way towards the restaurant.  There are Playlists for every mood, all searchable by city.  Enjoy the journey with LocalGems.</p>
+        <p>LocalGems helps you experience the magic of travel by discovering amazing local places along the way to a
+          destination. Imagine you're in a new city, and you have dinner reservations, and you'd like to explore before
+          dinner. Enter the restaurant into LocalGems as your "final destination" and then load a Playlist containing
+          amazing local places to explore as you make your way towards the restaurant. There are Playlists for every
+          mood, all searchable by city. Enjoy the journey with LocalGems.</p>
         <br>
         <h3><strong><a name="How-to-use">How to use LocalGems</a></strong></h3>
-        <p>Choose your final destination from the dropdown menu, and then click "Playlists."  A Playlist is a collection of amazing local businesses, experiences, and places.  Choose a Playlist to suit your mood.</p>
+        <p>Choose your final destination from the dropdown menu, and then click "Playlists." A Playlist is a collection
+          of amazing local businesses, experiences, and places. Choose a Playlist to suit your mood.</p>
         <br>
         <h3><strong><a name="Interface">LocalGems Interface</a></strong></h3>
-        <p>The LocalGems map shows your position.  Your destination is represented by a gold star on the map, and the LocalGems in your loaded Playlist are represented by blue diamonds on the map.  Change out a Playlist or add a new one at any time.</p>
+        <p>The LocalGems map shows your position. Your destination is represented by a gold star on the map, and the
+          LocalGems in your loaded Playlist are represented by blue diamonds on the map. Change out a Playlist or add a
+          new one at any time.</p>
         <br>
         <h3><strong><a name="Navigation-Arrow">Navigation Arrow</a></strong></h3>
-        <p>The black arrow that appears around your map is the Navigation Arrow.  It points in the direction of your final destination so you know which way to walk, and your distance to destination is found below the map.</p>
+        <p>The black arrow that appears around your map is the Navigation Arrow. It points in the direction of your
+          final destination so you know which way to walk, and your distance to destination is found below the map.</p>
         <br>
         <h3><strong><a name="Turn-by-turn">Get Turn-by-Turn Directions</a></strong></h3>
-        <p>Sometimes you've had enough exploring and are ready to walk straight to your destiation.  If a final destiation has been chosen, the "Directions" button will be available for turn-by-turn directions.</p>
+        <p>Sometimes you've had enough exploring and are ready to walk straight to your destiation. If a final
+          destiation has been chosen, the "Directions" button will be available for turn-by-turn directions.</p>
       </section>
       <footer class="modal-card-foot">
-        <button class="button has-background-grey-lighter" id="exit-about-modal" aria-label="close">Close</button>
+        <button class="button has-background-grey-lighter" @click="closeModal('about-modal')" aria-label="close">Close</button>
       </footer>
     </div>
   </div>
@@ -93,9 +103,9 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Search cities
+        Choose a city
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-choose-city-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter	" @click="closeModal('choose-city-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <div v-for="city in cities">
@@ -103,7 +113,7 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-primary">New Playlist</button>
+        <button @click="newPlaylistModal()" class="button is-primary">Create New Playlist</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
@@ -116,7 +126,7 @@
       <header class="modal-card-head">
         Search playlists
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-city-playlists-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter	" @click="closeModal('city-playlists-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -128,12 +138,15 @@
           </label>
           <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">Clear</button>
         </div>
+      </section>
+      <section class="modal-card-body">
         <div v-for="playlist in cityPlaylists">
-          <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
+          <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes:
+            (${playlist.playlist_votes.length})</button>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-primary">New Playlist</button>
+        <button @click="newPlaylistModal()" class="button is-primary">Create New Playlist</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
@@ -145,9 +158,10 @@
     <div class="modal-card">
       <header class="modal-card-head">
         ${currentPlaylist.title}
-        <button @click="toggleVote(currentPlaylist)" class="button is-success">${liked}</button>
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter" id="exit-playlist-detail-modal" aria-label="close">Back</button>
+        <button v-if="requestUser === currentPlaylist.user" @click="toggleVote(currentPlaylist)" class="button is-success">${liked}</button>
+        <button v-else @click="openModal('login-required-modal')" class="button is-success">${liked}</button>
+        <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <h3>Description: ${currentPlaylist.description}</h3>
@@ -164,8 +178,8 @@
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
         {% if user.is_authenticated %}
         <div v-if="userOwns()">
-          <button @click="editPlaylist()" class="button is-warning">Edit</button>
-          <button @click="confirmDeletePlaylist()" class="button is-danger">Delete</button>
+          <button @click="openModal('edit-playlist-modal')" class="button is-warning">Edit</button>
+          <button @click="openModal('confirm-delete-playlist-modal')" class="button is-danger">Delete</button>
         </div>
         {% endif %}
       </footer>
@@ -179,7 +193,7 @@
       <header class="modal-card-head">
         Create new playlist
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter" id="exit-create-playlist-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" @click="closeModal('create-playlist-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -220,17 +234,19 @@
       <header class="modal-card-head">
         <p>Customize *${currentPlaylist.title}*</p>
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-edit-playlist-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter	" @click="closeModal('edit-playlist-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
+        <h3>Description: ${currentPlaylist.description}</h3>
+        <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
-          <div class="message-body columns">
-            <div class="column has-background-grey-lighter">${destination.description}</div>
-            <div v-if="userOwns()" class="column is-one-quarter"> <button @click="deleteDestination(destination.pk)"
-                class="button is-danger cancel">Remove</button>
+          <div class="message-body has-background-grey-lighter">
+            <p>${destination.description}</p>
+            <div v-if="userOwns()">
+              <button @click="deleteDestination(destination.pk)" class="button is-danger cancel">Remove</button>
             </div>
           </div>
         </article>
@@ -273,7 +289,7 @@
       <header class="modal-card-head">
         Playlist already exists
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-duplicate-playlist-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter	" @click="closeModal('duplicate-playlist-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <p>You have already created a playlist with that name!</p>
@@ -291,7 +307,8 @@
       <header class="modal-card-head">
         Duplicate Destination
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter" id="exit-duplicate-destination-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" @click="closeModal('duplicate-destination-modal')"
+          aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <p>This playlist already has a destination with that name!</p>
@@ -309,7 +326,8 @@
       <header class="modal-card-head">
         Confirm delete playlist
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter" id="exit-confirm-delete-playlist-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" @click="closeModal('confirm-delete-playlist-modal')"
+          aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <p>Are you sure you want to delete this playlist?</p>
@@ -335,6 +353,8 @@
         <br>
         <a href="{% url 'auth_login' %}"><strong>Login</strong></a>
         <br>
+        <br>
+        <br>
         <a href="{% url 'registration_register' %}"><strong>Sign up</strong></a>
 
       </section>
@@ -351,7 +371,8 @@
       <header class="modal-card-head">
         Playlist already applied
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter" id="exit-playlist-already-applied-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" @click="closeModal('playlist-already-applied-modal')"
+          aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <p>That playlist has already been applied!</p>
@@ -369,7 +390,7 @@
       <header class="modal-card-head">
         Active playlists
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter	" id="exit-active-playlists-modal" aria-label="close">Back</button>
+        <button class="button has-background-grey-lighter" @click="closeModal('active-playlists-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <div v-for="playlist in activePlaylists" class="columns">
@@ -443,7 +464,7 @@
       vm.currentHeading = place_name
       let link = `https://www.google.com/maps/dir/?api=1&destination=${place_lat},${place_lng}&travelmode=walking`
       let linkButton = `<a href="${link}" target="_blank" class="button is-info" id='maps-link'>Directions</a>`
-      document.getElementById("directions-button").src="static/images/google-maps.png";
+      document.getElementById("directions-button").src = "static/images/google-maps.png";
       if ($('#maps-link').length === 0) {
         $('#main-buttons').append(linkButton)
       }
@@ -463,11 +484,11 @@
       let contentString = `${place_name}`;
 
       google.maps.event.addListener(marker, 'click', function () {
-          var infowindow = new google.maps.InfoWindow({
-            content: contentString
-          });
-          infowindow.open(map, this);
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
         });
+        infowindow.open(map, this);
+      });
 
     });
 

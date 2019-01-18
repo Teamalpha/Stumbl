@@ -3,7 +3,7 @@
     width: 88%;
     border-radius: 100%;
     margin: 0 auto;
-    border: solid 3px rgb(30, 59, 114);
+    border: solid 4px rgb(30, 59, 114);
     -webkit-transform: translate3d(0px, 0px, 0px);
     -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
@@ -29,6 +29,7 @@ html, body {
     width: 60px;
     padding: 0;
     display: none;
+    z-index: 31;
     transform-origin: bottom center;
 }
 
@@ -62,10 +63,10 @@ html, body {
   text-align: center;
 }
 
-.open-pl-modal {
+#playlist-button {
     margin: 3%;
     width: 90%;
-
+    font-size: 1.25rem;
 }
 
 .brand {
@@ -90,6 +91,7 @@ html, body {
 #recenter-button:focus {
   outline: none;
 }
+
 #about-button {
   height: 40px;
   width: 40px;
@@ -100,6 +102,7 @@ html, body {
 #about-button:focus {
   outline: none;
 }
+
 #directions-button {
   height: 40px;
   width: 40px;
@@ -111,12 +114,11 @@ html, body {
   outline: none;
 }
 
-
-
 #cone-of-focus {
   height: 80px;
   width: 80px;
   padding-bottom: 40px;
+  z-index: -1;
   display: none;
 }
 
