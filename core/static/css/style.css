@@ -3,7 +3,6 @@
     width: 88%;
     border-radius: 100%;
     margin: 0 auto;
-    border: solid 4px rgb(30, 59, 114);
     -webkit-transform: translate3d(0px, 0px, 0px);
     -webkit-mask-image: -webkit-radial-gradient(white, black);
 }

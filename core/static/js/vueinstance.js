@@ -1,8 +1,10 @@
 var csrftoken = Cookies.get('csrftoken')
 Vue.http.headers.common['X-CSRFTOKEN'] = csrftoken
+Vue.http.options.root = '/';
 
-const requestUserPk = parseInt(document.getElementById('request-user-pk').value) || -1
+const requestUserPk = parseInt(document.getElementById('request-user-pk').value)
 const requestUser = document.getElementById('request-user').value
+const sharedPlaylistPk = document.querySelector('#shared-playlist-pk').value
 
 const vm = new Vue({
   el: '#vue-instance',
@@ -40,6 +42,7 @@ const vm = new Vue({
     if (requestUserPk !== -1) {
       this.getUserVotes()
     }
+    this.applySharedPlaylist()
   },
   methods: {
     openModal: function(id) {
@@ -270,6 +273,9 @@ const vm = new Vue({
         this.userVotes = response.data.votes
         this.userPlaylists = response.data.playlists
       })
+      .catch((err) => {
+        console.log(err);
+      })
     },
     toggleVote: function(playlist) {
       if (requestUserPk !== -1) {
@@ -310,6 +316,19 @@ const vm = new Vue({
         this.openModal('login-required-modal')
       }
     },
+    applySharedPlaylist: function() {
+      if (sharedPlaylistPk !== '') {
+        let sharedPlaylist = {
+          pk: parseInt(sharedPlaylistPk)
+        }
+        this.getPlaylist(sharedPlaylist)
+        setTimeout(() => {
+          this.applyGems
+          this.openModal('shared-playlist-applied-modal')
+        }, 2000);
+        
+      }
+    },
     closeModals: function() {
       this.closeModal('city-playlists-modal')
       this.closeModal('choose-city-modal')
@@ -323,6 +342,7 @@ const vm = new Vue({
       this.closeModal('playlist-already-applied-modal')
       this.closeModal('login-required-modal')
       this.closeModal('user-playlists-modal')
+      this.closeModal('shared-playlist-applied-modal')
     },
   }, // close methods
 }) // close vue instance

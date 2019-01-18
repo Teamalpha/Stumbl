@@ -380,6 +380,25 @@
     </div>
   </div>
 
+  {% comment %} Playlist already applied modal {% endcomment %}
+  <div id="shared-playlist-applied-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Shared Playlist Applied!
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('shared-playlist-applied-modal')"
+          aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <p>The playlist *${currentPlaylist.title}* has been applied!</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
   {% comment %} Active playlists modal {% endcomment %}
   <div id="active-playlists-modal" class="modal">
     <div class="modal-background"></div>
