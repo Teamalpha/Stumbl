@@ -75,6 +75,8 @@
 {% endif %}
 <input type="hidden" id="request-user" value="{{ request.user }}">
 
+<input type="hidden" id="shared-playlist-pk" value="{{ sharedPlaylistPk }}">
+
 <body>
     {% block content %}{% endblock content %}
     {% block footer %}{% endblock footer %}

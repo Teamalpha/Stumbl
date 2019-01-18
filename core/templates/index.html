@@ -163,7 +163,11 @@
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
-        <h3>Description: ${currentPlaylist.description}</h3>
+        <h3><strong>${currentPlaylist.description}</strong></h3>
+        <br>
+        <div class="center-children">
+          <a class="button is-link is-90" id="share-link">Share this playlist!</a>
+        </div>
         <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
           <div class="message-header">
@@ -373,6 +377,25 @@
       </header>
       <section class="modal-card-body">
         <p>That playlist has already been applied!</p>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} Playlist already applied modal {% endcomment %}
+  <div id="shared-playlist-applied-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Shared Playlist Applied!
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('shared-playlist-applied-modal')"
+          aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <p>The playlist *${currentPlaylist.title}* has been applied!</p>
       </section>
       <footer class="modal-card-foot">
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
