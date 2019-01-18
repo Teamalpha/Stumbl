@@ -41,8 +41,7 @@
   <div id="main-buttons columns">
     <div class="column center-children">
       <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Playlists</button>
-      {% comment %} <button v-if="activePlaylists.length > 0" @click="openModal('active-playlists-modal')" class="button is-info">Active
-        Playlists</button> {% endcomment %}
+
     </div>
   </div>
 
@@ -141,8 +140,8 @@
       </section>
       <section class="modal-card-body">
         <div v-for="playlist in cityPlaylists">
-          <button @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes:
-            (${playlist.playlist_votes.length})</button>
+          <button v-if="requestUser === playlist.user" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
+          <button v-else @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -160,7 +159,7 @@
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
         <button v-if="requestUser === currentPlaylist.user" @click="toggleVote(currentPlaylist)" class="button is-warning">${liked}</button>
-        <button v-else @click="toggleVote(currentPlaylist)" class="button is-success">${liked}</button>
+        <button v-else @click="toggleVote(currentPlaylist)" class="button is-info">${liked}</button>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
@@ -353,8 +352,6 @@
         <br>
         <a href="{% url 'auth_login' %}"><strong>Login</strong></a>
         <br>
-        <br>
-        <br>
         <a href="{% url 'registration_register' %}"><strong>Sign up</strong></a>
 
       </section>
@@ -397,6 +394,28 @@
           <div class="column">
             <button @click="getPlaylist(playlist)" class="button is-success">${playlist.title}</button>
             <button @click="disablePlaylist(playlist)" class="button is-danger">Remove</button>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} User playlists modal {% endcomment %}
+  <div id="user-playlists-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        User playlists
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('user-playlists-modal')" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <div v-for="playlist in userPlaylists" class="columns">
+          <div class="column">
+            <button @click="getPlaylist(playlist)" class="button is-info">${playlist.title}</button>
           </div>
         </div>
       </section>
