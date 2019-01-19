@@ -51,15 +51,21 @@ const vm = new Vue({
     closeModal: function(id) {
       document.getElementById(id).classList.remove('is-active')
     },
-    getCities: function () {
-      this.$http.get("/api/playlists/").then((response) => {
-        this.playlists = response.data;
+    getUniqueCities: function() {
+      this.cities = []
+      if (this.playlists.length > 0) {
         for (let playlist of this.playlists) {
           let city = capitalize(playlist.city)
           if (!this.cities.includes(city)) {
             this.cities.push(city)
           }
         }
+      }
+    },
+    getCities: function () {
+      this.$http.get("/api/playlists/").then((response) => {
+        this.playlists = response.data;
+        this.getUniqueCities()
       })
         .catch((err) => {
           console.log(err);
@@ -156,13 +162,16 @@ const vm = new Vue({
     deletePlaylist: function() {
       if (requestUser === this.currentPlaylist.user) {
         this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then(() => {
+          this.cityPlaylists.splice(this.cityPlaylists.indexOf(this.currentPlaylist), 1)
+          this.playlists.splice(this.playlists.indexOf(this.currentPlaylist), 1)
+          this.getUniqueCities()
           this.currentPlaylist = {};
+          this.closeModal('confirm-delete-playlist-modal')
+          this.closeModal('playlist-detail-modal')
           // to optimize - avoid hitting API again, instead remove playlist manually from cityPlaylists and activePlaylists.
-          this.$http.get(`/api/playlists/?city=${this.currentCity}`).then((response) => {
-            this.cityPlaylists = response.data;
-            this.closeModal('playlist-detail-modal')
-            this.closeModal('confirm-delete-playlist-modal')
-          })
+          // this.$http.get(`/api/playlists/?city=${this.currentCity}`).then((response) => {
+          //   this.cityPlaylists = response.data;
+          // })
         });
       }
     },
@@ -240,13 +249,15 @@ const vm = new Vue({
         this.closeModal('playlist-main-menu')  
       }
     },
-    deleteDestination: function(destinationPk) {
+    deleteDestination: function(destination) {
       if (requestUser === this.currentPlaylist.user) {
-        this.$http.delete(`/api/destinations/${destinationPk}`).then((response) => {
+        let destinationToDelete = destination
+        this.$http.delete(`/api/destinations/${destination.pk}`).then(() => {
+          this.currentPlaylist.destinations.splice(this.currentPlaylist.destinations.indexOf(destinationToDelete), 1)
           // rewrite this function to avoid the extra api hit - need to manually remove destination from this.currentPlaylist.destinations
-          this.$http.get(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
-            this.currentPlaylist = response.data;
-          })
+          // this.$http.get(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
+          //   this.currentPlaylist = response.data;
+          // })
         })
       }
     },
@@ -293,9 +304,13 @@ const vm = new Vue({
         }
         // delete vote if vote exists
         if (this.voteExists()) {
+          // let voteToDelete = playlist.playlist_votes.indexOf()
           this.$http.delete(`api/votes/${this.voteToDeletePk}`).then((response) => {
             this.liked = 'like'
-            newVote.pk = response.data.pk
+            this.newVote = response.data
+            console.log(response)
+            console.log('vote:', this.newVote)
+            // newVote.pk = response.data.pk
             this.currentPlaylist.playlist_votes.splice(this.currentPlaylist.playlist_votes.indexOf(newVote), 1)
             // this.cityPlaylists.indexOf(playlist).playlist_votes.splice(this.cityPlaylists.indexOf(playlist).playlist_votes.indexOf(this.newVote), 1)
             this.userVotes.splice(this.userVotes.indexOf(newVote), 1)

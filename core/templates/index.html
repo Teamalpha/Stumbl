@@ -263,7 +263,7 @@
           <div class="message-body has-background-grey-lighter">
             <p>${destination.description}</p>
             <div v-if="userOwns()">
-              <button @click="deleteDestination(destination.pk)" class="button is-danger cancel">Remove</button>
+              <button @click="deleteDestination(destination)" class="button is-danger cancel">Remove</button>
             </div>
           </div>
         </article>

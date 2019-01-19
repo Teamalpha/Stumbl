@@ -50,10 +50,7 @@ urlpatterns = [
     path('accounts/register/', MyRegistrationView.as_view(), name='registration_register'),
     path('api/', include((router.urls, 'core'), namespace='api')),
     path('admin/', admin.site.urls),
-    path('playlist/<int:pk>/', views.playlist_detail, name="playlist_detail"),
     path('accounts/', include('registration.backends.simple.urls')),
-
-
 ]
 
 if settings.DEBUG:
