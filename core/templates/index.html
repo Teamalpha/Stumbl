@@ -93,7 +93,7 @@
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-main-menu')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body center-children">
         <button v-if="activePlaylists.length == 0" id="playlist-button" class="button is-light is-static">Active
         Playlists</button>
         <button v-else @click="openModal('active-playlists-modal')"  id="playlist-button" class="button is-info">Active
@@ -119,7 +119,7 @@
         <button class="button has-background-grey-lighter	" @click="closeModal('choose-city-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body center-children">
         <div v-for="city in cities">
           <button @click="getCityPlaylists(city)" class="button is-info playlist-menu-bar">${city}</button>
         </div>
@@ -152,7 +152,7 @@
           <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">X</button>
         </div>
       </section>
-      <section class="modal-card-body">
+      <section class="modal-card-body center-children">
         <div v-for="playlist in cityPlaylists">
           <button v-if="requestUser === playlist.user" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
           <button v-else @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
@@ -366,7 +366,7 @@
         <button class="button has-background-grey-lighter" @click="closeModal('login-required-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
-        <p>Most of our features work without the need to log in. You've just encountered a feature which does. Feel free to login or register, or simply leave this page and continue using use the rest of our features.</p>
+        <p>Most of our features work without the need to log in. You've just encountered a feature which does. Feel free to login or register, or simply close this window to continue using our other features.</p>
         <br>
         <br>
         <a href="{% url 'auth_login' %}"><strong>Login</strong></a>
@@ -392,25 +392,6 @@
       </header>
       <section class="modal-card-body">
         <p>That playlist has already been applied!</p>
-      </section>
-      <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
-      </footer>
-    </div>
-  </div>
-
-  {% comment %} Playlist already applied modal {% endcomment %}
-  <div id="shared-playlist-applied-modal" class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        Shared Playlist Applied!
-        <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter" @click="closeModal('shared-playlist-applied-modal')"
-          aria-label="close">Back</button>
-      </header>
-      <section class="modal-card-body">
-        <p>Welcome to localgems! The playlist <em>${currentPlaylist.title}</em> - ${currentPlaylist.description} has been applied!</p>
       </section>
       <footer class="modal-card-foot">
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>

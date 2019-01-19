@@ -42,7 +42,7 @@ const vm = new Vue({
     if (requestUserPk !== -1) {
       this.getUserVotes()
     }
-    this.applySharedPlaylist()
+    this.openSharedPlaylist()
   },
   methods: {
     openModal: function(id) {
@@ -157,7 +157,8 @@ const vm = new Vue({
       if (requestUser === this.currentPlaylist.user) {
         this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then(() => {
           this.currentPlaylist = {};
-          this.$http.get(`/api/playlists/?search=${this.currentCity}`).then((response) => {
+          // to optimize - avoid hitting API again, instead remove playlist manually from cityPlaylists and activePlaylists.
+          this.$http.get(`/api/playlists/?city=${this.currentCity}`).then((response) => {
             this.cityPlaylists = response.data;
             this.closeModal('playlist-detail-modal')
             this.closeModal('confirm-delete-playlist-modal')
@@ -242,6 +243,7 @@ const vm = new Vue({
     deleteDestination: function(destinationPk) {
       if (requestUser === this.currentPlaylist.user) {
         this.$http.delete(`/api/destinations/${destinationPk}`).then((response) => {
+          // rewrite this function to avoid the extra api hit - need to manually remove destination from this.currentPlaylist.destinations
           this.$http.get(`/api/playlists/${this.currentPlaylist.pk}`).then((response) => {
             this.currentPlaylist = response.data;
           })
@@ -322,7 +324,7 @@ const vm = new Vue({
         this.openModal('login-required-modal')
       }
     },
-    applySharedPlaylist: function() {
+    openSharedPlaylist: function() {
       if (sharedPlaylistPk !== '') {
         let sharedPlaylist = {
           pk: parseInt(sharedPlaylistPk)
@@ -344,7 +346,6 @@ const vm = new Vue({
       this.closeModal('login-required-modal')
       this.closeModal('playlist-main-menu')
       this.closeModal('user-playlists-modal')
-      this.closeModal('shared-playlist-applied-modal')
     },
   }, // close methods
 }) // close vue instance

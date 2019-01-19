@@ -18,20 +18,20 @@ function roundify() {
   arrow.style.top = `${originY - 60 - radius}px`
   arrow.style.left = `${originX - 30}px`
 
-  recenterButton.style.top = `${originY - 20 + radius * .91}px`
-  recenterButton.style.left = `${originX - 20 - radius * .91}px`
+  recenterButton.style.top = `${originY - 25 + radius * .91}px`
+  recenterButton.style.left = `${originX - 25 - radius * .91}px`
   recenterButton.style.display = 'inline-block'
 
-  aboutButton.style.top = `${originY - 20 - radius * .91}px`
-  aboutButton.style.left = `${originX - 20 - radius * .91}px`
+  aboutButton.style.top = `${originY - 25 - radius * .91}px`
+  aboutButton.style.left = `${originX - 25 - radius * .91}px`
   aboutButton.style.display = 'inline-block'
 
-  directionsButton.style.top = `${originY - 20 + radius * .91}px`
-  directionsButton.style.left = `${originX - 20 + radius * .91}px`
+  directionsButton.style.top = `${originY - 25 + radius * .91}px`
+  directionsButton.style.left = `${originX - 25 + radius * .91}px`
   directionsButton.style.display = 'inline-block'
 
-  coneOfFocus.style.top = `${originY - 40 - radius * .91}px`
-  coneOfFocus.style.left = `${originX - 40 + radius * .91}px`
+  coneOfFocus.style.top = `${originY - 45 - radius * .91}px`
+  coneOfFocus.style.left = `${originX - 45 + radius * .91}px`
   coneOfFocus.style.display = 'inline-block'
 }
 
@@ -65,7 +65,16 @@ if (window.DeviceOrientationEvent) {
   })
 }
 
-function capitalize(word) {
-  capitalizedWord = word[0].toUpperCase() + word.slice(1).toLowerCase()
-  return capitalizedWord
+function capitalize(sentence) {
+  let words = sentence.split(" ")
+  let capitalizedWords = []
+  for (let word of words) {
+    word = word[0].toUpperCase() + word.slice(1)
+    capitalizedWords.push(word)
+  }
+  return capitalizedWords.join(' ')
 }
+console.log(capitalize('trc'))
+console.log(capitalize('TRC'))
+console.log(capitalize('New Orleans'))
+console.log(capitalize('new orleans'))
