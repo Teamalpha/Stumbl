@@ -18,7 +18,7 @@ const vm = new Vue({
     currentPlaylistDestinations: [],
     playlists: [],
     userVotes: [],
-    userPlaylists: {},
+    userPlaylists: [],
     newPlaylist: {},
     currentDestination: {},
     voteToDelete: {},
@@ -66,10 +66,9 @@ const vm = new Vue({
       this.$http.get("/api/playlists/").then((response) => {
         this.playlists = response.data;
         this.getUniqueCities()
+      }).catch((err) => {
+        console.log(err);
       })
-        .catch((err) => {
-          console.log(err);
-        })
     },
     getCityPlaylists: function (city) {
       this.$http.get(`/api/playlists/?city=${city}`).then((response) => {
@@ -77,10 +76,9 @@ const vm = new Vue({
         this.currentCity = city
         this.openModal('city-playlists-modal')
         this.searchField = ''
+      }).catch((err) => {
+        console.log(err);
       })
-        .catch((err) => {
-          console.log(err);
-        })
     },
     voteExists: function () {
       if (this.userVotes.length > 0) {
@@ -110,14 +108,12 @@ const vm = new Vue({
         this.openModal('playlist-detail-modal')
         this.liked = (this.voteExists() ? "Unlike" : "Like")
 
-        if (((/Android/i.test(navigator.userAgent)))) {
-          document.getElementById('share-link').href = `sms:?body=Check%20out%20this%20LocalGems%20playlist%20*${playlist.title}*%20for%20${playlist.city}%20at https://www.localgems.io/shared_playlist/${playlist.pk}`
-        } else
-          document.getElementById('share-link').href = `sms:&body=Check%20out%20this%20LocalGems%20playlist%20*${playlist.title}*%20for%20${playlist.city}%20at https://www.localgems.io/shared_playlist/${playlist.pk}`
+        let shareChar = (/Android/i.test(navigator.userAgent) ? '?' : '&')
+
+        document.getElementById('share-link').href = `sms:${shareChar}body=Check%20out%20this%20LocalGems%20playlist%20*${playlist.title}*%20for%20${playlist.city}%20at https://www.localgems.io/shared_playlist/${playlist.pk}`
+      }).catch((err) => {
+        console.log(err);
       })
-        .catch((err) => {
-          console.log(err);
-        })
     },
     isUniquePlaylist: function () {
       for (let playlist of this.playlists) {
@@ -146,6 +142,7 @@ const vm = new Vue({
             this.currentPlaylist.pk = response.data.pk
             this.playlists.push(this.currentPlaylist)
             this.cityPlaylists.push(this.currentPlaylist)
+            this.userPlaylists.push(this.currentPlaylist)
             if (!this.cities.includes(this.currentPlaylist.city)) {
               this.cities.push(this.currentPlaylist.city)
             }
@@ -159,10 +156,9 @@ const vm = new Vue({
             this.closeModal('playlist-detail-modal')
             this.openModal('playlist-detail-modal')
             this.openModal('edit-playlist-modal')
+          }).catch((err) => {
+            console.log(err);
           })
-            .catch((err) => {
-              console.log(err);
-            })
         }
       } else {
         this.openModal('login-required-modal')
@@ -172,12 +168,15 @@ const vm = new Vue({
       if (requestUser === this.currentPlaylist.user) {
         this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then(() => {
           this.cityPlaylists.splice(this.cityPlaylists.indexOf(this.currentPlaylist), 1)
+          this.userPlaylists.splice(this.userPlaylists.indexOf(this.currentPlaylist), 1)
           this.playlists.splice(this.playlists.indexOf(this.currentPlaylist), 1)
           this.getUniqueCities()
           this.currentPlaylist = {};
           this.closeModal('confirm-delete-playlist-modal')
           this.closeModal('playlist-detail-modal')
-        });
+        }).catch((err) => {
+          console.log(err);
+        })
       }
     },
     isUniqueDestination: function () {
@@ -207,10 +206,9 @@ const vm = new Vue({
           this.currentDestination = { 'name': '' }
           this.destinationDescription = ''
           this.currentPlaylist.destinations[this.currentPlaylist.destinations.length - 1].pk = response.data.pk
+        }).catch((err) => {
+          console.log(err);
         })
-          .catch((err) => {
-            console.log(err);
-          })
       }
     },
     isActivePlaylist: function () {
@@ -259,6 +257,8 @@ const vm = new Vue({
         let destinationToDelete = destination
         this.$http.delete(`/api/destinations/${destination.pk}`).then(() => {
           this.currentPlaylist.destinations.splice(this.currentPlaylist.destinations.indexOf(destinationToDelete), 1)
+        }).catch((err) => {
+          console.log(err);
         })
       }
     },
@@ -283,19 +283,17 @@ const vm = new Vue({
       if (!isAccessible) { isAccessible = '' }
       this.$http.get(`/api/playlists/?city=${this.currentCity}&title=${this.searchField}&accessible=${isAccessible}`).then((response) => {
         this.cityPlaylists = response.data;
+      }).catch((err) => {
+        console.log(err);
       })
-        .catch((err) => {
-          console.log(err);
-        })
     },
     getUserVotes: function () {
       this.$http.get(`api/users/${requestUserPk}`).then((response) => {
         this.userVotes = response.data.votes
         this.userPlaylists = response.data.playlists
+      }).catch((err) => {
+        console.log(err);
       })
-        .catch((err) => {
-          console.log(err);
-        })
     },
     toggleVote: function (playlist) {
       if (requestUserPk !== -1) {
@@ -323,6 +321,8 @@ const vm = new Vue({
           this.$http.post(`api/votes/`, newVote).then((response) => {
             this.liked = 'Unlike'
             newVote.pk = response.data.pk
+
+            // push the new vote into currentPlaylist, cityPlaylists, and userVotes
             this.currentPlaylist.playlist_votes.push(newVote)
             this.cityPlaylists[this.getCityPlaylistIndex()].playlist_votes.push(newVote)
             this.userVotes.push(newVote)

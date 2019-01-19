@@ -19,6 +19,11 @@ html, body {
     position: absolute;
 }
 
+.owned {
+    background-color: #209cee;
+    color: #fff
+}
+
 .empty-space {
     height: 50px;
 }
@@ -33,35 +38,39 @@ html, body {
 }
 
 .button {
-    margin: 2px 0px;
+    margin: 2px 1px;
+}
+
+.bordered {
+    border: solid 2px #949494
 }
 
 .message-header {
-    background-color: chartreuse
+    background-color: rgb(5, 0, 77)
 }
 
 .is-90 {
-  min-width: 90%;
+    min-width: 90%;
 }
 
 .is-80 {
-  min-width: 80%;
+    min-width: 80%;
 }
 
 .is-70 {
-  min-width: 70%;
+    min-width: 70%;
 }
 
 .is-60 {
-  min-width: 60%;
+    min-width: 60%;
 }
 
 .is-25 {
-  min-width: 25%;
+    min-width: 25%;
 }
 
 .is-20 {
-  min-width: 20%;
+    min-width: 20%;
 }
 
 #pac-input {
@@ -83,13 +92,12 @@ html, body {
 }
 
 #playlist-button {
-    margin: 3%;
+    margin: 1%;
     width: 90%;
     font-size: 1.25rem;
 }
 
 .playlist-menu-bar {
-  margin: 2%;
   width: 90%;
   font-size: 1rem;
 }
