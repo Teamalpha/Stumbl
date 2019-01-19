@@ -91,11 +91,12 @@ const vm = new Vue({
       }
       return false
     },
-    getCityPlaylistIndex: function () {
-      if (this.cityPlaylists.length > 0) {
-        for (let playlist of this.cityPlaylists) {
+    // Two similar objects with different memory addresses are not considered equal if one of the values is a nested list. This function finds the exact nested object by comparing the nested objects title key and then returns its index.
+    getPlaylistIndex: function (playlistArray) {
+      if (playlistArray.length > 0) {
+        for (let playlist of playlistArray) {
           if (playlist.title === this.currentPlaylist.title) {
-            return this.cityPlaylists.indexOf(playlist)
+            return playlistArray.indexOf(playlist)
           }
         }
       }
@@ -168,7 +169,7 @@ const vm = new Vue({
       if (requestUser === this.currentPlaylist.user) {
         this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then(() => {
           this.cityPlaylists.splice(this.cityPlaylists.indexOf(this.currentPlaylist), 1)
-          this.userPlaylists.splice(this.userPlaylists.indexOf(this.currentPlaylist), 1)
+          this.userPlaylists.splice(this.getPlaylistIndex(this.userPlaylists), 1)
           this.playlists.splice(this.playlists.indexOf(this.currentPlaylist), 1)
           this.getUniqueCities()
           this.currentPlaylist = {};
@@ -308,7 +309,7 @@ const vm = new Vue({
             newVote.pk = this.voteToDelete.pk
 
             // find the index of the playlist in cityPlaylists, then remove the vote
-            this.cityPlaylists[this.getCityPlaylistIndex()].playlist_votes.splice(this.cityPlaylists[this.getCityPlaylistIndex()].playlist_votes.indexOf(newVote), 1)
+            this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.splice(this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.indexOf(newVote), 1)
 
             // remove the vote from currentPlaylist
             this.currentPlaylist.playlist_votes.splice(this.currentPlaylist.playlist_votes.indexOf(newVote), 1)
@@ -324,7 +325,7 @@ const vm = new Vue({
 
             // push the new vote into currentPlaylist, cityPlaylists, and userVotes
             this.currentPlaylist.playlist_votes.push(newVote)
-            this.cityPlaylists[this.getCityPlaylistIndex()].playlist_votes.push(newVote)
+            this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.push(newVote)
             this.userVotes.push(newVote)
           }).catch((err) => {
             console.log(err);
