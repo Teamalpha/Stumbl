@@ -52,8 +52,16 @@ html, body {
   min-width: 70%;
 }
 
+.is-60 {
+  min-width: 60%;
+}
+
 .is-25 {
   min-width: 25%;
+}
+
+.is-20 {
+  min-width: 20%;
 }
 
 #pac-input {

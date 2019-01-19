@@ -2,8 +2,6 @@ var updatebearing;
 
 function getMySpot() {
     navigator.geolocation.getCurrentPosition(function (position) {
-        // const location2 = document.getElementById('location2');
-        // location.innerText = `My coordinates are: ${position.coords.latitude}, ${position.coords.longitude}`
         loNg = position.coords.longitude
         laT = position.coords.latitude
         if (placeCoords) {
@@ -24,8 +22,6 @@ getMySpot()
 
 function whichWaytoGo() {
     var mySpot = Math.round(getBearing(toRadian(laT), toRadian(loNg), toRadian(placeCoords.lat), toRadian(placeCoords.lng)))
-    compasser = document.getElementById('alpha');
-    // compasser.innerText = `My heading is: ${ mySpot } degrees`;
     return mySpot
 }
 
