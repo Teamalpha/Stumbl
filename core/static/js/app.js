@@ -74,7 +74,3 @@ function capitalize(sentence) {
   }
   return capitalizedWords.join(' ')
 }
-console.log(capitalize('trc'))
-console.log(capitalize('TRC'))
-console.log(capitalize('New Orleans'))
-console.log(capitalize('new orleans'))
