@@ -170,7 +170,7 @@ const vm = new Vue({
         this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then(() => {
           this.cityPlaylists.splice(this.cityPlaylists.indexOf(this.currentPlaylist), 1)
           this.userPlaylists.splice(this.getPlaylistIndex(this.userPlaylists), 1)
-          this.playlists.splice(this.playlists.indexOf(this.currentPlaylist), 1)
+          this.playlists.splice(this.getPlaylistIndex(this.playlists), 1)
           this.getUniqueCities()
           this.currentPlaylist = {};
           this.closeModal('confirm-delete-playlist-modal')
