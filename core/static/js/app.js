@@ -74,3 +74,23 @@ function capitalize(sentence) {
   }
   return capitalizedWords.join(' ')
 }
+
+// prevent pinch zoom on iOS 10 or greater.
+document.addEventListener('touchmove', function (event) {
+  if (event.scale !== 1) { event.preventDefault(); }
+}, false);
+
+// prevent double tap zoom on iOS 10 or greater
+var lastTouchEnd = 0;
+document.addEventListener('touchend', function (event) {
+  var now = (new Date()).getTime();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+}, false);
+
+$('#how-to').click(function() {
+  $('#nav-check').prop('checked', false)
+  $('#about-modal').addClass('is-active')
+})
