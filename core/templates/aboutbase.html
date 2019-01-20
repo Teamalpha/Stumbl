@@ -9,7 +9,6 @@
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    {% comment %} check if there are better ways to prevent user scaling {% endcomment %}
     <meta charset="utf-8">
     <meta name="google-site-verification" content="LxRKXxbx-5TCeA5NckaoDS_KytGGYo-N3X4J7rtMd3Q" />
     <meta name="google-site-verification" content="T9nLocSBThIav4QXdlONfHdcJ1wsTi4L4C7fntxV9Mo" />
@@ -17,8 +16,11 @@
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"/>
     <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/nav.js' %}" defer></script>
 
     {% block header %}{% endblock header %}
+  
   </head>
 
 <div class="nav">

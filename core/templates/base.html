@@ -18,7 +18,6 @@
     </title>
 
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
-    {% comment %} check if there are better ways to prevent user scaling {% endcomment %}
     <meta charset="utf-8">
     <meta name="google-site-verification" content="LxRKXxbx-5TCeA5NckaoDS_KytGGYo-N3X4J7rtMd3Q" />
     <meta name="google-site-verification" content="T9nLocSBThIav4QXdlONfHdcJ1wsTi4L4C7fntxV9Mo" />
@@ -35,7 +34,10 @@
     <script src="{% static 'js/compass.js' %}" defer></script>
     <script src="{% static 'js/vueinstance.js' %}" defer></script>
     <script src="{% static 'js/app.js' %}" defer></script>
+    <script src="{% static 'js/nav.js' %}" defer></script>
+
     {% block header %}{% endblock header %}
+  
   </head>
 
 <div class="nav">

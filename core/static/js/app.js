@@ -77,7 +77,9 @@ function capitalize(sentence) {
 
 // prevent pinch zoom on iOS 10 or greater.
 document.addEventListener('touchmove', function (event) {
-  if (event.scale !== 1) { event.preventDefault(); }
+  if (event.scale !== 1) {
+    event.preventDefault()
+  }
 }, false);
 
 // prevent double tap zoom on iOS 10 or greater
@@ -89,8 +91,3 @@ document.addEventListener('touchend', function (event) {
   }
   lastTouchEnd = now;
 }, false);
-
-$('#how-to').click(function() {
-  $('#nav-check').prop('checked', false)
-  $('#about-modal').addClass('is-active')
-})
