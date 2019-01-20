@@ -153,6 +153,7 @@ const vm = new Vue({
             this.currentDestination = { 'name': '' }
             this.destinationDescription = ''
             this.currentDescription = ''
+            this.currentTitle = ''
             this.accessible = false
             document.getElementById('accessible').checked = false
             this.closeModal('create-playlist-modal')
