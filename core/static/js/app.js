@@ -69,8 +69,8 @@ function capitalize(sentence) {
   let words = sentence.split(" ")
   let capitalizedWords = []
   for (let word of words) {
-    word = word[0].toUpperCase() + word.slice(1)
-    capitalizedWords.push(word)
+    capWord = word[0].toUpperCase() + word.slice(1)
+    capitalizedWords.push(capWord)
   }
   return capitalizedWords.join(' ')
 }
@@ -92,29 +92,30 @@ document.addEventListener('touchend', function (event) {
   lastTouchEnd = now;
 }, false);
 
-$(window).mouseup(function(event) {
-  let modalArray = [
-    '#city-playlists-modal',
-    '#choose-city-modal',
-    '#playlist-detail-modal',
-    '#create-playlist-modal',
-    '#edit-playlist-modal',
-    '#duplicate-playlist-modal',
-    '#confirm-delete-playlist-modal',
-    '#duplicate-destination-modal',
-    '#active-playlists-modal',
-    '#playlist-already-applied-modal',
-    '#login-required-modal',
-    '#playlist-main-menu',
-    '#user-playlists-modal'
-  ]
+// close modals if user clicks outside
+// $(window).mouseup(function(event) {
+//   let modalArray = [
+//     '#city-playlists-modal',
+//     '#choose-city-modal',
+//     '#playlist-detail-modal',
+//     '#create-playlist-modal',
+//     '#edit-playlist-modal',
+//     '#duplicate-playlist-modal',
+//     '#confirm-delete-playlist-modal',
+//     '#duplicate-destination-modal',
+//     '#active-playlists-modal',
+//     '#playlist-already-applied-modal',
+//     '#login-required-modal',
+//     '#playlist-main-menu',
+//     '#user-playlists-modal'
+//   ]
 
-  for (let individualModal of modalArray) {
-    let modal = $(individualModal)
-    if (event.target !== modal && event.target.parentNode !== modal) {
-      $(modal).removeClass('is-active')
-    }
-  }
-})
+//   for (let individualModal of modalArray) {
+//     let modal = $(individualModal)
+//     if (event.target !== modal && event.target.parentNode !== modal) {
+//       $(modal).removeClass('is-active')
+//     }
+//   }
+// })
 
       

@@ -138,15 +138,17 @@ const vm = new Vue({
         }
         if (this.isUniquePlaylist()) {
           this.$http.post(`api/playlists/`, this.newPlaylist).then((response) => {
-            this.newPlaylist = response.data
-            this.currentPlaylist = this.newPlaylist
-            this.currentPlaylist.pk = response.data.pk
+            this.currentPlaylist = response.data
             this.playlists.push(this.currentPlaylist)
             this.cityPlaylists.push(this.currentPlaylist)
             this.userPlaylists.push(this.currentPlaylist)
             if (!this.cities.includes(this.currentPlaylist.city)) {
               this.cities.push(this.currentPlaylist.city)
-            }
+            }        
+            
+            let shareChar = (/Android/i.test(navigator.userAgent) ? '?' : '&')
+            document.getElementById('share-link').href = `sms:${shareChar}body=Check%20out%20this%20LocalGems%20playlist%20*${this.currentPlaylist.title}*%20for%20${this.currentPlaylist.city}%20at https://www.localgems.io/shared_playlist/${this.currentPlaylist.pk}`
+    
             // clear variables
             this.currentDestination = { 'name': '' }
             this.destinationDescription = ''
@@ -167,10 +169,11 @@ const vm = new Vue({
     },
     deletePlaylist: function () {
       if (requestUser === this.currentPlaylist.user) {
+        this.cityPlaylists.splice(this.getPlaylistIndex(this.currentPlaylist), 1)
+        this.userPlaylists.splice(this.getPlaylistIndex(this.userPlaylists), 1)
+        this.playlists.splice(this.getPlaylistIndex(this.playlists), 1)
+        
         this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then(() => {
-          this.cityPlaylists.splice(this.cityPlaylists.indexOf(this.currentPlaylist), 1)
-          this.userPlaylists.splice(this.getPlaylistIndex(this.userPlaylists), 1)
-          this.playlists.splice(this.getPlaylistIndex(this.playlists), 1)
           this.getUniqueCities()
           this.currentPlaylist = {};
           this.closeModal('confirm-delete-playlist-modal')
