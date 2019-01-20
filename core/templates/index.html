@@ -154,7 +154,7 @@
       </section>
       <section class="modal-card-body center-children">
         <div v-for="playlist in cityPlaylists">
-          <button v-if="requestUser === playlist.user" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
+          <button v-if="requestUser === playlist.user" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title} (<img class="pr1" src="{% static 'images/favorited.png' %}" width="20" height="20"> ${playlist.playlist_votes.length})</button>
           <button v-else @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
         </div>
       </section>

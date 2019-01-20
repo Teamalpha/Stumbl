@@ -49,22 +49,6 @@ function getBearing(lat1, long1, lat2, long2) {
     return brngInDegs;
 }
 
-// function getDistance(lat1, lon1, lat2, lon2) {
-//     const R = 6371;
-//     let l1 = toRadian(lat1);
-//     let l2 = toRadian(lat2);
-//     let cl = toRadian(lat2-lat1);
-//     let cλ = toRadian(lon2-lon1);
-
-//     let a = Math.sin(cl/2) * Math.sin(cl/2) +
-//             Math.cos(l1) * Math.cos(l2) *
-//             Math.sin(cλ/2) * Math.sin(cλ/2);
-//     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-//     let d = (R * 100) * c;
-//     return d;
-// }
-
 function getDistance(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
     var dLat = toRadian(lat2 - lat1);  // toRadian below
