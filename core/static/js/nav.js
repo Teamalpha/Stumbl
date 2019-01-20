@@ -5,9 +5,7 @@ $('#how-to').click(function() {
   
   $(window).mouseup(function(event) {
     let nav = $('#nav-links')
-    console.log(event.target)
     if (event.target !== nav && event.target.parentNode !== nav) {
       $('#nav-check').prop('checked', false)
-      nav.hide()
     }
   })
