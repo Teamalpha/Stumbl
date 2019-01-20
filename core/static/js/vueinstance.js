@@ -169,7 +169,7 @@ const vm = new Vue({
     },
     deletePlaylist: function () {
       if (requestUser === this.currentPlaylist.user) {
-        this.cityPlaylists.splice(this.getPlaylistIndex(this.currentPlaylist), 1)
+        this.cityPlaylists.splice(this.getPlaylistIndex(this.cityPlaylists), 1)
         this.userPlaylists.splice(this.getPlaylistIndex(this.userPlaylists), 1)
         this.playlists.splice(this.getPlaylistIndex(this.playlists), 1)
         
