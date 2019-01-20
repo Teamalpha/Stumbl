@@ -69,12 +69,53 @@ function capitalize(sentence) {
   let words = sentence.split(" ")
   let capitalizedWords = []
   for (let word of words) {
-    word = word[0].toUpperCase() + word.slice(1)
-    capitalizedWords.push(word)
+    capWord = word[0].toUpperCase() + word.slice(1)
+    capitalizedWords.push(capWord)
   }
   return capitalizedWords.join(' ')
 }
-console.log(capitalize('trc'))
-console.log(capitalize('TRC'))
-console.log(capitalize('New Orleans'))
-console.log(capitalize('new orleans'))
+
+// prevent pinch zoom on iOS 10 or greater.
+document.addEventListener('touchmove', function (event) {
+  if (event.scale !== 1) {
+    event.preventDefault()
+  }
+}, false);
+
+// prevent double tap zoom on iOS 10 or greater
+var lastTouchEnd = 0;
+document.addEventListener('touchend', function (event) {
+  var now = (new Date()).getTime();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+}, false);
+
+// close modals if user clicks outside
+// $(window).mouseup(function(event) {
+//   let modalArray = [
+//     '#city-playlists-modal',
+//     '#choose-city-modal',
+//     '#playlist-detail-modal',
+//     '#create-playlist-modal',
+//     '#edit-playlist-modal',
+//     '#duplicate-playlist-modal',
+//     '#confirm-delete-playlist-modal',
+//     '#duplicate-destination-modal',
+//     '#active-playlists-modal',
+//     '#playlist-already-applied-modal',
+//     '#login-required-modal',
+//     '#playlist-main-menu',
+//     '#user-playlists-modal'
+//   ]
+
+//   for (let individualModal of modalArray) {
+//     let modal = $(individualModal)
+//     if (event.target !== modal && event.target.parentNode !== modal) {
+//       $(modal).removeClass('is-active')
+//     }
+//   }
+// })
+
+      
