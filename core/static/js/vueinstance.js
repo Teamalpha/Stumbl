@@ -380,7 +380,6 @@ const vm = new Vue({
         this.currentPlaylist.accessible = document.getElementById('accessible-edit').checked
         this.getUniqueCities()
         this.closeModal('edit-playlist-details-modal')
-
       })
     },
     updateDestination: function() {
