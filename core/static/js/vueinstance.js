@@ -137,6 +137,9 @@ const vm = new Vue({
       return true
     },
     addPlaylist: function () {
+      if (this.currentTitle === '' || this.currentCity === '') {
+        this.openModal('more-info-required-modal')
+      }
       if (requestUserPk !== -1) {
         this.newPlaylist = {
           "user": requestUser,
@@ -203,6 +206,9 @@ const vm = new Vue({
       return true
     },
     addDestination: function () {
+      if (this.currentDestination.name === '' || this.destinationDescription === '') {
+        this.openModal('more-info-required-modal')
+      }
       this.newDestination = {
         "playlist": this.currentPlaylist.pk,
         "lat": this.currentDestination.geometry.location.lat(),
