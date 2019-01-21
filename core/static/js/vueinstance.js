@@ -92,7 +92,7 @@ const vm = new Vue({
       }
       return false
     },
-    // Two similar objects with different memory addresses are not considered equal if one of the values is a nested list. This function finds the exact nested object by comparing the nested objects title key and then returns its index.
+    // Two similar objects with different memory addresses are not considered equal if one of the values is a nested list. This function finds the exact nested object by comparing the nested objects primary key and then returns its index.
     getPlaylistIndex: function (playlistArray) {
       if (playlistArray.length > 0) {
         for (let playlist of playlistArray) {
@@ -127,8 +127,7 @@ const vm = new Vue({
         this.closeModal('user-playlists-modal')
         this.openModal('playlist-detail-modal')
         this.liked = (this.voteExists(this.currentPlaylist) ? "Unlike" : "Like")
-        this.voteToDelete.playlist = this.currentPlaylist.pk
-
+        this.voteExists(playlist)
         let shareChar = (/Android/i.test(navigator.userAgent) ? '?' : '&')
 
         document.getElementById('share-link').href = `sms:${shareChar}body=Check%20out%20this%20LocalGems%20playlist%20*${playlist.title}*%20for%20${playlist.city}%20at https://www.localgems.io/shared_playlist/${playlist.pk}`
@@ -365,13 +364,13 @@ const vm = new Vue({
 
             // push the new vote into currentPlaylist, cityPlaylists, activePlaylists, userPlaylists, and userVotes
             this.currentPlaylist.playlist_votes.push(newVote)
-            if (this.cityPlaylists.length > 0) {
+            if (this.hasPlaylist(this.cityPlaylists)) {
               this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.push(newVote)
             }
-            if (this.userPlaylists.length > 0){
+            if (this.hasPlaylist(this.userPlaylists)) {
               this.userPlaylists[this.getPlaylistIndex(this.userPlaylists)].playlist_votes.push(newVote)
             }
-            if (this.activePlaylists.length > 0) {
+            if (this.hasPlaylist(this.activePlaylists)) {
               this.activePlaylists[this.getPlaylistIndex(this.activePlaylists)].playlist_votes.push(newVote)
             }
             this.userVotes.push(newVote)
