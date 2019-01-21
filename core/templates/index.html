@@ -11,21 +11,12 @@
 
   <img src="{% static 'images/arrow.svg' %}" id="arrow" class="absolute" alt="Compass arrow">
   <input type="image" src="{% static 'images/center.png' %}" id="recenter-button" class="absolute" alt="recenter button"></input>
-  <input type="image" src="{% static 'images/thick-about.png' %}" id="about-button" class="absolute" @click="openModal('about-modal')"></input>
+  <input type="image" src="{% static 'images/about.png' %}" id="about-button" class="absolute" @click="openModal('about-modal')"></input>
 
   <a target="_blank" id='maps-link'>
     <input type="image" src="{% static 'images/bw-google-maps.png' %}" id="directions-button" class="absolute"></input>
   </a>
   <img src="{% static 'images/cone-of-focus.png' %}" id="cone-of-focus" class="absolute" alt="Cone of focus">
-
-  <div id='test'></div>
-  <div id='alpha'></div>
-  <div id='beta'></div>
-  <div id='gamma'></div>
-  <div id='compass'></div>
-  <div id='distance'></div>
-  <div id='location'></div>
-  <div id='location2'></div>
 
   <div class="control center-children">
     <input id="pac-input" class="controls top-layer input is-info" type="text" placeholder="Where are you headed?">
@@ -40,8 +31,7 @@
 
   <div id="main-buttons columns">
     <div class="column center-children">
-      <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Playlists</button>
-
+      <button class="button is-info" id="playlist-button" @click="openModal('playlist-main-menu')">Playlists</button>
     </div>
   </div>
 
@@ -69,33 +59,64 @@
         <br>
         <h3><strong><a name="What-is-LocalGems">What is LocalGems?</a></strong></h3>
         <p>LocalGems helps you experience the magic of travel by discovering amazing local places along the way to a
-          destination. Imagine you're in a new city, and you have dinner reservations, and you'd like to explore before
-          dinner. Enter the restaurant into LocalGems as your "final destination" and then load a Playlist containing
-          amazing local places to explore as you make your way towards the restaurant. There are Playlists for every
-          mood, all searchable by city. Enjoy the journey with LocalGems.</p>
+          destination. Imagine you're in a new city, and you've made dinner reservations. Before dinner, you'd like to
+          experience what the city is really like. Simply enter the name of the restaurant into the searchbar and then
+          load a Playlist containing
+          amazing local places to explore. An arrow will point you in the direction of the restaurant. The route and
+          the stops you make along the way are up to you! There are Playlists for every
+          mood. Feel free to apply more than one! Enjoy the journey with LocalGems.</p>
         <br>
         <h3><strong><a name="How-to-use">How to use LocalGems</a></strong></h3>
-        <p>Choose your final destination from the dropdown menu, and then click "Playlists." A Playlist is a collection
+        <p>Choose your final destination from the searchbar, and then click "Playlists." A Playlist is a collection
           of amazing local businesses, experiences, and places. Choose a Playlist to suit your mood.</p>
         <br>
         <h3><strong><a name="Interface">LocalGems Interface</a></strong></h3>
         <p>The LocalGems map shows your position. Your destination is represented by a gold star on the map, and the
-          LocalGems in your loaded Playlist are represented by blue diamonds on the map. Change out a Playlist or add a
-          new one at any time.</p>
+          LocalGems in your loaded Playlist are represented by blue diamonds on the map. Apply and remove playlists at
+          any time!</p>
         <br>
         <h3><strong><a name="Navigation-Arrow">Navigation Arrow</a></strong></h3>
-        <p>The black arrow that appears around your map is the Navigation Arrow. It points in the direction of your
-          final destination so you know which way to walk, and your distance to destination is found below the map.</p>
+        <p>The navigation arrow that appears around your map points toward your destination so you know which way to
+          walk. The distance to your destination can be found below the map.</p>
         <br>
         <h3><strong><a name="Turn-by-turn">Get Turn-by-Turn Directions</a></strong></h3>
-        <p>Sometimes you've had enough exploring and are ready to walk straight to your destiation. If a final
-          destiation has been chosen, the "Directions" button will be available for turn-by-turn directions.</p>
+        <p>If you've had enough exploring or need to find a way around an obstacle, tap the button on the lower right
+          of the map to get precise walking directions.</p>
       </section>
       <footer class="modal-card-foot">
         <button class="button has-background-grey-lighter" @click="closeModal('about-modal')" aria-label="close">Close</button>
       </footer>
     </div>
   </div>
+
+  {% comment %} Playlists Main Menu {% endcomment %}
+  <div id="playlist-main-menu" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <h1> Playlist Main menu </h1>
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('playlist-main-menu')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
+      </header>
+      <section class="modal-card-body center-children">
+        <button v-if="activePlaylists.length == 0" id="playlist-button" class="button is-light is-static">Active
+          Playlists</button>
+        <button v-else @click="openModal('active-playlists-modal')" id="playlist-button" class="button is-info">Active
+          Playlists</button>
+        <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Playlists</button>
+        <button v-if="userPlaylists.length == 0" class="button is-light is-static" id="playlist-button">Your Playlists</button>
+        <button v-else class="button is-info" id="playlist-button" @click="openModal('user-playlists-modal')">Your
+          Playlists</button>
+      </section>
+      <footer class="modal-card-foot">
+        <button v-if="requestUserPk == -1" class="button is-grey is-static"><strong>Create New Playlist</strong></button>
+        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
+
+      </footer>
+    </div>
+  </div>
+
 
   {% comment %} Choose city modal {% endcomment %}
   <div id="choose-city-modal" class="modal">
@@ -105,15 +126,16 @@
         Choose a city
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('choose-city-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body center-children">
         <div v-for="city in cities">
-          <button @click="getCityPlaylists(city)" class="button is-success is-fullwidth">${city}</button>
+          <button @click="getCityPlaylists(city)" class="button is-info playlist-menu-bar">${city}</button>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-primary">Create New Playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+        <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
+
       </footer>
     </div>
   </div>
@@ -123,29 +145,30 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Search playlists
+        Search playlists in ${currentCity}
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('city-playlists-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
           <input class="input" type="text" id="search-field" placeholder="Search playlists" v-model="searchField">
-          <button class="button has-background-grey-lighter" @click="searchPlaylists()">Search</button>
           <label class="checkbox">
             <input id="is-accessible" type="checkbox" value="true">
             Accessible
           </label>
-          <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">Clear</button>
+          <br />
+          <button class="button has-background-grey-lighter" @click="searchPlaylists()">Search</button>
+          <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">X</button>
         </div>
       </section>
-      <section class="modal-card-body">
+      <section class="modal-card-body center-children">
         <div v-for="playlist in cityPlaylists">
-          <button v-if="requestUser === playlist.user" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
-          <button v-else @click="getPlaylist(playlist)" class="button is-success is-fullwidth">${playlist.title} - Likes: (${playlist.playlist_votes.length})</button>
+          <button @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
+            <span style="color: red;"><i class="far fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-primary">Create New Playlist</button>
+        <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
@@ -158,14 +181,18 @@
       <header class="modal-card-head">
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
-        <button v-if="requestUser === currentPlaylist.user" @click="toggleVote(currentPlaylist)" class="button is-warning">${liked}</button>
-        <button v-else @click="toggleVote(currentPlaylist)" class="button is-info">${liked}</button>
+        <button @click="toggleVote(currentPlaylist)" class="button is-info">${liked}</button>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel"><strong>X</strong></button>
       </header>
       <section class="modal-card-body">
-        <h3>Description: ${currentPlaylist.description}</h3>
+        <h3><strong>${currentPlaylist.description}</strong></h3>
         <br>
-        <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
+        <div class="center-children">
+          <a class="button is-link is-90" id="share-link">Share this playlist!</a>
+        </div>
+        <br>
+        <article v-for="destination in currentPlaylist.destinations" class="message is-info">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
@@ -173,8 +200,7 @@
         </article>
       </section>
       <footer class="modal-card-foot">
-        <button @click="applyGems()" class="button is-primary apply-playlist">Select playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+        <button @click="applyGems()" class="button is-link apply-playlist">Select playlist</button>
         {% if user.is_authenticated %}
         <div v-if="userOwns()">
           <button @click="openModal('edit-playlist-modal')" class="button is-warning">Edit</button>
@@ -204,7 +230,7 @@
         <div class="field">
           <label class="label">City</label>
           <div class="control">
-            <input v-model="currentCity" class="input is-success" type="text" placeholder="City" value="bulma">
+            <input v-model="currentCity" class="input is-success" type="text" placeholder="City">
           </div>
         </div>
         <div class="field">
@@ -237,21 +263,23 @@
       </header>
       <section class="modal-card-body">
         <h3>Description: ${currentPlaylist.description}</h3>
+        <button @click="openModal('edit-playlist-details-modal'), setPlaylistFields()" class="button is-warning">Edit Playlist Details</button>
         <br>
-        <article v-for="destination in currentPlaylist.destinations" class="message is-success is-small">
+        <article v-for="destination in currentPlaylist.destinations" class="message is-info is-small">
           <div class="message-header">
             <p>${destination.name}</p>
           </div>
           <div class="message-body has-background-grey-lighter">
             <p>${destination.description}</p>
             <div v-if="userOwns()">
-              <button @click="deleteDestination(destination.pk)" class="button is-danger cancel">Remove</button>
+              <button @click="deleteDestination(destination)" class="button is-danger cancel">Remove</button>
+              <button @click="openModal('edit-destination-details-modal'), setDestinationFields(destination)" class="button is-warning">Edit Description</button>
             </div>
           </div>
         </article>
         <label class="label">Add a gem</label>
         <div class="control">
-          <input id="modal-autocomplete" class="controls input is-success" type="text" placeholder="choose destination">
+          <input id="modal-autocomplete" class="controls input is-info" type="text" placeholder="choose destination">
         </div>
         <div class="field">
           <label class="label">Name</label>
@@ -269,13 +297,85 @@
         <div class="field">
           <label class="label">What makes this place a hidden gem?</label>
           <div class="control">
-            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-success"
+            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-info"
               type="text" placeholder="Description"></textarea>
           </div>
         </div>
       </section>
       <footer class="modal-card-foot">
         <button @click="addDestination()" class="button is-link">Add Gem</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+{% comment %} edit playlist details modal {% endcomment %}
+  <div id="edit-playlist-details-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Edit *${currentPlaylist.title}*
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('edit-playlist-details-modal')" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label">Title</label>
+          <div class="control">
+            <input v-model="currentTitle" class="input" type="text" placeholder="Playlist name">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">City</label>
+          <div class="control">
+            <input v-model="currentCity" class="input is-success" type="text" placeholder="City">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Description</label>
+          <div class="control">
+            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-success"
+              type="text" placeholder="Description"></textarea>
+          </div>
+        </div>
+        <label class="checkbox">
+          <input id="accessible-edit" type="checkbox" value="true">
+          Accessible
+        </label>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="updatePlaylist()" class="button is-link">Save Changes</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+{% comment %} edit destination details modal {% endcomment %}
+  <div id="edit-destination-details-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Edit Destination Details
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('edit-destination-details-modal')" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+       <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input v-model="currentDestination.name" id="current-place-name" class="input" type="text" placeholder="Place name">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">What makes this place a hidden gem?</label>
+          <div class="control">
+            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-info"
+              type="text" placeholder="Description"></textarea>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="updateDestination()" class="button is-link">Save Changes</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
@@ -348,7 +448,9 @@
         <button class="button has-background-grey-lighter" @click="closeModal('login-required-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
-        <p>You must be logged in to do that! Please login to use this feature.</p>
+        <p>Most of our features work without the need to log in. You've just encountered a feature which does. Feel
+          free to login or register, or simply close this window to continue using our other features.</p>
+        <br>
         <br>
         <a href="{% url 'auth_login' %}"><strong>Login</strong></a>
         <br>
@@ -388,17 +490,17 @@
         Active playlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('active-playlists-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </header>
       <section class="modal-card-body">
         <div v-for="playlist in activePlaylists" class="columns">
-          <div class="column">
-            <button @click="getPlaylist(playlist)" class="button is-success">${playlist.title}</button>
-            <button @click="disablePlaylist(playlist)" class="button is-danger">Remove</button>
+          <div class="column center-children">
+            <button @click="getPlaylist(playlist)" class="button is-info is-70 ">${playlist.title}</button>
+            <button @click="disablePlaylist(playlist)" class="button is-danger is-20">Remove</button>
           </div>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -408,15 +510,13 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        User playlists
+        Your playlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('user-playlists-modal')" aria-label="close">Back</button>
       </header>
       <section class="modal-card-body">
-        <div v-for="playlist in userPlaylists" class="columns">
-          <div class="column">
-            <button @click="getPlaylist(playlist)" class="button is-info">${playlist.title}</button>
-          </div>
+        <div v-for="playlist in userPlaylists" class="center-children">
+          <button @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}</button>
         </div>
       </section>
       <footer class="modal-card-foot">

@@ -17,13 +17,13 @@
       {% block title %} LocalGems {% endblock title %}
     </title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    {% comment %} check if there are better ways to prevent user scaling {% endcomment %}
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <meta name="google-site-verification" content="LxRKXxbx-5TCeA5NckaoDS_KytGGYo-N3X4J7rtMd3Q" />
     <meta name="google-site-verification" content="T9nLocSBThIav4QXdlONfHdcJ1wsTi4L4C7fntxV9Mo" />
     
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     
@@ -35,7 +35,10 @@
     <script src="{% static 'js/compass.js' %}" defer></script>
     <script src="{% static 'js/vueinstance.js' %}" defer></script>
     <script src="{% static 'js/app.js' %}" defer></script>
+    <script src="{% static 'js/nav.js' %}" defer></script>
+
     {% block header %}{% endblock header %}
+  
   </head>
 
 <div class="nav">
@@ -55,8 +58,9 @@
 
   <input type="checkbox" id="nav-check">
   <div class="nav-links">
-    <a href="https://github.com/Teamalpha/Stumbl">Github</a>
     <a href="{% url 'about' %}">About</a>
+    <a id="how-to">How to use LocalGems</a>
+    <a href="https://github.com/Teamalpha/Stumbl">Github</a>
   {% if user.is_authenticated %}
     <a href="{% url 'auth_logout' %}">Logout</a>
   {% else %}
@@ -72,6 +76,8 @@
 <input type="hidden" id="request-user-pk" value="-1">
 {% endif %}
 <input type="hidden" id="request-user" value="{{ request.user }}">
+
+<input type="hidden" id="shared-playlist-pk" value="{{ sharedPlaylistPk }}">
 
 <body>
     {% block content %}{% endblock content %}

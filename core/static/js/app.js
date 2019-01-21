@@ -18,20 +18,20 @@ function roundify() {
   arrow.style.top = `${originY - 60 - radius}px`
   arrow.style.left = `${originX - 30}px`
 
-  recenterButton.style.top = `${originY - 20 + radius * .91}px`
-  recenterButton.style.left = `${originX - 20 - radius * .91}px`
+  recenterButton.style.top = `${originY - 25 + radius * .91}px`
+  recenterButton.style.left = `${originX - 25 - radius * .91}px`
   recenterButton.style.display = 'inline-block'
 
-  aboutButton.style.top = `${originY - 20 - radius * .91}px`
-  aboutButton.style.left = `${originX - 20 - radius * .91}px`
+  aboutButton.style.top = `${originY - 25 - radius * .91}px`
+  aboutButton.style.left = `${originX - 25 - radius * .91}px`
   aboutButton.style.display = 'inline-block'
 
-  directionsButton.style.top = `${originY - 20 + radius * .91}px`
-  directionsButton.style.left = `${originX - 20 + radius * .91}px`
+  directionsButton.style.top = `${originY - 25 + radius * .91}px`
+  directionsButton.style.left = `${originX - 25 + radius * .91}px`
   directionsButton.style.display = 'inline-block'
 
-  coneOfFocus.style.top = `${originY - 40 - radius * .91}px`
-  coneOfFocus.style.left = `${originX - 40 + radius * .91}px`
+  coneOfFocus.style.top = `${originY - 45 - radius * .91}px`
+  coneOfFocus.style.left = `${originX - 45 + radius * .91}px`
   coneOfFocus.style.display = 'inline-block'
 }
 
@@ -65,13 +65,63 @@ if (window.DeviceOrientationEvent) {
   })
 }
 
-function capitalize(word) {
-  capitalizedWord = word[0].toUpperCase() + word.slice(1).toLowerCase()
-  return capitalizedWord
-}
   if (window.localStorage.getItem("hasVisited") !== "true") {
     console.log(window.localStorage.getItem("hasVisited"))
     $("#about-modal").addClass('is-active');
   window.localStorage.setItem("hasVisited","true");
   }
 
+function capitalize(sentence) {
+  let words = sentence.split(" ")
+  let capitalizedWords = []
+  for (let word of words) {
+    capWord = word[0].toUpperCase() + word.slice(1)
+    capitalizedWords.push(capWord)
+  }
+  return capitalizedWords.join(' ')
+}
+
+// prevent pinch zoom on iOS 10 or greater.
+document.addEventListener('touchmove', function (event) {
+  if (event.scale !== 1) {
+    event.preventDefault()
+  }
+}, false);
+
+// prevent double tap zoom on iOS 10 or greater
+var lastTouchEnd = 0;
+document.addEventListener('touchend', function (event) {
+  var now = (new Date()).getTime();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault();
+  }
+  lastTouchEnd = now;
+}, false);
+
+// close modals if user clicks outside
+// $(window).mouseup(function(event) {
+//   let modalArray = [
+//     '#city-playlists-modal',
+//     '#choose-city-modal',
+//     '#playlist-detail-modal',
+//     '#create-playlist-modal',
+//     '#edit-playlist-modal',
+//     '#duplicate-playlist-modal',
+//     '#confirm-delete-playlist-modal',
+//     '#duplicate-destination-modal',
+//     '#active-playlists-modal',
+//     '#playlist-already-applied-modal',
+//     '#login-required-modal',
+//     '#playlist-main-menu',
+//     '#user-playlists-modal'
+//   ]
+
+//   for (let individualModal of modalArray) {
+//     let modal = $(individualModal)
+//     if (event.target !== modal && event.target.parentNode !== modal) {
+//       $(modal).removeClass('is-active')
+//     }
+//   }
+// })
+
+      

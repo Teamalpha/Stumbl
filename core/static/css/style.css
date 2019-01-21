@@ -3,7 +3,6 @@
     width: 88%;
     border-radius: 100%;
     margin: 0 auto;
-    border: solid 4px rgb(30, 59, 114);
     -webkit-transform: translate3d(0px, 0px, 0px);
     -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
@@ -12,16 +11,19 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
-    /* background-color: rgba(116, 122, 150, 0.973); */
-    /* background-color: 	#89cff0; */
 }
 
 .absolute {
     position: absolute;
 }
 
+.owned {
+    background-color: #209cee;
+    color: #fff
+}
+
 .empty-space {
-    height: 50px;
+    height: 30px;
 }
 
 #arrow {
@@ -34,11 +36,39 @@ html, body {
 }
 
 .button {
-    margin: 2px 0px;
+    margin: 4px 1px;
+}
+
+.bordered {
+    border: solid 2px #949494
 }
 
 .message-header {
-    background-color: chartreuse
+    background-color: rgb(5, 0, 77)
+}
+
+.is-90 {
+    min-width: 90%;
+}
+
+.is-80 {
+    min-width: 80%;
+}
+
+.is-70 {
+    min-width: 70%;
+}
+
+.is-60 {
+    min-width: 60%;
+}
+
+.is-25 {
+    min-width: 25%;
+}
+
+.is-20 {
+    min-width: 20%;
 }
 
 #pac-input {
@@ -51,10 +81,6 @@ html, body {
     border-color: #4d90fe;
   }
 
-#add-autocomplete {
-    z-index: 9999;
-}
-
 .pr1 {
     padding-right: 5px;
 }
@@ -64,9 +90,14 @@ html, body {
 }
 
 #playlist-button {
-    margin: 3%;
+    margin: 1%;
     width: 90%;
     font-size: 1.25rem;
+}
+
+.playlist-menu-bar {
+  width: 90%;
+  font-size: 1rem;
 }
 
 .brand {
@@ -82,8 +113,8 @@ html, body {
 }
 
 #recenter-button {
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   display: none;
   z-index: 30;
 }
@@ -93,8 +124,8 @@ html, body {
 }
 
 #about-button {
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   display: none;
   z-index: 30;
 }
@@ -104,8 +135,8 @@ html, body {
 }
 
 #directions-button {
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   display: none;
   z-index: 30;
 }
@@ -115,8 +146,8 @@ html, body {
 }
 
 #cone-of-focus {
-  height: 80px;
-  width: 80px;
+  height: 90px;
+  width: 90px;
   padding-bottom: 40px;
   z-index: -1;
   display: none;
@@ -221,10 +252,14 @@ html, body {
     overflow-y: auto;
   }
 .modal-card-body {
-  font-family: monospace;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  justify-content: center;
 }
 .modal-card-head {
-  font-family: monospace;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-align: center;
+  justify-content: center;
+
 }
 
 .form-styling{
