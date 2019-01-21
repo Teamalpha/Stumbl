@@ -70,18 +70,25 @@
         <p>Choose your final destination from the searchbar, and then click "Playlists." A Playlist is a collection
           of amazing local businesses, experiences, and places. Choose a Playlist to suit your mood.</p>
         <br>
-        <h3><strong><a name="Interface">LocalGems Interface</a></strong></h3>
+        <h3><strong><a name="Interface">LocalGems Interface</a></strong>
+        </h3>
         <p>The LocalGems map shows your position. Your destination is represented by a gold star on the map, and the
           LocalGems in your loaded Playlist are represented by blue diamonds on the map. Apply and remove playlists at
           any time!</p>
         <br>
-        <h3><strong><a name="Navigation-Arrow">Navigation Arrow</a></strong></h3>
+        <h3><strong><a name="Navigation-Arrow">Navigation Arrow <input type="image" src="{% static 'images/Arrow.png' %}" alt="recenter button" width='20'></a></strong></h3>
         <p>The navigation arrow that appears around your map points toward your destination so you know which way to
           walk. The distance to your destination can be found below the map.</p>
         <br>
-        <h3><strong><a name="Turn-by-turn">Get Turn-by-Turn Directions</a></strong></h3>
+        <h3><strong><a name="Your Current Position">Your Current Postion <input type="image" src="{% static 'images/center.png' %}" alt="recenter button" width='20'></input></a></strong></h3>
+        <p>The blue circle indicates your current position on the map. While the map is by default centered on your position, you may explore the area by dragging the map with two fingers. If you wish to return to your original position, tap the bullseye icon in the top left of your map.</p>
+        <br>
+        <h3><strong><a name="Field-of-focus">Your Field of View <input type="image" src="{% static 'images/cone-of-focus.png' %}" alt="recenter button" width='30'></input></a></strong></h3>
+        <p>The rotating blue dot with a rotating field of vision represents the direction which you are currently pointing in relation to the map.</p>
+        <br>
+        <h3><strong><a name="Turn-by-turn">Get Turn-by-Turn Directions <input type="image" src="{% static 'images/google-maps.png' %}" alt="recenter button" width='20'></input></a></strong></h3>
         <p>If you've had enough exploring or need to find a way around an obstacle, tap the button on the lower right
-          of the map to get precise walking directions.</p>
+          of the map to get precise walking directions. This will open the Google Maps app, offering precise walking directions to your destination.</p>
       </section>
       <footer class="modal-card-foot">
         <button class="button has-background-grey-lighter" @click="closeModal('about-modal')" aria-label="close">Close</button>
@@ -191,6 +198,7 @@
         Search playlists in ${currentCity}
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('city-playlists-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -212,7 +220,6 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -303,6 +310,7 @@
         <p>Customize *${currentPlaylist.title}*</p>
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('edit-playlist-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <h3>Description: ${currentPlaylist.description}</h3>
@@ -347,7 +355,6 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="addDestination()" class="button is-link">Add Gem</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -449,6 +456,7 @@
       <header class="modal-card-head">
         Duplicate Destination
         <p class="modal-card-title"></p>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
         <button class="button has-background-grey-lighter" @click="closeModal('duplicate-destination-modal')"
           aria-label="close">Back</button>
       </header>
@@ -456,7 +464,6 @@
         <p>This playlist already has a destination with that name!</p>
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -468,6 +475,7 @@
       <header class="modal-card-head">
         Confirm delete playlist
         <p class="modal-card-title"></p>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
         <button class="button has-background-grey-lighter" @click="closeModal('confirm-delete-playlist-modal')"
           aria-label="close">Back</button>
       </header>
@@ -476,7 +484,6 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="deletePlaylist()" class="button is-warning">Delete Playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -489,6 +496,7 @@
         Login required
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('login-required-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <p>Most of our features work without the need to log in. You've just encountered a feature which does. Feel
@@ -501,7 +509,6 @@
 
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -515,12 +522,12 @@
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-already-applied-modal')"
           aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <p>That playlist has already been applied!</p>
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -553,12 +560,12 @@
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('more-info-destination-modal')"
           aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <p>Please fill out all required fields before submitting!</p>
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
