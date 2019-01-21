@@ -69,3 +69,9 @@ function capitalize(word) {
   capitalizedWord = word[0].toUpperCase() + word.slice(1).toLowerCase()
   return capitalizedWord
 }
+  if (window.localStorage.getItem("hasVisited") !== "true") {
+    console.log(window.localStorage.getItem("hasVisited"))
+    $("#about-modal").addClass('is-active');
+  window.localStorage.setItem("hasVisited","true");
+  }
+
