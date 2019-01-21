@@ -75,21 +75,23 @@ function firstVisitInfoModal() {
 firstVisitInfoModal()
 
 function capitalize(sentence) {
-  if (sentence.includes(' ')) {
-    let words = sentence.split(" ")
-    let capitalizedWords = []
-    for (let word of words) {
-      let capWord = word[0].toUpperCase() + word.slice(1)
-      capitalizedWords.push(capWord)
+  if (sentence !== null &&sentence !== '') {
+    if (sentence.includes(' ')) {
+      let words = sentence.split(" ")
+      let capitalizedWords = []
+      for (let word of words) {
+        let capWord = word[0].toUpperCase() + word.slice(1)
+        capitalizedWords.push(capWord)
+      }
+      return capitalizedWords.join(' ')
+    } else {
+      let capWord = sentence[0].toUpperCase() + sentence.slice(1)
+      return capWord
     }
-    return capitalizedWords.join(' ')
-  } else {
-    let capWord = word[0].toUpperCase() + word.slice(1)
-    return capWord
   }
 }
 
-// prevent pinch zoom on iOS 10 or greater.
+// reduce pinch zoom on iOS 10 or greater.
 document.addEventListener('touchmove', function (event) {
   if (event.scale !== 1) {
     event.preventDefault()
