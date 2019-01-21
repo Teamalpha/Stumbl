@@ -22,6 +22,7 @@ const vm = new Vue({
     newPlaylist: {},
     currentDestination: {},
     voteToDelete: {},
+    destinationToUpdate: {},
     accessible: false,
     currentTitle: null,
     currentCity: null,
@@ -100,6 +101,13 @@ const vm = new Vue({
           }
         }
       }
+    },
+    getDestinationIndex: function() {
+      for (let destination of this.currentPlaylist.destinations) {
+        if (destination.pk === destinationToUpdate.pk)
+        return currentPlaylist.destinations.indexOf(destination)
+      }
+      
     },
     getPlaylist: function (playlist) {
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
@@ -259,9 +267,9 @@ const vm = new Vue({
     },
     deleteDestination: function (destination) {
       if (requestUser === this.currentPlaylist.user) {
-        let destinationToDelete = destination
+        let destinationToUpdate = destination
         this.$http.delete(`/api/destinations/${destination.pk}`).then(() => {
-          this.currentPlaylist.destinations.splice(this.currentPlaylist.destinations.indexOf(destinationToDelete), 1)
+          this.currentPlaylist.destinations.splice(this.currentPlaylist.destinations.indexOf(destinationToUpdate), 1)
         }).catch((err) => {
           console.log(err);
         })
@@ -346,6 +354,42 @@ const vm = new Vue({
         }
         this.getPlaylist(sharedPlaylist)
       }
+    },
+    updatePlaylist: function() {
+      let updatedPlaylist = {
+        "title": capitalize(this.currentTitle),
+        "city": capitalize(this.currentCity),
+        "description": this.currentDescription,
+        "accessible": document.getElementById('accessible-edit').checked,
+      }
+      this.$http.patch(`api/playlists/${this.currentPlaylist.pk}/`, updatedPlaylist).then(() => {
+        console.log('apparently updating the playlist worked!')
+      })
+    },
+    updateDestination: function() {
+      let updatedDestination = {
+        "description": this.destinationDescription,
+        "name": this.currentDestination.name,
+      }
+      this.$http.patch(`api/destinations/${this.destinationToUpdate.pk}/`, updatedDestination).then(() => {
+        console.log('apparently updating the destination worked!')
+        this.currentPlaylist[this.getDestinationIndex()]
+        
+      })
+    },
+    setPlaylistFields: function() {
+      this.currentDescription = this.currentPlaylist.description
+      this.currentTitle = this.currentPlaylist.title
+      if (this.currentPlaylist.accessible) {
+        document.getElementById('accessible-edit').checked = true
+      } else {
+        document.getElementById('accessible-edit').checked = false
+      } 
+    },
+    setDestinationFields: function(destination) {
+      this.currentDestination.name = destination.name
+      this.destinationDescription = destination.description
+      this.destinationToUpdate = destination
     },
     closeModals: function () {
       this.closeModal('city-playlists-modal')

@@ -263,6 +263,7 @@
       </header>
       <section class="modal-card-body">
         <h3>Description: ${currentPlaylist.description}</h3>
+        <button @click="openModal('edit-playlist-details-modal'), setPlaylistFields()" class="button is-warning">Edit Playlist Details</button>
         <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-info is-small">
           <div class="message-header">
@@ -272,6 +273,7 @@
             <p>${destination.description}</p>
             <div v-if="userOwns()">
               <button @click="deleteDestination(destination)" class="button is-danger cancel">Remove</button>
+              <button @click="openModal('edit-destination-details-modal'), setDestinationFields(destination)" class="button is-warning">Edit Description</button>
             </div>
           </div>
         </article>
@@ -302,6 +304,78 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="addDestination()" class="button is-link">Add Gem</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+{% comment %} edit playlist details modal {% endcomment %}
+  <div id="edit-playlist-details-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Edit *${currentPlaylist.title}*
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('edit-playlist-details-modal')" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label">Title</label>
+          <div class="control">
+            <input v-model="currentTitle" class="input" type="text" placeholder="Playlist name">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">City</label>
+          <div class="control">
+            <input v-model="currentCity" class="input is-success" type="text" placeholder="City">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Description</label>
+          <div class="control">
+            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-success"
+              type="text" placeholder="Description"></textarea>
+          </div>
+        </div>
+        <label class="checkbox">
+          <input id="accessible-edit" type="checkbox" value="true">
+          Accessible
+        </label>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="updatePlaylist()" class="button is-link">Save Changes</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+{% comment %} edit destination details modal {% endcomment %}
+  <div id="edit-destination-details-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Edit Destination Details
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('edit-destination-details-modal')" aria-label="close">Back</button>
+      </header>
+      <section class="modal-card-body">
+       <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input v-model="currentDestination.name" id="current-place-name" class="input" type="text" placeholder="Place name">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">What makes this place a hidden gem?</label>
+          <div class="control">
+            <textarea v-model="destinationDescription" id="current-place-description" class="textarea input is-info"
+              type="text" placeholder="Description"></textarea>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button @click="updateDestination()" class="button is-link">Save Changes</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
