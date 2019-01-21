@@ -65,6 +65,12 @@ if (window.DeviceOrientationEvent) {
   })
 }
 
+  if (window.localStorage.getItem("hasVisited") !== "true") {
+    console.log(window.localStorage.getItem("hasVisited"))
+    $("#about-modal").addClass('is-active');
+  window.localStorage.setItem("hasVisited","true");
+  }
+
 function capitalize(sentence) {
   let words = sentence.split(" ")
   let capitalizedWords = []
