@@ -260,6 +260,7 @@
         <p>Customize *${currentPlaylist.title}*</p>
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('edit-playlist-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <h3>Description: ${currentPlaylist.description}</h3>
@@ -302,7 +303,6 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="addDestination()" class="button is-link">Add Gem</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -332,6 +332,7 @@
       <header class="modal-card-head">
         Duplicate Destination
         <p class="modal-card-title"></p>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
         <button class="button has-background-grey-lighter" @click="closeModal('duplicate-destination-modal')"
           aria-label="close">Back</button>
       </header>
@@ -339,7 +340,6 @@
         <p>This playlist already has a destination with that name!</p>
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -351,6 +351,7 @@
       <header class="modal-card-head">
         Confirm delete playlist
         <p class="modal-card-title"></p>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
         <button class="button has-background-grey-lighter" @click="closeModal('confirm-delete-playlist-modal')"
           aria-label="close">Back</button>
       </header>
@@ -359,7 +360,6 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="deletePlaylist()" class="button is-warning">Delete Playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -372,6 +372,7 @@
         Login required
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('login-required-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <p>Most of our features work without the need to log in. You've just encountered a feature which does. Feel
@@ -384,7 +385,6 @@
 
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -398,12 +398,12 @@
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-already-applied-modal')"
           aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <p>That playlist has already been applied!</p>
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -439,6 +439,7 @@
         Your playlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('user-playlists-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div v-for="playlist in userPlaylists" class="center-children">
@@ -446,7 +447,6 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
