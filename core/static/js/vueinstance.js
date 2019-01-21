@@ -96,7 +96,7 @@ const vm = new Vue({
     getPlaylistIndex: function (playlistArray) {
       if (playlistArray.length > 0) {
         for (let playlist of playlistArray) {
-          if (playlist.title === this.currentPlaylist.title) {
+          if (playlist.pk === this.currentPlaylist.pk) {
             return playlistArray.indexOf(playlist)
           }
         }
@@ -112,6 +112,7 @@ const vm = new Vue({
     getPlaylist: function (playlist) {
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
+        this.currentCity = playlist.city
         this.closeModal('active-playlists-modal')
         this.closeModal('user-playlists-modal')
         this.openModal('playlist-detail-modal')
@@ -355,6 +356,13 @@ const vm = new Vue({
         this.getPlaylist(sharedPlaylist)
       }
     },
+    updatePlaylistVariables: function(playlists) {
+      let playlistIndex = this.getPlaylistIndex(playlists)
+        playlists[playlistIndex].title = this.currentTitle
+        playlists[playlistIndex].city = this.currentCity
+        playlists[playlistIndex].description = this.currentDescription
+        playlists[playlistIndex].accessible = document.getElementById('accessible-edit').checked
+    },
     updatePlaylist: function() {
       let updatedPlaylist = {
         "title": capitalize(this.currentTitle),
@@ -363,10 +371,15 @@ const vm = new Vue({
         "accessible": document.getElementById('accessible-edit').checked,
       }
       this.$http.patch(`api/playlists/${this.currentPlaylist.pk}/`, updatedPlaylist).then(() => {
-        console.log('apparently updating the playlist worked!')
-
+        this.updatePlaylistVariables(this.cityPlaylists)
+        this.updatePlaylistVariables(this.userPlaylists)
+        this.updatePlaylistVariables(this.playlists)
+        this.currentPlaylist.title = capitalize(this.currentTitle)
+        this.currentPlaylist.city = capitalize(this.currentCity)
+        this.currentPlaylist.description = this.currentDescription
+        this.currentPlaylist.accessible = document.getElementById('accessible-edit').checked
+        this.getUniqueCities()
         this.closeModal('edit-playlist-details-modal')
-
       })
     },
     updateDestination: function() {
@@ -375,7 +388,6 @@ const vm = new Vue({
         "name": this.currentDestination.name,
       }
       this.$http.patch(`api/destinations/${this.destinationToUpdate.pk}/`, updatedDestination).then(() => {
-        console.log('apparently updating the destination worked!')
         this.currentPlaylist.destinations[this.getDestinationIndex()].description = this.destinationDescription
         this.currentPlaylist.destinations[this.getDestinationIndex()].name = this.currentDestination.name
         this.destinationDescription = ''
@@ -384,6 +396,7 @@ const vm = new Vue({
       })
     },
     setPlaylistFields: function() {
+      this.getCityPlaylists(this.currentCity)
       this.currentDescription = this.currentPlaylist.description
       this.currentTitle = this.currentPlaylist.title
       if (this.currentPlaylist.accessible) {
