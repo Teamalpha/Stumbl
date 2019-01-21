@@ -65,11 +65,14 @@ if (window.DeviceOrientationEvent) {
   })
 }
 
+function firstVisitInfoModal() {
   if (window.localStorage.getItem("hasVisited") !== "true") {
-    console.log(window.localStorage.getItem("hasVisited"))
-    $("#about-modal").addClass('is-active');
-  window.localStorage.setItem("hasVisited","true");
+    $("#first-visit-modal").addClass('is-active');
+    window.localStorage.setItem("hasVisited", "true");
   }
+}
+
+firstVisitInfoModal()
 
 function capitalize(sentence) {
   let words = sentence.split(" ")
@@ -97,6 +100,7 @@ document.addEventListener('touchend', function (event) {
   }
   lastTouchEnd = now;
 }, false);
+
 
 // close modals if user clicks outside
 // $(window).mouseup(function(event) {

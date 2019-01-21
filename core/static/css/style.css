@@ -134,6 +134,15 @@ html, body {
   outline: none;
 }
 
+#first-visit-about-button {
+  height: 50px;
+  width: 50px;
+}
+
+#first-visit-about-button:focus {
+  outline: none;
+}
+
 #directions-button {
   height: 50px;
   width: 50px;
