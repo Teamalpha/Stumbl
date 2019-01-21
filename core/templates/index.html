@@ -148,6 +148,7 @@
         Search playlists in ${currentCity}
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('city-playlists-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -169,7 +170,6 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
