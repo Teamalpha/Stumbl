@@ -81,10 +81,10 @@ const vm = new Vue({
         console.log(err);
       })
     },
-    voteExists: function () {
+    voteExists: function (playlist) {
       if (this.userVotes.length > 0) {
         for (let vote of this.userVotes) {
-          if (vote.playlist === this.currentPlaylist.pk) {
+          if (vote.playlist === playlist.pk) {
             this.voteToDelete = vote
             return true
           }
@@ -116,7 +116,7 @@ const vm = new Vue({
         this.closeModal('active-playlists-modal')
         this.closeModal('user-playlists-modal')
         this.openModal('playlist-detail-modal')
-        this.liked = (this.voteExists() ? "Unlike" : "Like")
+        this.liked = (this.voteExists(this.currentPlaylist) ? "Unlike" : "Like")
 
         let shareChar = (/Android/i.test(navigator.userAgent) ? '?' : '&')
 
@@ -324,7 +324,7 @@ const vm = new Vue({
           "user": requestUserPk,
         }
         // delete vote if vote exists
-        if (this.voteExists()) {
+        if (this.voteExists(this.currentPlaylist)) {
           this.$http.delete(`api/votes/${this.voteToDelete.pk}`).then(() => {
             this.liked = 'like'
             newVote.pk = this.voteToDelete.pk

@@ -136,7 +136,10 @@
       <section class="modal-card-body">
         <div v-for="playlist in activePlaylists" class="columns">
           <div class="column center-children">
-            <button @click="getPlaylist(playlist)" class="button is-info is-70 ">${playlist.title}</button>
+            <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-70">${playlist.title}&nbsp&nbsp
+              <span style="color: red;"><i class="fas fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+            <button v-else @click="getPlaylist(playlist)" class="button is-info is-70">${playlist.title}&nbsp&nbsp
+            <span style="color: red;"><i class="far fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
             <button @click="disablePlaylist(playlist)" class="button is-danger is-20">Remove</button>
           </div>
         </div>
@@ -158,7 +161,11 @@
       </header>
       <section class="modal-card-body">
         <div v-for="playlist in userPlaylists" class="center-children">
-          <button @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}</button>
+          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
+            <span style="color: red;"><i class="fas fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
+            <span style="color: red;"><i class="far fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -212,7 +219,9 @@
       </section>
       <section class="modal-card-body center-children">
         <div v-for="playlist in cityPlaylists">
-          <button @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
+          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
+            <span style="color: red;"><i class="fas fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
             <span style="color: red;"><i class="far fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
         </div>
       </section>
