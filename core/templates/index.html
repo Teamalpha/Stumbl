@@ -284,19 +284,19 @@
         <div class="field">
           <label class="label">Title</label>
           <div class="control">
-            <input v-model="currentTitle" class="input" type="text" placeholder="Playlist name">
+            <input v-model="currentTitle" class="input is-info" type="text" placeholder="Playlist name">
           </div>
         </div>
         <div class="field">
           <label class="label">City</label>
           <div class="control">
-            <input v-model="currentCity" class="input is-success" type="text" placeholder="City">
+            <input v-model="currentCity" class="input is-info" type="text" placeholder="City">
           </div>
         </div>
         <div class="field">
           <label class="label">Description</label>
           <div class="control">
-            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-success"
+            <textarea v-model="currentDescription" id="current-place-description" class="textarea input"
               type="text" placeholder="Description"></textarea>
           </div>
         </div>
@@ -333,7 +333,7 @@
             <p>${destination.description}</p>
             <div v-if="userOwns()">
               <button @click="deleteDestination(destination)" class="button is-danger cancel">Remove</button>
-              <button @click="openModal('edit-destination-details-modal'), setDestinationFields(destination)" class="button is-warning">Edit Description</button>
+              <button @click="setDestinationFields(destination), openModal('edit-destination-details-modal')" class="button is-warning">Edit Description</button>
             </div>
           </div>
         </article>
@@ -344,13 +344,13 @@
         <div class="field">
           <label class="label">Name</label>
           <div class="control">
-            <input v-model="currentDestination.name" id="current-place-name" class="input" type="text" placeholder="Place name">
+            <input v-model="currentDestination.name" id="current-place-name" class="input is-info" type="text" placeholder="Place name">
           </div>
         </div>
         <div class="field">
           <label class="label">Address</label>
           <div class="control">
-            <input v-model="currentDestination.formatted_address" id="current-place-address" class="input" type="text"
+            <input v-model="currentDestination.formatted_address" id="current-place-address" class="input is-info" type="text"
               placeholder="Address" readonly>
           </div>
         </div>
@@ -382,19 +382,19 @@
         <div class="field">
           <label class="label">Title</label>
           <div class="control">
-            <input v-model="currentTitle" class="input" type="text" placeholder="Playlist name">
+            <input v-model="currentTitle" class="input is-info" type="text" placeholder="Playlist name">
           </div>
         </div>
         <div class="field">
           <label class="label">City</label>
           <div class="control">
-            <input v-model="currentCity" class="input is-success" type="text" placeholder="City">
+            <input v-model="currentCity" class="input is-info" type="text" placeholder="City">
           </div>
         </div>
         <div class="field">
           <label class="label">Description</label>
           <div class="control">
-            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-success"
+            <textarea v-model="currentDescription" id="current-place-description" class="textarea input is-info"
               type="text" placeholder="Description"></textarea>
           </div>
         </div>
@@ -423,7 +423,7 @@
        <div class="field">
           <label class="label">Name</label>
           <div class="control">
-            <input v-model="currentDestination.name" id="current-place-name" class="input" type="text" placeholder="Place name">
+            <input v-model="currentDestination.name" id="current-place-name" class="input is-info" type="text" placeholder="Place name">
           </div>
         </div>
         <div class="field">
@@ -542,7 +542,7 @@
     </div>
   </div>
 
-  {% comment %} Need more info to submit Playlist modal{% endcomment %}
+  {% comment %} Need more info to submit modal{% endcomment %}
   <div id="more-info-required-modal" class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
@@ -572,7 +572,8 @@
       <section class="modal-card-body">
         <p>It looks like this is your first visit!</p>
         <br>
-        <p>LocalGems.io is a walking exploration app for mobile phones only. Discover the best places to visit from locals with the inside scoop and get ready to experience some true hidden gems! Simply enter a destination within walking distance such as a hotel or restaurant, activate a gemlist or two that matches your interests, and discover a few hidden gems along the way!</p>
+        <p>LocalGems.io is a walking exploration app for mobile phones only. Discover the best places to visit from locals with the inside scoop!</p>
+        <p>Simply enter a destination within walking distance such as a hotel or restaurant, activate a gemlist or two that match your interests, and get ready to discover some of the city's true hidden gems!</p>
         <br>
         <p><strong><em>Please enjoy LocalGems responsibly and maintain your attention in front of you at all times!</em></strong></p>
         <br>
