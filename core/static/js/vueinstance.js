@@ -102,6 +102,16 @@ const vm = new Vue({
         }
       }
     },
+    hasPlaylist: function(playlistArray) {
+      if (playlistArray.length > 0) {
+        for (let playlist of playlistArray) {
+          if (playlist.pk === this.currentPlaylist.pk) {
+            return true
+          }
+        }
+      }
+      return false
+    },
     getDestinationIndex: function() {
       for (let destination of this.currentPlaylist.destinations) {
         if (destination.pk === this.destinationToUpdate.pk)
@@ -117,6 +127,7 @@ const vm = new Vue({
         this.closeModal('user-playlists-modal')
         this.openModal('playlist-detail-modal')
         this.liked = (this.voteExists(this.currentPlaylist) ? "Unlike" : "Like")
+        this.voteToDelete.playlist = this.currentPlaylist.pk
 
         let shareChar = (/Android/i.test(navigator.userAgent) ? '?' : '&')
 
@@ -330,7 +341,15 @@ const vm = new Vue({
             newVote.pk = this.voteToDelete.pk
 
             // find the index of the playlist in cityPlaylists, then remove the vote
-            this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.splice(this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.indexOf(newVote), 1)
+            if (this.cityPlaylists.length > 0) {
+              this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.splice(this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.indexOf(newVote), 1)
+            }
+            if (this.hasPlaylist(this.userPlaylists)) {
+              this.userPlaylists[this.getPlaylistIndex(this.userPlaylists)].playlist_votes.splice(this.userPlaylists[this.getPlaylistIndex(this.userPlaylists)].playlist_votes.indexOf(newVote), 1)
+            }
+            if (this.hasPlaylist(this.activePlaylists)) {
+              this.activePlaylists[this.getPlaylistIndex(this.activePlaylists)].playlist_votes.splice(this.activePlaylists[this.getPlaylistIndex(this.activePlaylists)].playlist_votes.indexOf(newVote), 1)
+            }
 
             // remove the vote from currentPlaylist
             this.currentPlaylist.playlist_votes.splice(this.currentPlaylist.playlist_votes.indexOf(newVote), 1)
@@ -344,10 +363,20 @@ const vm = new Vue({
             this.liked = 'Unlike'
             newVote.pk = response.data.pk
 
-            // push the new vote into currentPlaylist, cityPlaylists, and userVotes
+            // push the new vote into currentPlaylist, cityPlaylists, activePlaylists, userPlaylists, and userVotes
             this.currentPlaylist.playlist_votes.push(newVote)
-            this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.push(newVote)
+            if (this.cityPlaylists.length > 0) {
+              this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.push(newVote)
+            }
+            if (this.userPlaylists.length > 0){
+              this.userPlaylists[this.getPlaylistIndex(this.userPlaylists)].playlist_votes.push(newVote)
+            }
+            if (this.activePlaylists.length > 0) {
+              this.activePlaylists[this.getPlaylistIndex(this.activePlaylists)].playlist_votes.push(newVote)
+            }
             this.userVotes.push(newVote)
+            this.voteToDelete = newVote
+
           }).catch((err) => {
             console.log(err);
           })
@@ -409,6 +438,8 @@ const vm = new Vue({
         this.currentPlaylist.destinations[this.getDestinationIndex()].name = this.currentDestination.name
         this.destinationDescription = ''
         this.currentDestination.name = ''
+        this.currentDestination.formatted_address = '',
+        this.
         this.closeModal('edit-destination-details-modal')
       })
     },
