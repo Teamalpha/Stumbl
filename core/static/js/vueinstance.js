@@ -137,6 +137,10 @@ const vm = new Vue({
       return true
     },
     addPlaylist: function () {
+      if (this.currentTitle === '' || this.currentCity === '' || this.currentTitle === null || this.currentCity === null) {
+        this.openModal('more-info-required-modal')
+        return false
+      }
       if (requestUserPk !== -1) {
         this.newPlaylist = {
           "user": requestUser,
@@ -203,6 +207,10 @@ const vm = new Vue({
       return true
     },
     addDestination: function () {
+      if (this.currentDestination.name === '' || this.destinationDescription === '' || this.currentDestination.name === null || this.destinationDescription === null) {
+        this.openModal('more-info-required-modal')
+        return false
+      }
       this.newDestination = {
         "playlist": this.currentPlaylist.pk,
         "lat": this.currentDestination.geometry.location.lat(),
@@ -364,6 +372,11 @@ const vm = new Vue({
         playlists[playlistIndex].accessible = document.getElementById('accessible-edit').checked
     },
     updatePlaylist: function() {
+      if (this.currentTitle === '' || this.currentCity === '' || this.currentTitle === null || this.currentCity === null) {
+        this.openModal('more-info-required-modal')
+        return false
+      }
+
       let updatedPlaylist = {
         "title": capitalize(this.currentTitle),
         "city": capitalize(this.currentCity),
@@ -383,6 +396,10 @@ const vm = new Vue({
       })
     },
     updateDestination: function() {
+      if (this.currentDestination.name === '' || this.destinationDescription === '' || this.currentDestination.name === null || this.destinationDescription === null) {
+        this.openModal('more-info-required-modal')
+        return false
+      }
       let updatedDestination = {
         "description": this.destinationDescription,
         "name": this.currentDestination.name,

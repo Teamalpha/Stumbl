@@ -117,13 +117,54 @@
           Playlists</button>
       </section>
       <footer class="modal-card-foot">
-        <button v-if="requestUserPk == -1" class="button is-grey is-static"><strong>Create New Playlist</strong></button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Playlist</button>
         <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
-
       </footer>
     </div>
   </div>
 
+  {% comment %} Active playlists modal {% endcomment %}
+  <div id="active-playlists-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Active playlists
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('active-playlists-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+      </header>
+      <section class="modal-card-body">
+        <div v-for="playlist in activePlaylists" class="columns">
+          <div class="column center-children">
+            <button @click="getPlaylist(playlist)" class="button is-info is-70 ">${playlist.title}</button>
+            <button @click="disablePlaylist(playlist)" class="button is-danger is-20">Remove</button>
+          </div>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+      </footer>
+    </div>
+  </div>
+
+  {% comment %} User playlists modal {% endcomment %}
+  <div id="user-playlists-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        Your playlists
+        <p class="modal-card-title"></p>
+        <button class="button has-background-grey-lighter" @click="closeModal('user-playlists-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
+      </header>
+      <section class="modal-card-body">
+        <div v-for="playlist in userPlaylists" class="center-children">
+          <button @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}</button>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+      </footer>
+    </div>
+  </div>
 
   {% comment %} Choose city modal {% endcomment %}
   <div id="choose-city-modal" class="modal">
@@ -141,8 +182,8 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
-
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Playlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
       </footer>
     </div>
   </div>
@@ -176,7 +217,8 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Playlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
       </footer>
     </div>
   </div>
@@ -188,9 +230,10 @@
       <header class="modal-card-head">
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
-        <button @click="toggleVote(currentPlaylist)" class="button is-info">${liked}</button>
+        <button v-if="requestUserPk === -1" @click="openModal('login-required-modal')" class="button is-grey">${liked}</button>
+        <button v-else @click="toggleVote(currentPlaylist)" class="button is-info">${liked}</button>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel"><strong>X</strong></button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <h3><strong>${currentPlaylist.description}</strong></h3>
@@ -226,6 +269,7 @@
         Create new playlist
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('create-playlist-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -254,7 +298,6 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="addPlaylist()" class="button is-link">Create Playlist</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -324,6 +367,7 @@
         Edit *${currentPlaylist.title}*
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('edit-playlist-details-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -352,7 +396,6 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="updatePlaylist()" class="button is-link">Save Changes</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -365,6 +408,7 @@
         Edit Destination Details
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('edit-destination-details-modal')" aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
        <div class="field">
@@ -383,7 +427,6 @@
       </section>
       <footer class="modal-card-foot">
         <button @click="updateDestination()" class="button is-link">Save Changes</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -462,6 +505,7 @@
         <br>
         <a href="{% url 'auth_login' %}"><strong>Login</strong></a>
         <br>
+        <br>
         <a href="{% url 'registration_register' %}"><strong>Sign up</strong></a>
 
       </section>
@@ -489,45 +533,45 @@
     </div>
   </div>
 
-  {% comment %} Active playlists modal {% endcomment %}
-  <div id="active-playlists-modal" class="modal">
+  {% comment %} Need more info to submit Playlist modal{% endcomment %}
+  <div id="more-info-required-modal" class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Active playlists
+        More Info Required
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter" @click="closeModal('active-playlists-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+        <button class="button has-background-grey-lighter" @click="closeModal('more-info-required-modal')"
+          aria-label="close">Back</button>
+        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
-        <div v-for="playlist in activePlaylists" class="columns">
-          <div class="column center-children">
-            <button @click="getPlaylist(playlist)" class="button is-info is-70 ">${playlist.title}</button>
-            <button @click="disablePlaylist(playlist)" class="button is-danger is-20">Remove</button>
-          </div>
-        </div>
+        <p>Please fill out all required fields before submitting!</p>
       </section>
       <footer class="modal-card-foot">
       </footer>
     </div>
   </div>
 
-  {% comment %} User playlists modal {% endcomment %}
-  <div id="user-playlists-modal" class="modal">
+  {% comment %} First visit modal {% endcomment %}
+  <div id="first-visit-modal" class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Your playlists
+        Welcome to LocalGems.io!
         <p class="modal-card-title"></p>
-        <button class="button has-background-grey-lighter" @click="closeModal('user-playlists-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
-        <div v-for="playlist in userPlaylists" class="center-children">
-          <button @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}</button>
-        </div>
+        <p>It looks like this is your first visit!</p>
+        <br>
+        <p>LocalGems.io is a walking exploration app for mobile phones only. Discover the best places to visit from locals with the inside scoop and get ready to experience some true hidden gems! Simply enter a destination within walking distance such as a hotel or restaurant, activate a gemlist or two that matches your interests, and discover a few hidden gems along the way!</p>
+        <br>
+        <p><strong><em>Please enjoy LocalGems responsibly and maintain your attention in front of you at all times!</em></strong></p>
+        <br>
+        <p><input type="image" src="{% static 'images/about.png' %}" id="first-visit-about-button" @click="closeModal('first-visit-modal'), openModal('about-modal')"></input> More info</p>
+
       </section>
       <footer class="modal-card-foot">
+        <button class="button has-background-grey-lighter" @click="closeModal('first-visit-modal')" aria-label="close">Got it!</button>
       </footer>
     </div>
   </div>

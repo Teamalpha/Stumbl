@@ -65,23 +65,34 @@ if (window.DeviceOrientationEvent) {
   })
 }
 
+function firstVisitInfoModal() {
   if (window.localStorage.getItem("hasVisited") !== "true") {
-    console.log(window.localStorage.getItem("hasVisited"))
-    $("#about-modal").addClass('is-active');
-  window.localStorage.setItem("hasVisited","true");
+    $("#first-visit-modal").addClass('is-active');
+    window.localStorage.setItem("hasVisited", "true");
   }
-
-function capitalize(sentence) {
-  let words = sentence.split(" ")
-  let capitalizedWords = []
-  for (let word of words) {
-    capWord = word[0].toUpperCase() + word.slice(1)
-    capitalizedWords.push(capWord)
-  }
-  return capitalizedWords.join(' ')
 }
 
-// prevent pinch zoom on iOS 10 or greater.
+firstVisitInfoModal()
+
+function capitalize(sentence) {
+  if (sentence !== null && sentence !== '') {
+    if (sentence.trim().indexOf(' ') !== -1) {
+      let words = sentence.trim().split(" ")
+      console.log(words)
+      let capitalizedWords = []
+      for (let word of words) {
+        let capWord = word[0].toUpperCase() + word.slice(1)
+        capitalizedWords.push(capWord)
+      }
+      return capitalizedWords.join(' ')
+    } else {
+      let capWord = sentence[0].toUpperCase() + sentence.slice(1)
+      return capWord
+    }
+  }
+}
+
+// reduce pinch zoom on iOS 10 or greater.
 document.addEventListener('touchmove', function (event) {
   if (event.scale !== 1) {
     event.preventDefault()
@@ -97,6 +108,7 @@ document.addEventListener('touchend', function (event) {
   }
   lastTouchEnd = now;
 }, false);
+
 
 // close modals if user clicks outside
 // $(window).mouseup(function(event) {
@@ -123,3 +135,11 @@ document.addEventListener('touchend', function (event) {
 //     }
 //   }
 // })
+
+console.log(capitalize('two words '))
+
+console.log(capitalize('two words'))
+console.log(capitalize('three whole words'))
+console.log(capitalize('single'))
+console.log(capitalize(' two words'))
+
