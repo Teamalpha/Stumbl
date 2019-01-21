@@ -70,18 +70,25 @@
         <p>Choose your final destination from the searchbar, and then click "Playlists." A Playlist is a collection
           of amazing local businesses, experiences, and places. Choose a Playlist to suit your mood.</p>
         <br>
-        <h3><strong><a name="Interface">LocalGems Interface</a></strong></h3>
+        <h3><strong><a name="Interface">LocalGems Interface</a></strong>
+        </h3>
         <p>The LocalGems map shows your position. Your destination is represented by a gold star on the map, and the
           LocalGems in your loaded Playlist are represented by blue diamonds on the map. Apply and remove playlists at
           any time!</p>
         <br>
-        <h3><strong><a name="Navigation-Arrow">Navigation Arrow</a></strong></h3>
+        <h3><strong><a name="Navigation-Arrow">Navigation Arrow <input type="image" src="{% static 'images/Arrow.png' %}" alt="recenter button" width='20'></a></strong></h3>
         <p>The navigation arrow that appears around your map points toward your destination so you know which way to
           walk. The distance to your destination can be found below the map.</p>
         <br>
-        <h3><strong><a name="Turn-by-turn">Get Turn-by-Turn Directions</a></strong></h3>
+        <h3><strong><a name="Your Current Position">Your Current Postion <input type="image" src="{% static 'images/center.png' %}" alt="recenter button" width='20'></input></a></strong></h3>
+        <p>The blue circle indicates your current position on the map. While the map is by default centered on your position, you may explore the area by dragging the map with two fingers. If you wish to return to your original position, tap the bullseye icon in the top left of your map.</p>
+        <br>
+        <h3><strong><a name="Field-of-focus">Your Field of View <input type="image" src="{% static 'images/cone-of-focus.png' %}" alt="recenter button" width='30'></input></a></strong></h3>
+        <p>The rotating blue dot with a rotating field of vision represents the direction which you are currently pointing in relation to the map.</p>
+        <br>
+        <h3><strong><a name="Turn-by-turn">Get Turn-by-Turn Directions <input type="image" src="{% static 'images/google-maps.png' %}" alt="recenter button" width='20'></input></a></strong></h3>
         <p>If you've had enough exploring or need to find a way around an obstacle, tap the button on the lower right
-          of the map to get precise walking directions.</p>
+          of the map to get precise walking directions. This will open the Google Maps app, offering precise walking directions to your destination.</p>
       </section>
       <footer class="modal-card-foot">
         <button class="button has-background-grey-lighter" @click="closeModal('about-modal')" aria-label="close">Close</button>
