@@ -104,8 +104,8 @@ const vm = new Vue({
     },
     getDestinationIndex: function() {
       for (let destination of this.currentPlaylist.destinations) {
-        if (destination.pk === destinationToUpdate.pk)
-        return currentPlaylist.destinations.indexOf(destination)
+        if (destination.pk === this.destinationToUpdate.pk)
+        return this.currentPlaylist.destinations.indexOf(destination)
       }
       
     },
@@ -364,6 +364,9 @@ const vm = new Vue({
       }
       this.$http.patch(`api/playlists/${this.currentPlaylist.pk}/`, updatedPlaylist).then(() => {
         console.log('apparently updating the playlist worked!')
+
+        this.closeModal('edit-playlist-details-modal')
+
       })
     },
     updateDestination: function() {
@@ -373,8 +376,11 @@ const vm = new Vue({
       }
       this.$http.patch(`api/destinations/${this.destinationToUpdate.pk}/`, updatedDestination).then(() => {
         console.log('apparently updating the destination worked!')
-        this.currentPlaylist[this.getDestinationIndex()]
-        
+        this.currentPlaylist.destinations[this.getDestinationIndex()].description = this.destinationDescription
+        this.currentPlaylist.destinations[this.getDestinationIndex()].name = this.currentDestination.name
+        this.destinationDescription = ''
+        this.currentDestination.name = ''
+        this.closeModal('edit-destination-details-modal')
       })
     },
     setPlaylistFields: function() {
