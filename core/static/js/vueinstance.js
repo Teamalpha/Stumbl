@@ -22,6 +22,7 @@ const vm = new Vue({
     newPlaylist: {},
     currentDestination: {},
     voteToDelete: {},
+    destinationToUpdate: {},
     accessible: false,
     currentTitle: null,
     currentCity: null,
@@ -95,15 +96,23 @@ const vm = new Vue({
     getPlaylistIndex: function (playlistArray) {
       if (playlistArray.length > 0) {
         for (let playlist of playlistArray) {
-          if (playlist.title === this.currentPlaylist.title) {
+          if (playlist.pk === this.currentPlaylist.pk) {
             return playlistArray.indexOf(playlist)
           }
         }
       }
     },
+    getDestinationIndex: function() {
+      for (let destination of this.currentPlaylist.destinations) {
+        if (destination.pk === this.destinationToUpdate.pk)
+        return this.currentPlaylist.destinations.indexOf(destination)
+      }
+      
+    },
     getPlaylist: function (playlist) {
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
+        this.currentCity = playlist.city
         this.closeModal('active-playlists-modal')
         this.closeModal('user-playlists-modal')
         this.openModal('playlist-detail-modal')
@@ -153,6 +162,7 @@ const vm = new Vue({
             this.currentDestination = { 'name': '' }
             this.destinationDescription = ''
             this.currentDescription = ''
+            this.currentTitle = ''
             this.accessible = false
             document.getElementById('accessible').checked = false
             this.closeModal('create-playlist-modal')
@@ -258,9 +268,9 @@ const vm = new Vue({
     },
     deleteDestination: function (destination) {
       if (requestUser === this.currentPlaylist.user) {
-        let destinationToDelete = destination
+        let destinationToUpdate = destination
         this.$http.delete(`/api/destinations/${destination.pk}`).then(() => {
-          this.currentPlaylist.destinations.splice(this.currentPlaylist.destinations.indexOf(destinationToDelete), 1)
+          this.currentPlaylist.destinations.splice(this.currentPlaylist.destinations.indexOf(destinationToUpdate), 1)
         }).catch((err) => {
           console.log(err);
         })
@@ -346,6 +356,60 @@ const vm = new Vue({
         this.getPlaylist(sharedPlaylist)
       }
     },
+    updatePlaylistVariables: function(playlists) {
+      let playlistIndex = this.getPlaylistIndex(playlists)
+        playlists[playlistIndex].title = this.currentTitle
+        playlists[playlistIndex].city = this.currentCity
+        playlists[playlistIndex].description = this.currentDescription
+        playlists[playlistIndex].accessible = document.getElementById('accessible-edit').checked
+    },
+    updatePlaylist: function() {
+      let updatedPlaylist = {
+        "title": capitalize(this.currentTitle),
+        "city": capitalize(this.currentCity),
+        "description": this.currentDescription,
+        "accessible": document.getElementById('accessible-edit').checked,
+      }
+      this.$http.patch(`api/playlists/${this.currentPlaylist.pk}/`, updatedPlaylist).then(() => {
+        this.updatePlaylistVariables(this.cityPlaylists)
+        this.updatePlaylistVariables(this.userPlaylists)
+        this.updatePlaylistVariables(this.playlists)
+        this.currentPlaylist.title = capitalize(this.currentTitle)
+        this.currentPlaylist.city = capitalize(this.currentCity)
+        this.currentPlaylist.description = this.currentDescription
+        this.currentPlaylist.accessible = document.getElementById('accessible-edit').checked
+        this.getUniqueCities()
+        this.closeModal('edit-playlist-details-modal')
+      })
+    },
+    updateDestination: function() {
+      let updatedDestination = {
+        "description": this.destinationDescription,
+        "name": this.currentDestination.name,
+      }
+      this.$http.patch(`api/destinations/${this.destinationToUpdate.pk}/`, updatedDestination).then(() => {
+        this.currentPlaylist.destinations[this.getDestinationIndex()].description = this.destinationDescription
+        this.currentPlaylist.destinations[this.getDestinationIndex()].name = this.currentDestination.name
+        this.destinationDescription = ''
+        this.currentDestination.name = ''
+        this.closeModal('edit-destination-details-modal')
+      })
+    },
+    setPlaylistFields: function() {
+      this.getCityPlaylists(this.currentCity)
+      this.currentDescription = this.currentPlaylist.description
+      this.currentTitle = this.currentPlaylist.title
+      if (this.currentPlaylist.accessible) {
+        document.getElementById('accessible-edit').checked = true
+      } else {
+        document.getElementById('accessible-edit').checked = false
+      } 
+    },
+    setDestinationFields: function(destination) {
+      this.currentDestination.name = destination.name
+      this.destinationDescription = destination.description
+      this.destinationToUpdate = destination
+    },
     closeModals: function () {
       this.closeModal('city-playlists-modal')
       this.closeModal('choose-city-modal')
@@ -360,6 +424,8 @@ const vm = new Vue({
       this.closeModal('login-required-modal')
       this.closeModal('playlist-main-menu')
       this.closeModal('user-playlists-modal')
+      this.closeModal('edit-playlist-details-modal')
+      this.closeModal('edit-destination-details-modal')
     },
   }, // close methods
 }) // close vue instance

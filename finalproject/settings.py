@@ -29,9 +29,6 @@ GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-if DEBUG is False:
-    SECURE_SSL_REDIRECT = True
-
 ALLOWED_HOSTS = []
 
 
@@ -167,6 +164,7 @@ EMAIL_USE_TLS = False
 EMAIL_PORT = 1025
 
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 django_heroku.settings(locals())
 
