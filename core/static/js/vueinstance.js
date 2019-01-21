@@ -424,6 +424,8 @@ const vm = new Vue({
       this.closeModal('login-required-modal')
       this.closeModal('playlist-main-menu')
       this.closeModal('user-playlists-modal')
+      this.closeModal('edit-playlist-details-modal')
+      this.closeModal('edit-destination-details-modal')
     },
   }, // close methods
 }) // close vue instance

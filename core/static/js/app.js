@@ -117,5 +117,3 @@ document.addEventListener('touchend', function (event) {
 //     }
 //   }
 // })
-
-      
