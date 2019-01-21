@@ -75,9 +75,10 @@ function firstVisitInfoModal() {
 firstVisitInfoModal()
 
 function capitalize(sentence) {
-  if (sentence !== null &&sentence !== '') {
-    if (sentence.includes(' ')) {
-      let words = sentence.split(" ")
+  if (sentence !== null && sentence !== '') {
+    if (sentence.trim().indexOf(' ') !== -1) {
+      let words = sentence.trim().split(" ")
+      console.log(words)
       let capitalizedWords = []
       for (let word of words) {
         let capWord = word[0].toUpperCase() + word.slice(1)
@@ -134,3 +135,11 @@ document.addEventListener('touchend', function (event) {
 //     }
 //   }
 // })
+
+console.log(capitalize('two words '))
+
+console.log(capitalize('two words'))
+console.log(capitalize('three whole words'))
+console.log(capitalize('single'))
+console.log(capitalize(' two words'))
+

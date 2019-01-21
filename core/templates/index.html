@@ -117,7 +117,7 @@
           Playlists</button>
       </section>
       <footer class="modal-card-foot">
-        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey is-static"><strong>Create New Playlist</strong></button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Playlist</button>
         <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
       </footer>
     </div>
@@ -182,7 +182,8 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Playlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
       </footer>
     </div>
   </div>
@@ -216,7 +217,8 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button @click="newPlaylistModal()" class="button is-link">Create New Playlist</button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Playlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
       </footer>
     </div>
   </div>
@@ -228,7 +230,8 @@
       <header class="modal-card-head">
         ${currentPlaylist.title}
         <p class="modal-card-title"></p>
-        <button @click="toggleVote(currentPlaylist)" class="button is-info">${liked}</button>
+        <button v-if="requestUserPk === -1" @click="openModal('login-required-modal')" class="button is-grey">${liked}</button>
+        <button v-else @click="toggleVote(currentPlaylist)" class="button is-info">${liked}</button>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
