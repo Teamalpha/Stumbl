@@ -125,8 +125,6 @@ const vm = new Vue({
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
         this.currentCity = playlist.city
-        this.closeModal('active-playlists-modal')
-        this.closeModal('user-playlists-modal')
         this.openModal('playlist-detail-modal')
         this.liked = (this.voteExists(this.currentPlaylist) ? "Unlike" : "Like")
         this.voteExists(playlist)
@@ -434,13 +432,13 @@ const vm = new Vue({
         "name": this.currentDestination.name,
       }
       this.$http.patch(`api/destinations/${this.destinationToUpdate.pk}/`, updatedDestination).then(() => {
-        this.currentPlaylist.destinations[this.getDestinationIndex()].description = this.destinationDescription
-        this.currentPlaylist.destinations[this.getDestinationIndex()].name = this.currentDestination.name
+        let destinationIndex = this.currentPlaylist.destinations.indexOf(this.destinationToUpdate)
+        this.currentPlaylist.destinations[destinationIndex].description = this.destinationDescription
+        this.currentPlaylist.destinations[destinationIndex].name = this.currentDestination.name
+        this.currentDestination = { 'name': '' }
         this.destinationDescription = ''
-        this.currentDestination.name = ''
         this.currentDestination.formatted_address = '',
-          this.
-            this.closeModal('edit-destination-details-modal')
+        this.closeModal('edit-destination-details-modal')
       })
     },
     setPlaylistFields: function () {

@@ -108,10 +108,10 @@
       </header>
       <section class="modal-card-body center-children">
         <button v-if="activePlaylists.length == 0" id="playlist-button" class="button is-light is-static">Active
-          Gemlist</button>
+          Gemlists</button>
         <button v-else @click="openModal('active-playlists-modal')" id="playlist-button" class="button is-info">Active
           Gemlists</button>
-        <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Gemlists</button>
+        <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Search Gemlists</button>
         <button v-if="userPlaylists.length == 0" class="button is-light is-static" id="playlist-button">Your Gemlists</button>
         <button v-else class="button is-info" id="playlist-button" @click="openModal('user-playlists-modal')">Your
           Gemlists</button>
