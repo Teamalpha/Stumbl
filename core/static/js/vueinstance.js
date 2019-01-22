@@ -92,7 +92,6 @@ const vm = new Vue({
       }
       return false
     },
-    // Two similar objects with different memory addresses are not considered equal if one of the values is a nested list. This function finds the exact nested object by comparing the nested objects primary key and then returns its index.
     getPlaylistIndex: function (playlistArray) {
       if (playlistArray.length > 0) {
         for (let playlist of playlistArray) {
@@ -102,7 +101,17 @@ const vm = new Vue({
         }
       }
     },
-    hasPlaylist: function(playlistArray) {
+    getVoteIndex: function () {
+      if (this.userVotes.length > 0) {
+        for (i = 0; i < this.userVotes.length; i++) {
+          if (this.userVotes[i].pk === this.voteToDelete.pk) {
+            console.log('this index was :', i)
+            return i
+          }
+        }
+      }
+    },
+    hasPlaylist: function (playlistArray) {
       if (playlistArray.length > 0) {
         for (let playlist of playlistArray) {
           if (playlist.pk === this.currentPlaylist.pk) {
@@ -111,13 +120,6 @@ const vm = new Vue({
         }
       }
       return false
-    },
-    getDestinationIndex: function() {
-      for (let destination of this.currentPlaylist.destinations) {
-        if (destination.pk === this.destinationToUpdate.pk)
-        return this.currentPlaylist.destinations.indexOf(destination)
-      }
-      
     },
     getPlaylist: function (playlist) {
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
@@ -167,11 +169,11 @@ const vm = new Vue({
             this.userPlaylists.push(this.currentPlaylist)
             if (!this.cities.includes(this.currentPlaylist.city)) {
               this.cities.push(this.currentPlaylist.city)
-            }        
-            
+            }
+
             let shareChar = (/Android/i.test(navigator.userAgent) ? '?' : '&')
             document.getElementById('share-link').href = `sms:${shareChar}body=Check%20out%20this%20LocalGems%20playlist%20*${this.currentPlaylist.title}*%20for%20${this.currentPlaylist.city}%20at https://www.localgems.io/shared_playlist/${this.currentPlaylist.pk}`
-    
+
             // clear variables
             this.currentDestination = { 'name': '' }
             this.destinationDescription = ''
@@ -196,7 +198,7 @@ const vm = new Vue({
         this.cityPlaylists.splice(this.getPlaylistIndex(this.cityPlaylists), 1)
         this.userPlaylists.splice(this.getPlaylistIndex(this.userPlaylists), 1)
         this.playlists.splice(this.getPlaylistIndex(this.playlists), 1)
-        
+
         this.$http.delete(`/api/playlists/${this.currentPlaylist.pk}`).then(() => {
           this.getUniqueCities()
           this.currentPlaylist = {};
@@ -337,10 +339,9 @@ const vm = new Vue({
         if (this.voteExists(this.currentPlaylist)) {
           this.$http.delete(`api/votes/${this.voteToDelete.pk}`).then(() => {
             this.liked = 'like'
-            newVote.pk = this.voteToDelete.pk
 
-            // find the index of the playlist in cityPlaylists, then remove the vote
-            if (this.cityPlaylists.length > 0) {
+            // find the index of the playlist in each variable, then remove the vote
+            if (this.hasPlaylist(this.cityPlaylists)) {
               this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.splice(this.cityPlaylists[this.getPlaylistIndex(this.cityPlaylists)].playlist_votes.indexOf(newVote), 1)
             }
             if (this.hasPlaylist(this.userPlaylists)) {
@@ -352,7 +353,7 @@ const vm = new Vue({
 
             // remove the vote from currentPlaylist
             this.currentPlaylist.playlist_votes.splice(this.currentPlaylist.playlist_votes.indexOf(newVote), 1)
-            this.userVotes.splice(this.userVotes.indexOf(newVote), 1)
+            this.userVotes.splice(this.getVoteIndex(), 1)
           }).catch((err) => {
             console.log(err);
           })
@@ -374,7 +375,7 @@ const vm = new Vue({
               this.activePlaylists[this.getPlaylistIndex(this.activePlaylists)].playlist_votes.push(newVote)
             }
             this.userVotes.push(newVote)
-            this.voteToDelete = newVote
+            this.voteToDelete = response.data
 
           }).catch((err) => {
             console.log(err);
@@ -392,14 +393,14 @@ const vm = new Vue({
         this.getPlaylist(sharedPlaylist)
       }
     },
-    updatePlaylistVariables: function(playlists) {
+    updatePlaylistVariables: function (playlists) {
       let playlistIndex = this.getPlaylistIndex(playlists)
-        playlists[playlistIndex].title = this.currentTitle
-        playlists[playlistIndex].city = this.currentCity
-        playlists[playlistIndex].description = this.currentDescription
-        playlists[playlistIndex].accessible = document.getElementById('accessible-edit').checked
+      playlists[playlistIndex].title = this.currentTitle
+      playlists[playlistIndex].city = this.currentCity
+      playlists[playlistIndex].description = this.currentDescription
+      playlists[playlistIndex].accessible = document.getElementById('accessible-edit').checked
     },
-    updatePlaylist: function() {
+    updatePlaylist: function () {
       if (this.currentTitle === '' || this.currentCity === '' || this.currentTitle === null || this.currentCity === null) {
         this.openModal('more-info-required-modal')
         return false
@@ -423,7 +424,7 @@ const vm = new Vue({
         this.closeModal('edit-playlist-details-modal')
       })
     },
-    updateDestination: function() {
+    updateDestination: function () {
       if (this.currentDestination.name === '' || this.destinationDescription === '' || this.currentDestination.name === null || this.destinationDescription === null) {
         this.openModal('more-info-required-modal')
         return false
@@ -438,11 +439,11 @@ const vm = new Vue({
         this.destinationDescription = ''
         this.currentDestination.name = ''
         this.currentDestination.formatted_address = '',
-        this.
-        this.closeModal('edit-destination-details-modal')
+          this.
+            this.closeModal('edit-destination-details-modal')
       })
     },
-    setPlaylistFields: function() {
+    setPlaylistFields: function () {
       this.getCityPlaylists(this.currentCity)
       this.currentDescription = this.currentPlaylist.description
       this.currentTitle = this.currentPlaylist.title
@@ -450,9 +451,9 @@ const vm = new Vue({
         document.getElementById('accessible-edit').checked = true
       } else {
         document.getElementById('accessible-edit').checked = false
-      } 
+      }
     },
-    setDestinationFields: function(destination) {
+    setDestinationFields: function (destination) {
       this.currentDestination.name = destination.name
       this.destinationDescription = destination.description
       this.destinationToUpdate = destination
