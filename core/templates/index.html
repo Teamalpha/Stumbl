@@ -321,19 +321,19 @@
         <button class="button has-background-grey-lighter	" @click="closeModal('edit-playlist-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body mxsz">
         <h2><strong>${currentPlaylist.description}</strong></h2>
         <button @click="openModal('edit-playlist-details-modal'), setPlaylistFields()" class="button is-warning">Edit Gemlist Details</button>
         <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-info is-small">
-          <div class="message-header">
+          <div class="message-header mxsz">
             <p>${destination.name}</p>
           </div>
           <div class="message-body has-background-grey-lighter mxsz">
             <p>${destination.description}</p>
             <div v-if="userOwns()">
-              <button @click="deleteDestination(destination)" class="button is-danger cancel">Remove</button>
-              <button @click="setDestinationFields(destination), openModal('edit-destination-details-modal')" class="button is-warning">Edit Description</button>
+              <button @click="deleteDestination(destination)" class="button is-danger cancel is-small">Remove</button>
+              <button @click="setDestinationFields(destination), openModal('edit-destination-details-modal')" class="button is-warning is-small">Edit Description</button>
             </div>
           </div>
         </article>
