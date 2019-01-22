@@ -104,7 +104,7 @@
         <h1> Gemlist Main Menu </h1>
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-main-menu')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body center-children">
         <button v-if="activePlaylists.length == 0" id="playlist-button" class="button is-light is-static">Active
@@ -131,16 +131,16 @@
         Active Gemlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('active-playlists-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div v-for="playlist in activePlaylists" class="columns">
           <div class="column center-children">
             <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-70">${playlist.title}&nbsp&nbsp
-              <span style="color: red;"><i class="fas fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+              <span style="color: #FFC214;"><i class="fas fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
             <button v-else @click="getPlaylist(playlist)" class="button is-info is-70">${playlist.title}&nbsp&nbsp
-            <span style="color: red;"><i class="far fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-            <button @click="disablePlaylist(playlist)" class="button is-danger is-20">Remove</button>
+            <span style="color: #FFC214;"><i class="far fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+            <button @click="disablePlaylist(playlist)" class="button red-button is-20">Remove</button>
           </div>
         </div>
       </section>
@@ -157,14 +157,14 @@
         Your Gemlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('user-playlists-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div v-for="playlist in userPlaylists" class="center-children">
           <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
-            <span style="color: red;"><i class="fas fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+            <span style="color: #FFC214;"><i class="fas fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
           <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
-            <span style="color: red;"><i class="far fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+            <span style="color: #FFC214;"><i class="far fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
 
         </div>
       </section>
@@ -181,7 +181,7 @@
         Choose a city
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('choose-city-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body center-children">
         <div v-for="city in cities">
@@ -203,7 +203,7 @@
         Search Gemlists in ${currentCity}
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('city-playlists-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -220,9 +220,9 @@
       <section class="modal-card-body center-children">
         <div v-for="playlist in cityPlaylists">
           <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
-            <span style="color: red;"><i class="fas fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+            <span style="color: #FFC214;"><i class="fas fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
           <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
-            <span style="color: red;"><i class="far fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
+            <span style="color: #FFC214;"><i class="far fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -242,7 +242,7 @@
         <button v-if="requestUserPk === -1" @click="openModal('login-required-modal')" class="button is-grey">${liked}</button>
         <button v-else @click="toggleVote(currentPlaylist)" class="button is-info">${liked}</button>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <h3><strong>${currentPlaylist.description}</strong></h3>
@@ -263,7 +263,7 @@
         {% if user.is_authenticated %}
         <div v-if="userOwns()">
           <button @click="openModal('edit-playlist-modal')" class="button is-warning">Edit</button>
-          <button @click="openModal('confirm-delete-playlist-modal')" class="button is-danger">Delete</button>
+          <button @click="openModal('confirm-delete-playlist-modal')" class="button red-button">Delete</button>
         </div>
         {% endif %}
       </footer>
@@ -278,7 +278,7 @@
         Create new Gemlist
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('create-playlist-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -319,7 +319,7 @@
         <p>Customize *${currentPlaylist.title}*</p>
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('edit-playlist-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <h2><strong>${currentPlaylist.description}</strong></h2>
@@ -332,7 +332,7 @@
           <div class="message-body has-background-grey-lighter">
             <p>${destination.description}</p>
             <div v-if="userOwns()">
-              <button @click="deleteDestination(destination)" class="button is-danger cancel">Remove</button>
+              <button @click="deleteDestination(destination)" class="button red-button cancel">Remove</button>
               <button @click="setDestinationFields(destination), openModal('edit-destination-details-modal')" class="button is-warning">Edit Description</button>
             </div>
           </div>
@@ -376,7 +376,7 @@
         Edit *${currentPlaylist.title}*
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('edit-playlist-details-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
@@ -417,7 +417,7 @@
         Edit Destination Details
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('edit-destination-details-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
        <div class="field">
@@ -453,7 +453,7 @@
         <p>You have already created a gemlist with that name!</p>
       </section>
       <footer class="modal-card-foot">
-        <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
+        <button @click="closeModals()" class="button red-button cancel">Cancel</button>
       </footer>
     </div>
   </div>
@@ -465,7 +465,7 @@
       <header class="modal-card-head">
         Duplicate Destination
         <p class="modal-card-title"></p>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
         <button class="button has-background-grey-lighter" @click="closeModal('duplicate-destination-modal')"
           aria-label="close">Back</button>
       </header>
@@ -484,7 +484,7 @@
       <header class="modal-card-head">
         Confirm delete gemlist
         <p class="modal-card-title"></p>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
         <button class="button has-background-grey-lighter" @click="closeModal('confirm-delete-playlist-modal')"
           aria-label="close">Back</button>
       </header>
@@ -505,7 +505,7 @@
         Login required
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('login-required-modal')" aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <p>Most of our features work without the need to log in. You've just encountered a feature which does. Feel
@@ -532,7 +532,7 @@
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-already-applied-modal')"
           aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <p>That gemlist has already been applied!</p>
@@ -551,7 +551,7 @@
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('more-info-required-modal')"
           aria-label="close">Back</button>
-        <button @click="closeModals()" class="button is-danger cancel">X</button>
+        <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
       <section class="modal-card-body">
         <p>Please fill out all required fields before submitting!</p>
