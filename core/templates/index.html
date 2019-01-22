@@ -31,7 +31,7 @@
 
   <div id="main-buttons columns">
     <div class="column center-children">
-      <button class="button is-info" id="playlist-button" @click="openModal('playlist-main-menu')">Playlists</button>
+      <button class="button is-info" id="playlist-button" @click="openModal('playlist-main-menu')">Gemlists</button>
     </div>
   </div>
 
@@ -61,19 +61,19 @@
         <p>LocalGems helps you experience the magic of travel by discovering amazing local places along the way to a
           destination. Imagine you're in a new city, and you've made dinner reservations. Before dinner, you'd like to
           experience what the city is really like. Simply enter the name of the restaurant into the searchbar and then
-          load a Playlist containing
+          load a Gemlist containing
           amazing local places to explore. An arrow will point you in the direction of the restaurant. The route and
-          the stops you make along the way are up to you! There are Playlists for every
+          the stops you make along the way are up to you! There are Gemlists for every
           mood. Feel free to apply more than one! Enjoy the journey with LocalGems.</p>
         <br>
         <h3><strong><a name="How-to-use">How to use LocalGems</a></strong></h3>
-        <p>Choose your final destination from the searchbar, and then click "Playlists." A Playlist is a collection
-          of amazing local businesses, experiences, and places. Choose a Playlist to suit your mood.</p>
+        <p>Choose your final destination from the searchbar, and then click "Gemlists". A Gemlit is a collection
+          of amazing local businesses, experiences, and places. Choose a Gemlist to suit your mood.</p>
         <br>
         <h3><strong><a name="Interface">LocalGems Interface</a></strong>
         </h3>
         <p>The LocalGems map shows your position. Your destination is represented by a gold star on the map, and the
-          LocalGems in your loaded Playlist are represented by blue diamonds on the map. Apply and remove playlists at
+          LocalGems in your loaded Gemlist are represented by blue diamonds on the map. Apply and remove Gemlists at
           any time!</p>
         <br>
         <h3><strong><a name="Navigation-Arrow">Navigation Arrow <input type="image" src="{% static 'images/Arrow.png' %}" alt="recenter button" width='20'></a></strong></h3>
@@ -101,24 +101,24 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <h1> Playlist Main menu </h1>
+        <h1> Gemlist Main Menu </h1>
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-main-menu')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body center-children">
         <button v-if="activePlaylists.length == 0" id="playlist-button" class="button is-light is-static">Active
-          Playlists</button>
+          Gemlist</button>
         <button v-else @click="openModal('active-playlists-modal')" id="playlist-button" class="button is-info">Active
-          Playlists</button>
-        <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Playlists</button>
-        <button v-if="userPlaylists.length == 0" class="button is-light is-static" id="playlist-button">Your Playlists</button>
+          Gemlists</button>
+        <button class="button is-info" id="playlist-button" @click="openModal('choose-city-modal')">Gemlists</button>
+        <button v-if="userPlaylists.length == 0" class="button is-light is-static" id="playlist-button">Your Gemlists</button>
         <button v-else class="button is-info" id="playlist-button" @click="openModal('user-playlists-modal')">Your
-          Playlists</button>
+          Gemlists</button>
       </section>
       <footer class="modal-card-foot">
-        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Playlist</button>
-        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Gemlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -128,7 +128,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Active playlists
+        Active Gemlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('active-playlists-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button is-danger cancel">Cancel</button>
@@ -154,7 +154,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Your playlists
+        Your Gemlists
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('user-playlists-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button is-danger cancel">X</button>
@@ -189,8 +189,8 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Playlist</button>
-        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Gemlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -200,14 +200,14 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Search playlists in ${currentCity}
+        Search Gemlists in ${currentCity}
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter	" @click="closeModal('city-playlists-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
         <div class="field">
-          <input class="input" type="text" id="search-field" placeholder="Search playlists" v-model="searchField">
+          <input class="input" type="text" id="search-field" placeholder="Search Gemlists" v-model="searchField">
           <label class="checkbox">
             <input id="is-accessible" type="checkbox" value="true">
             Accessible
@@ -226,8 +226,8 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Playlist</button>
-        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Playlist</strong></button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Gemlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -275,7 +275,7 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Create new playlist
+        Create new Gemlist
         <p class="modal-card-title"></p>
         <button class="button has-background-grey-lighter" @click="closeModal('create-playlist-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button is-danger cancel">X</button>
