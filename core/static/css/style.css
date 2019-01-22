@@ -323,3 +323,8 @@ html, body {
   margin-left: -1px;
   font-size: 20px;
 }
+
+.red-button {
+  background-color: #FF4114;
+  color: white;
+}
