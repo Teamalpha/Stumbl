@@ -105,7 +105,6 @@ const vm = new Vue({
       if (this.userVotes.length > 0) {
         for (i = 0; i < this.userVotes.length; i++) {
           if (this.userVotes[i].pk === this.voteToDelete.pk) {
-            console.log('this index was :', i)
             return i
           }
         }
@@ -147,14 +146,14 @@ const vm = new Vue({
       return true
     },
     addPlaylist: function () {
-      if (this.currentTitle === '' || this.currentCity === '' || this.currentTitle === null || this.currentCity === null) {
+      if (this.currentTitle === '' || this.currentCity === '' || this.currentDescription === '' ||this.currentTitle === null || this.currentCity === null || this.currentDescription === null) {
         this.openModal('more-info-required-modal')
         return false
       }
       if (requestUserPk !== -1) {
         this.newPlaylist = {
           "user": requestUser,
-          "title": capitalize(this.currentTitle),
+          "title": capitalizeFirst(this.currentTitle),
           "city": capitalize(this.currentCity),
           "description": this.currentDescription,
           "accessible": document.getElementById('accessible').checked,

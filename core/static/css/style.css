@@ -162,6 +162,17 @@ html, body {
   display: none;
 }
 
+#search-field {
+  display: inline-block;
+  min-height: 27px;
+  margin-top: 4px;
+  min-width: 72%;
+}
+
+#is-accessible {
+  margin-bottom: 0px;
+}
+
 /* Navbar code adapted from https://codepen.io/jo_Geek/pen/xgbaEr */
 * {
     box-sizing: border-box;

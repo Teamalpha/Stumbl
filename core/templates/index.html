@@ -165,7 +165,6 @@
             <span style="color: red;"><i class="fas fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
           <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
             <span style="color: red;"><i class="far fa-heart"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -206,16 +205,15 @@
         <button @click="closeModals()" class="button is-danger cancel">X</button>
       </header>
       <section class="modal-card-body">
-        <div class="field">
-          <input class="input" type="text" id="search-field" placeholder="Search Gemlists" v-model="searchField">
+        <div class="columns">
+          <input type="text" id="search-field" placeholder="Search Gemlists" v-model="searchField">
+          <button class="button is-small has-background-grey-lighter" @click="searchPlaylists()">Search</button>
+          <button class="button is-small has-background-grey-lighter" @click="getCityPlaylists(currentCity)">Clear</button>
           <label class="checkbox">
             <input id="is-accessible" type="checkbox" value="true">
             Accessible
           </label>
-          <br />
-          <button class="button has-background-grey-lighter" @click="searchPlaylists()">Search</button>
-          <button class="button has-background-grey-lighter" @click="getCityPlaylists(currentCity)">X</button>
-        </div>
+       </div>
       </section>
       <section class="modal-card-body center-children">
         <div v-for="playlist in cityPlaylists">
@@ -566,16 +564,17 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Welcome to LocalGems.io!
+        <strong>Welcome to localgems.io!</strong>
         <p class="modal-card-title"></p>
       </header>
       <section class="modal-card-body">
         <p>It looks like this is your first visit!</p>
         <br>
-        <p>LocalGems.io is a walking exploration app for mobile phones only. Discover the best places to visit from locals with the inside scoop!</p>
-        <p>Simply enter a destination within walking distance such as a hotel or restaurant, activate a gemlist or two that match your interests, and get ready to discover some of the city's true hidden gems!</p>
+        <p><strong>localgems.io</strong> is a walking exploration app for mobile phones. Discover the best places to visit from locals with the inside scoop!</p>
         <br>
-        <p><strong><em>Please enjoy LocalGems responsibly and maintain your attention in front of you at all times!</em></strong></p>
+        <p>Enter a destination, choose a gemlist full of your cities best kept secrets, and celebrate the journey!</p>
+        <br>
+        <p><em>Please enjoy LocalGems responsibly - maintain your attention in front of you at all times!</em></p>
         <br>
         <p><input type="image" src="{% static 'images/about.png' %}" id="first-visit-about-button" @click="closeModal('first-visit-modal'), openModal('about-modal')"></input> More info</p>
 
