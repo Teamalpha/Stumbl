@@ -40,40 +40,40 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <strong>LocalGems: Celebrate the Journey</strong>
+        <strong>localgems: Celebrate the Journey</strong>
         <p class="modal-card-title"></p>
       </header>
       <section class="modal-card-body">
-        <h3>About Local Gems</h3>
+        <h3>About localgems</h3>
         <br>
-        <p><a href="#What-is-LocalGems">What is LocalGems?</a></p>
+        <p><a href="#What-is-LocalGems">What is localgems?</a></p>
         <br>
-        <p><a href="#How-to-use">How to Use LocalGems</a></p>
+        <p><a href="#How-to-use">How to Use localgems</a></p>
         <br>
-        <p><a href="#Interface">The LocalGems Interface</a></p>
+        <p><a href="#Interface">The localgems Interface</a></p>
         <br>
         <p><a href="#Navigation-Arrow">The Navigation Arrow</a></p>
         <br>
         <p><a href="#Turn-by-turn">Get Turn-by-Turn Directions</a></p>
         <br>
         <br>
-        <h3><strong><a name="What-is-LocalGems">What is LocalGems?</a></strong></h3>
-        <p>LocalGems helps you experience the magic of travel by discovering amazing local places along the way to a
+        <h3><strong><a name="What-is-LocalGems">What is localgems?</a></strong></h3>
+        <p>localgems helps you experience the magic of travel by discovering amazing local places along the way to a
           destination. Imagine you're in a new city, and you've made dinner reservations. Before dinner, you'd like to
-          experience what the city is really like. Simply enter the name of the restaurant into the searchbar and then
+          experience what the city is really like.  Enter the name of the restaurant into the searchbar and then
           load a Gemlist containing
           amazing local places to explore. An arrow will point you in the direction of the restaurant. The route and
           the stops you make along the way are up to you! There are Gemlists for every
-          mood. Feel free to apply more than one! Enjoy the journey with LocalGems.</p>
+          mood. Feel free to apply more than one! Enjoy the journey with localgems.</p>
         <br>
-        <h3><strong><a name="How-to-use">How to use LocalGems</a></strong></h3>
-        <p>Choose your final destination from the searchbar, and then click "Gemlists". A Gemlit is a collection
+        <h3><strong><a name="How-to-use">How to use localgems</a></strong></h3>
+        <p>Choose your final destination from the searchbar, and then click "Gemlists". A Gemlist is a collection
           of amazing local businesses, experiences, and places. Choose a Gemlist to suit your mood.</p>
         <br>
-        <h3><strong><a name="Interface">LocalGems Interface</a></strong>
+        <h3><strong><a name="Interface">localgems Interface</a></strong>
         </h3>
-        <p>The LocalGems map shows your position. Your destination is represented by a gold star on the map, and the
-          LocalGems in your loaded Gemlist are represented by blue diamonds on the map. Apply and remove Gemlists at
+        <p>The localgems map shows your position. Your destination is represented by a gold star on the map, and the
+          localgems in your loaded Gemlist are represented by blue diamonds on the map. Apply and remove Gemlists at
           any time!</p>
         <br>
         <h3><strong><a name="Navigation-Arrow">Navigation Arrow <input type="image" src="{% static 'images/Arrow.png' %}" alt="recenter button" width='20'></a></strong></h3>
@@ -117,8 +117,8 @@
           Gemlists</button>
       </section>
       <footer class="modal-card-foot">
-        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Gemlist</button>
-        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Gemlist</strong></button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey mxsz">Create New Gemlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link mxsz"><strong>Create New Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -136,11 +136,11 @@
       <section class="modal-card-body">
         <div v-for="playlist in activePlaylists" class="columns">
           <div class="column center-children">
-            <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-70">${playlist.title}&nbsp&nbsp
+            <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-70 mxsz">${playlist.title}&nbsp&nbsp
               <span style="color: #FFC214;"><i class="fas fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-            <button v-else @click="getPlaylist(playlist)" class="button is-info is-70">${playlist.title}&nbsp&nbsp
+            <button v-else @click="getPlaylist(playlist)" class="button is-info is-70 mxsz">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="far fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-            <button @click="disablePlaylist(playlist)" class="button red-button is-20">Remove</button>
+            <button @click="disablePlaylist(playlist)" class="button red-button is-20 mxsz">Remove</button>
           </div>
         </div>
       </section>
@@ -161,9 +161,9 @@
       </header>
       <section class="modal-card-body">
         <div v-for="playlist in userPlaylists" class="center-children">
-          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
+          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth mxsz">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="fas fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
+          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth mxsz">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="far fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
 
         </div>
@@ -189,8 +189,8 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Gemlist</button>
-        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Gemlist</strong></button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey mxsz">Create New Gemlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link mxsz"><strong>Create New Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -219,15 +219,15 @@
       </section>
       <section class="modal-card-body center-children">
         <div v-for="playlist in cityPlaylists">
-          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
+          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth mxsz">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="fas fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth">${playlist.title}&nbsp&nbsp
+          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth mxsz">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="far fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
         </div>
       </section>
       <footer class="modal-card-foot">
         <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Gemlist</button>
-        <button v-else @click="newPlaylistModal()" class="button is-link"><strong>Create New Gemlist</strong></button>
+        <button v-else @click="newPlaylistModal()" class="button is-link mxsz"><strong>Create New Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -244,18 +244,18 @@
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body mxsz">
         <h3><strong>${currentPlaylist.description}</strong></h3>
         <br>
         <div class="center-children">
-          <a class="button is-link is-90" id="share-link">Share this gemlist!</a>
+          <a class="button is-link is-90 mxsz" id="share-link">Share this gemlist!</a>
         </div>
         <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-info">
-          <div class="message-header">
+          <div class="message-header mxsz">
             <p>${destination.name}</p>
           </div>
-          <div class="message-body has-background-grey-lighter">${destination.description}</div>
+          <div class="message-body has-background-grey-lighter mxsz">${destination.description}</div>
         </article>
       </section>
       <footer class="modal-card-foot">
@@ -306,7 +306,7 @@
         </label>
       </section>
       <footer class="modal-card-foot">
-        <button @click="addPlaylist()" class="button is-link">Create Playlist</button>
+        <button @click="addPlaylist()" class="button is-link mxsz"><strong>Create Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -321,18 +321,18 @@
         <button class="button has-background-grey-lighter	" @click="closeModal('edit-playlist-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
-      <section class="modal-card-body">
+      <section class="modal-card-body mxsz">
         <h2><strong>${currentPlaylist.description}</strong></h2>
         <button @click="openModal('edit-playlist-details-modal'), setPlaylistFields()" class="button is-warning">Edit Gemlist Details</button>
         <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-info is-small">
-          <div class="message-header">
+          <div class="message-header mxsz">
             <p>${destination.name}</p>
           </div>
-          <div class="message-body has-background-grey-lighter">
+          <div class="message-body has-background-grey-lighter mxsz">
             <p>${destination.description}</p>
             <div v-if="userOwns()">
-              <button @click="deleteDestination(destination)" class="button red-button cancel">Remove</button>
+              <button @click="deleteDestination(destination)" class="button red-button cancel is-small">Remove</button>
               <button @click="setDestinationFields(destination), openModal('edit-destination-details-modal')" class="button is-warning">Edit Description</button>
             </div>
           </div>
@@ -509,7 +509,7 @@
       </header>
       <section class="modal-card-body">
         <p>Most of our features work without the need to log in. You've just encountered a feature which does. Feel
-          free to login or register, or simply close this window to continue using our other features.</p>
+          free to login or register, or close this window to continue using our other features.</p>
         <br>
         <br>
         <a href="{% url 'auth_login' %}"><strong>Login</strong></a>
@@ -566,16 +566,16 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        Welcome to LocalGems.io!
+        Welcome to localgems.io!
         <p class="modal-card-title"></p>
       </header>
       <section class="modal-card-body">
         <p>It looks like this is your first visit!</p>
         <br>
-        <p>LocalGems.io is a walking exploration app for mobile phones only. Discover the best places to visit from locals with the inside scoop!</p>
-        <p>Simply enter a destination within walking distance such as a hotel or restaurant, activate a gemlist or two that match your interests, and get ready to discover some of the city's true hidden gems!</p>
+        <p>localgems.io is a walking exploration app for mobile phones only. Discover the best places to visit from locals with the inside scoop!</p>
+        <p>Enter a destination within walking distance such as a hotel or restaurant, activate a gemlist or two that match your interests, and get ready to discover some of the city's true hidden gems!</p>
         <br>
-        <p><strong><em>Please enjoy LocalGems responsibly and maintain your attention in front of you at all times!</em></strong></p>
+        <p><strong><em>Please enjoy lcalGems responsibly and maintain your attention in front of you at all times!</em></strong></p>
         <br>
         <p><input type="image" src="{% static 'images/about.png' %}" id="first-visit-about-button" @click="closeModal('first-visit-modal'), openModal('about-modal')"></input> More info</p>
 

@@ -1,4 +1,6 @@
-
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
 #map {
     width: 88%;
     border-radius: 100%;
@@ -97,7 +99,7 @@ html, body {
 
 .playlist-menu-bar {
   width: 90%;
-  font-size: 1rem;
+  font-size: 20px;
 }
 
 .brand {
@@ -268,6 +270,7 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   text-align: center;
   justify-content: center;
+  font-size: 20px;
 
 }
 
@@ -324,6 +327,12 @@ html, body {
   font-size: 20px;
 }
 
+#playlist-button {
+  font-size: 20px;
+}
+
+.mxsz {
+  font-size: 20px;
 .red-button {
   background-color: #FF4114;
   color: white;
