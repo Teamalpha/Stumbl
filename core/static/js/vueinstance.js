@@ -399,7 +399,7 @@ const vm = new Vue({
       playlists[playlistIndex].accessible = document.getElementById('accessible-edit').checked
     },
     updatePlaylist: function () {
-      if (this.currentTitle === '' || this.currentCity === '' || this.currentTitle === null || this.currentCity === null) {
+      if (this.currentTitle === '' || this.currentCity === '' || this.currentDescription === '' ||this.currentTitle === null || this.currentCity === null || this.currentDescription === null) {
         this.openModal('more-info-required-modal')
         return false
       }
