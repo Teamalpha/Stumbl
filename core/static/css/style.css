@@ -1,4 +1,6 @@
-
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
 #map {
     width: 88%;
     border-radius: 100%;
