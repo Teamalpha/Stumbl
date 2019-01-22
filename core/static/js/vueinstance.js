@@ -132,7 +132,7 @@ const vm = new Vue({
         this.voteExists(playlist)
         let shareChar = (/Android/i.test(navigator.userAgent) ? '?' : '&')
 
-        document.getElementById('share-link').href = `sms:${shareChar}body=Check%20out%20this%20LocalGems%20playlist%20*${playlist.title}*%20for%20${playlist.city}%20at https://www.localgems.io/shared_playlist/${playlist.pk}`
+        document.getElementById('share-link').href = `sms:${shareChar}body=Check%20out%20this%20LocalGems%20gemlist%20*${playlist.title}*%20for%20${playlist.city}%20at https://www.localgems.io/shared_gemlist/${playlist.pk}`
       }).catch((err) => {
         console.log(err);
       })
@@ -172,7 +172,7 @@ const vm = new Vue({
             }
 
             let shareChar = (/Android/i.test(navigator.userAgent) ? '?' : '&')
-            document.getElementById('share-link').href = `sms:${shareChar}body=Check%20out%20this%20LocalGems%20playlist%20*${this.currentPlaylist.title}*%20for%20${this.currentPlaylist.city}%20at https://www.localgems.io/shared_playlist/${this.currentPlaylist.pk}`
+            document.getElementById('share-link').href = `sms:${shareChar}body=Check%20out%20this%20LocalGems%20gemlist%20*${this.currentPlaylist.title}*%20for%20${this.currentPlaylist.city}%20at https://www.localgems.io/shared_gemlist/${this.currentPlaylist.pk}`
 
             // clear variables
             this.currentDestination = { 'name': '' }
