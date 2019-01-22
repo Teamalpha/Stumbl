@@ -117,8 +117,8 @@
           Gemlists</button>
       </section>
       <footer class="modal-card-foot">
-        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey mxsz">Create New Gemlist</button>
-        <button v-else @click="newPlaylistModal()" class="button is-link mxsz"><strong>Create New Gemlist</strong></button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey font-20">Create New Gemlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link font-20"><strong>Create New Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -136,11 +136,11 @@
       <section class="modal-card-body">
         <div v-for="playlist in activePlaylists" class="columns">
           <div class="column center-children">
-            <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-70 mxsz">${playlist.title}&nbsp&nbsp
+            <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-70 font-20">${playlist.title}&nbsp&nbsp
               <span style="color: #FFC214;"><i class="fas fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-            <button v-else @click="getPlaylist(playlist)" class="button is-info is-70 mxsz">${playlist.title}&nbsp&nbsp
+            <button v-else @click="getPlaylist(playlist)" class="button is-info is-70 font-20">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="far fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-            <button @click="disablePlaylist(playlist)" class="button red-button is-20 mxsz">Remove</button>
+            <button @click="disablePlaylist(playlist)" class="button red-button is-small font-20">Remove</button>
           </div>
         </div>
       </section>
@@ -161,9 +161,9 @@
       </header>
       <section class="modal-card-body">
         <div v-for="playlist in userPlaylists" class="center-children">
-          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth mxsz">${playlist.title}&nbsp&nbsp
+          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth font-20">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="fas fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth mxsz">${playlist.title}&nbsp&nbsp
+          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth font-20">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="far fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
 
         </div>
@@ -189,8 +189,8 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey mxsz">Create New Gemlist</button>
-        <button v-else @click="newPlaylistModal()" class="button is-link mxsz"><strong>Create New Gemlist</strong></button>
+        <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey font-20">Create New Gemlist</button>
+        <button v-else @click="newPlaylistModal()" class="button is-link font-20"><strong>Create New Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -218,15 +218,15 @@
       </section>
       <section class="modal-card-body center-children">
         <div v-for="playlist in cityPlaylists">
-          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth mxsz">${playlist.title}&nbsp&nbsp
+          <button v-if="voteExists(playlist)" @click="getPlaylist(playlist)" class="button is-info is-fullwidth font-20">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="fas fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
-          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth mxsz">${playlist.title}&nbsp&nbsp
+          <button v-else @click="getPlaylist(playlist)" class="button is-info is-fullwidth font-20">${playlist.title}&nbsp&nbsp
             <span style="color: #FFC214;"><i class="far fa-star"></i></span>&nbsp ${playlist.playlist_votes.length}</button>
         </div>
       </section>
       <footer class="modal-card-foot">
         <button v-if="requestUserPk == -1" @click="openModal('login-required-modal')" class="button is-grey">Create New Gemlist</button>
-        <button v-else @click="newPlaylistModal()" class="button is-link mxsz"><strong>Create New Gemlist</strong></button>
+        <button v-else @click="newPlaylistModal()" class="button is-link font-20"><strong>Create New Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -243,27 +243,25 @@
         <button class="button has-background-grey-lighter" @click="closeModal('playlist-detail-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
-      <section class="modal-card-body mxsz">
+      <section class="modal-card-body font-20">
         <h3><strong>${currentPlaylist.description}</strong></h3>
         <br>
         <div class="center-children">
-          <a class="button is-link is-90 mxsz" id="share-link">Share this gemlist!</a>
+          <a class="button is-link is-90 font-20" id="share-link">Share this gemlist!</a>
         </div>
         <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-info">
-          <div class="message-header mxsz">
+          <div class="message-header font-20">
             <p>${destination.name}</p>
           </div>
-          <div class="message-body has-background-grey-lighter mxsz">${destination.description}</div>
+          <div class="message-body has-background-grey-lighter font-20">${destination.description}</div>
         </article>
       </section>
       <footer class="modal-card-foot">
         <button @click="applyGems()" class="button is-link apply-playlist">Select gemlist</button>
         {% if user.is_authenticated %}
-        <div v-if="userOwns()">
-          <button @click="openModal('edit-playlist-modal')" class="button is-warning">Edit</button>
-          <button @click="openModal('confirm-delete-playlist-modal')" class="button red-button">Delete</button>
-        </div>
+          <button v-if="userOwns()" @click="openModal('edit-playlist-modal')" class="button edit-button">Edit</button>
+          <button v-if="userOwns()" @click="openModal('confirm-delete-playlist-modal')" class="button red-button">Delete</button>
         {% endif %}
       </footer>
     </div>
@@ -305,7 +303,7 @@
         </label>
       </section>
       <footer class="modal-card-foot">
-        <button @click="addPlaylist()" class="button is-link mxsz"><strong>Create Gemlist</strong></button>
+        <button @click="addPlaylist()" class="button is-link font-20"><strong>Create Gemlist</strong></button>
       </footer>
     </div>
   </div>
@@ -320,20 +318,18 @@
         <button class="button has-background-grey-lighter	" @click="closeModal('edit-playlist-modal')" aria-label="close">Back</button>
         <button @click="closeModals()" class="button red-button cancel">X</button>
       </header>
-      <section class="modal-card-body mxsz">
+      <section class="modal-card-body font-20">
         <h2><strong>${currentPlaylist.description}</strong></h2>
-        <button @click="openModal('edit-playlist-details-modal'), setPlaylistFields()" class="button is-warning">Edit Gemlist Details</button>
+        <button @click="openModal('edit-playlist-details-modal'), setPlaylistFields()" class="button edit-button">Edit Gemlist Details</button>
         <br>
         <article v-for="destination in currentPlaylist.destinations" class="message is-info is-small">
-          <div class="message-header mxsz">
+          <div class="message-header font-20">
             <p>${destination.name}</p>
           </div>
-          <div class="message-body has-background-grey-lighter mxsz">
+          <div class="message-body has-background-grey-lighter font-20">
             <p>${destination.description}</p>
-            <div v-if="userOwns()">
-              <button @click="deleteDestination(destination)" class="button red-button cancel is-small">Remove</button>
-              <button @click="setDestinationFields(destination), openModal('edit-destination-details-modal')" class="button is-warning">Edit Description</button>
-            </div>
+              <button v-if="userOwns()" @click="deleteDestination(destination)" class="button red-button cancel">Remove</button>
+              <button v-if="userOwns()" @click="setDestinationFields(destination), openModal('edit-destination-details-modal')" class="button edit-button">Edit Description</button>
           </div>
         </article>
         <label class="label">Add a gem</label>
@@ -491,7 +487,7 @@
         <p>Are you sure you want to delete this gemlist?</p>
       </section>
       <footer class="modal-card-foot">
-        <button @click="deletePlaylist()" class="button is-warning">Delete Gemlist</button>
+        <button @click="deletePlaylist()" class="button red-button">Delete Gemlist</button>
       </footer>
     </div>
   </div>
