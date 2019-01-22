@@ -11,6 +11,7 @@ class DestinationAdmin(admin.ModelAdmin):
         "place_id",
         "description",
         "name",
+        "pk",
     )
 
 
@@ -18,8 +19,11 @@ class PlaylistAdmin(admin.ModelAdmin):
     model = Playlist
     list_display = (
         "user",
-        "title",
         "city",
+        "title",
+        "description",
+        "accessible",
+        "pk",
     )
 
 class VoteAdmin(admin.ModelAdmin):
@@ -27,6 +31,7 @@ class VoteAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "playlist",
+        "pk",
     )
 
 admin.site.register(Destination, DestinationAdmin)

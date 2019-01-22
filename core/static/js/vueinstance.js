@@ -105,7 +105,6 @@ const vm = new Vue({
       if (this.userVotes.length > 0) {
         for (i = 0; i < this.userVotes.length; i++) {
           if (this.userVotes[i].pk === this.voteToDelete.pk) {
-            console.log('this index was :', i)
             return i
           }
         }
@@ -125,8 +124,6 @@ const vm = new Vue({
       this.$http.get(`/api/playlists/${playlist.pk}`).then((response) => {
         this.currentPlaylist = response.data;
         this.currentCity = playlist.city
-        this.closeModal('active-playlists-modal')
-        this.closeModal('user-playlists-modal')
         this.openModal('playlist-detail-modal')
         this.liked = (this.voteExists(this.currentPlaylist) ? "Unlike" : "Like")
         this.voteExists(playlist)
@@ -149,14 +146,14 @@ const vm = new Vue({
       return true
     },
     addPlaylist: function () {
-      if (this.currentTitle === '' || this.currentCity === '' || this.currentTitle === null || this.currentCity === null) {
+      if (this.currentTitle === '' || this.currentCity === '' || this.currentDescription === '' ||this.currentTitle === null || this.currentCity === null || this.currentDescription === null) {
         this.openModal('more-info-required-modal')
         return false
       }
       if (requestUserPk !== -1) {
         this.newPlaylist = {
           "user": requestUser,
-          "title": capitalize(this.currentTitle),
+          "title": capitalizeFirst(this.currentTitle),
           "city": capitalize(this.currentCity),
           "description": this.currentDescription,
           "accessible": document.getElementById('accessible').checked,
@@ -401,7 +398,7 @@ const vm = new Vue({
       playlists[playlistIndex].accessible = document.getElementById('accessible-edit').checked
     },
     updatePlaylist: function () {
-      if (this.currentTitle === '' || this.currentCity === '' || this.currentTitle === null || this.currentCity === null) {
+      if (this.currentTitle === '' || this.currentCity === '' || this.currentDescription === '' ||this.currentTitle === null || this.currentCity === null || this.currentDescription === null) {
         this.openModal('more-info-required-modal')
         return false
       }
@@ -434,13 +431,13 @@ const vm = new Vue({
         "name": this.currentDestination.name,
       }
       this.$http.patch(`api/destinations/${this.destinationToUpdate.pk}/`, updatedDestination).then(() => {
-        this.currentPlaylist.destinations[this.getDestinationIndex()].description = this.destinationDescription
-        this.currentPlaylist.destinations[this.getDestinationIndex()].name = this.currentDestination.name
+        let destinationIndex = this.currentPlaylist.destinations.indexOf(this.destinationToUpdate)
+        this.currentPlaylist.destinations[destinationIndex].description = this.destinationDescription
+        this.currentPlaylist.destinations[destinationIndex].name = this.currentDestination.name
+        this.currentDestination = { 'name': '' }
         this.destinationDescription = ''
-        this.currentDestination.name = ''
         this.currentDestination.formatted_address = '',
-          this.
-            this.closeModal('edit-destination-details-modal')
+        this.closeModal('edit-destination-details-modal')
       })
     },
     setPlaylistFields: function () {

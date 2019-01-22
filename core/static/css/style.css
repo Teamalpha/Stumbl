@@ -9,6 +9,11 @@
     -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
+.edit-button {
+  background-color: #415F8D;
+  color: white;
+}
+
 html, body {
     width: 100%;
     margin: 0;
@@ -162,6 +167,16 @@ html, body {
   padding-bottom: 40px;
   z-index: -1;
   display: none;
+}
+
+#search-field {
+  display: inline-block;
+  height: 27px;
+  margin-top: 4px;
+}
+
+#is-accessible {
+  margin-bottom: 0px;
 }
 
 /* Navbar code adapted from https://codepen.io/jo_Geek/pen/xgbaEr */
@@ -331,7 +346,7 @@ html, body {
   font-size: 20px;
 }
 
-.mxsz {
+.font-20 {
   font-size: 20px;
 }
 

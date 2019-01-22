@@ -91,6 +91,12 @@ function capitalize(sentence) {
   }
 }
 
+function capitalizeFirst(sentence) {
+  if (sentence !== null && sentence !== '') {
+    return sentence[0].toUpperCase() + sentence.slice(1)
+  }
+}
+
 // reduce pinch zoom on iOS 10 or greater.
 document.addEventListener('touchmove', function (event) {
   if (event.scale !== 1) {
