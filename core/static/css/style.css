@@ -164,9 +164,8 @@ html, body {
 
 #search-field {
   display: inline-block;
-  min-height: 27px;
+  height: 27px;
   margin-top: 4px;
-  min-width: 72%;
 }
 
 #is-accessible {
