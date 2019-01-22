@@ -113,30 +113,3 @@ document.addEventListener('touchend', function (event) {
   }
   lastTouchEnd = now;
 }, false);
-
-
-// close modals if user clicks outside
-// $(window).mouseup(function(event) {
-//   let modalArray = [
-//     '#city-playlists-modal',
-//     '#choose-city-modal',
-//     '#playlist-detail-modal',
-//     '#create-playlist-modal',
-//     '#edit-playlist-modal',
-//     '#duplicate-playlist-modal',
-//     '#confirm-delete-playlist-modal',
-//     '#duplicate-destination-modal',
-//     '#active-playlists-modal',
-//     '#playlist-already-applied-modal',
-//     '#login-required-modal',
-//     '#playlist-main-menu',
-//     '#user-playlists-modal'
-//   ]
-
-//   for (let individualModal of modalArray) {
-//     let modal = $(individualModal)
-//     if (event.target !== modal && event.target.parentNode !== modal) {
-//       $(modal).removeClass('is-active')
-//     }
-//   }
-// })
